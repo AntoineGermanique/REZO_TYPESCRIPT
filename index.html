@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="lib/pixi.js"></script>
+    <script src="lib/jquery-2.1.1.min.js"></script>
+    <script src="lib/jquery.fullscreen-min.js"></script>
+    <script src="js/rezo.js"></script>
+    <script src="js/bulle.js"></script>
+    <script src="js/interactiveBulle.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/array.js"></script>
+    <script src="js/link.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/motion.js"></script>
+    <script src="js/save.js"></script>
+    <script src="js/open.js"></script>
+    <script src="js/whipe.js"></script>
+    <script src="js/load.js"></script>
+    <script src="js/suppr.js"></script>
+    <script src="js/text.js"></script>
+    <script src="js/fast.js"></script>
+    <script src="js/wordwrap.js"></script>
+    <script src="js/zoom.js"></script>
+    <script src="js/dragScene.js"></script>
+    <script src="js/jquery.mousewheel.js"></script>
+    <script src="js/resizeFun.js"></script>
+    <script src="js/interactiveLink.js"></script>
+    <script src="js/autoSizeText.js"></script>
+    <script src="js/gradient.js"></script>
+    <script src="js/bulleSize.js"></script>
+    <script src="js/scale.js"></script>
+    <script src="js/multi.js"></script>
+    <script src="js/draw.js"></script>
+    <script src="js/hyper.js"></script>
+    <script src="js/interactiveHyper.js"></script>
+    <script src="js/localStorage.js"></script>
+    <script src="js/styleAnim.js"></script>
+
+
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+    <!--div class='counter' id='counter'>count1</div-->
+    <!--div class='counter' id='counter2'>count2</div-->
+    <div id='menu'>
+        <div class="menuBtn">
+            <img id="menuBtn" src="images/MENU.png" />
+            <img id="menuBtn_replie" src="images/MENU_REPLIE.png" />
+        </div>
+        <div id="edit1">
+            <div class="bigBTN">
+                <img id="fastBulle" src="images/FAST.png" />
+            </div>
+            <div class="bigBTN">
+                <img id="plusBulle" src="images/PLUS.png" />
+            </div>
+            <div id="editBackground">
+                <div class="bigBTN">
+                    <img id="editBulle" src="images/EDIT.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="linkBulle" src="images/LINK.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="link2Bulle" src="images/LINK2.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="link3Bulle" src="images/LINK3.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="textBulle" src="images/TEXT.png" />
+                </div>
+                <div id="scalBackground">
+                    <div class="bigBTN">
+                        <img id="scalBulle" src="images/SCAL.png" />
+                    </div>
+                    <div class="bigBTN">
+                        <img id="scalZPBulle" src="images/ZOOMTXTPLS.png" />
+                    </div>
+                    <div class="bigBTN">
+                        <img id="scalZMBulle" src="images/ZOOMTXTMNS.png" />
+                    </div>
+                </div>
+                <div class="bigBTN">
+                    <img id="coloBulle" src="images/COLO.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="bordBulle" src="images/BORD.png" />
+                </div>
+                <div id="multiBackground">
+                    <div class="bigBTN">
+                        <img id="multBulle" src="images/MULT.png" />
+                    </div>
+                    <div class="bigBTN">
+                        <img id="drawBulle" src="images/DRAW.png" />
+                    </div>
+                </div>
+                <div class='bigBTN'>
+                    <img id="hyperBulle" src='images/HYPER.png' />
+                </div>
+                <div class="bigBTN">
+                    <img id="supprBulle" src="images/SUPPR.png" />
+                </div>
+            </div>
+            <div id='navBackground'>
+                <div class="bigBTN">
+                    <img id="naviBulle" src="images/NAVI.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="zoomPBulle" src="images/ZOOMPLS.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="zoomMBulle" src="images/ZOOMMNS.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="zoomPText" src="images/ZOOMTXTPLS.png" />
+                </div>
+                <div class="bigBTN">
+                    <img id="zoomMText" src="images/ZOOMTXTMNS.png" />
+                </div>
+            </div>
+            <div class="bigBTN">
+                <img id="fullBulle" src="images/FULL.png" />
+            </div>
+            <div class="bigBTN">
+                <img id="saveBulle" src="images/SAVE.png" />
+            </div>
+            <div class="bigBTN">
+                <img id="localSaveBulle" src="images/LOCALSAVE.png" />
+            </div>
+            <div class="bigBTN">
+                <img id="homeBulle" src="images/HOME.png" />
+            </div>
+            <div class="bigBTN">
+                <img id="localHome" src="images/LOCALHOME.png" />
+            </div>
+        </div>
+    </div>
+    <div id="gradient"></div>
+    <div id='open'>
+        <div id="btnOpen">
+            <div><img src="images/SUPPR.png" id="closeOpen"></div>
+            <div><img src="images/SAVE.png" id="saveOpen"></div>
+            <div><img src="images/PLUS.png" id="plusOpen"></div>
+        </div>
+    </div>
+    <div id='loading'>
+        <div id="imgLoader"> chargement <img src="images/LOADER.gif" id="loaderGif"></div>
+    </div>
+    <div id="goodNews"> fait, et sans problème ! </div>
+    <div id="canvasContainer">
+        <script>
+				rezo();
+        </script>
+    </div>
+
+</body>
+</html>

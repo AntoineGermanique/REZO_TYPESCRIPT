@@ -1,0 +1,50 @@
+//////////////////dragScene.js
+function dragScene(){
+	upperScene.mousedown = upperScene.touchstart = function(data)
+	{	
+		// stop the default event...
+		data.data.originalEvent.preventDefault();
+		// store a reference to the data
+		// The reason for this is because of multitouch
+		// we want to track the movement of this particular touch
+		this.data = data;
+		this.dragging = true;
+		oldX=scene.position.x*scaleScene.scale.x
+		oldY=scene.position.y*scaleScene.scale.x
+		oldPosition = this.data.data.getLocalPosition(this.parent);
+	}; 
+
+	// set the events for when the mouse is released or a touch is released
+	upperScene.mouseup = upperScene.mouseupoutside = upperScene.touchend = upperScene.touchendoutside = function(data)
+	{
+		this.dragging = false;
+		// set the interaction data to null
+		this.data = null;
+		// scene.pivot.x+=scene.position.x-oldX;
+		// scene.pivot.y+=scene.position.y-oldY;
+	};
+
+	// set the callbacks for when the mouse or a touch moves
+
+	upperScene.mousemove = upperScene.touchmove = function(data)
+	{
+		if(this.dragging)
+		{
+			var newPosition = this.data.data.getLocalPosition(this.parent);
+			scene.position.x = (newPosition.x-oldPosition.x+oldX)/scaleScene.scale.x
+			scene.position.y = (newPosition.y-oldPosition.y+oldY)/scaleScene.scale.x
+			
+			
+			// this.hitArea.x=-this.position.x+windowW/2*this.scale.x
+			// this.hitArea.y=-this.position.y+windowH/2*this.scale.y
+
+			// this.clear();
+			// updateWindowSize()
+			// this.beginFill(0xFF5500, 0.2)
+			// this.drawRect(-this.position.x/this.scale.x,-this.position.y/this.scale.y,windowW/this.scale.x,windowH/this.scale.x)
+			
+			
+		}
+	}
+}
+	

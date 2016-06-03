@@ -1,0 +1,295 @@
+﻿//////////////////draw.js
+var sceneMulti
+var sceneDraw
+var path = [];
+var drawnGraphics=new PIXI.Graphics()
+var detectPathGraphics=new PIXI.Graphics()
+drawnGraphics.alpha=0.2
+detectPathGraphics.alpha=0.3
+var rectTestArray=[]
+var drawDown = false;
+var clockwiseSelect=true
+var counterClockwiseSelect=false
+
+function drawIntercative(){
+	sceneDraw.addChild(drawnGraphics)
+	sceneMulti.addChild(detectPathGraphics)
+	sceneMulti.addChild(rectTestGraph)
+	console.log("drawinteractiv")
+	sceneDraw.mousedown=sceneDraw.touchstart = function(data)
+	{	updateWindowSize()
+		drawnGraphics.clear()
+		drawDown = true;
+		path = [];
+		color = 0x5D0776
+		console.clear()
+		console.log("draw!?!")
+	}
+
+	sceneDraw.mousemove= sceneDraw.touchmove = function(data)
+	{
+		if(!drawDown)return;
+		
+		path.push(data.data.global.x);
+		path.push(data.data.global.y);
+		drawnGraphics.clear()
+		drawnGraphics.lineStyle(5,0x000000,1) 
+		drawnGraphics.drawPolygon(path)
+		drawnGraphics.endFill();
+
+
+	}
+
+	sceneDraw.mouseup =sceneDraw.touchend=sceneDraw.touchendoutside = function()
+	{
+		drawDown = false;
+		drawnGraphics.beginFill(color);
+		drawnGraphics.drawPolygon(path)
+		drawnGraphics.endFill();
+		drawnGraphics.hitArea=new PIXI.Polygon(path);
+		drawnGraphics.interactive=true;
+		    
+		console.log(scene.x+"<-X scene Y->"+scene.y)
+		console.log(scaleScene.scale.x+"<-X scene scale")
+		rectCollisionTest(drawnGraphics,path)
+		path = [];
+	}
+	console.log("scenmutlidraw ok")
+}
+function draw(){
+	if(drawBool){
+		console.log("it's on!!!")
+		upperScene.interactive=false
+		sceneDraw.interactive=true
+	}else{
+		console.log("it's off...")
+		upperScene.interactive=true
+		sceneDraw.interactive=false
+		drawnGraphics.clear()
+	}
+}
+var diffScaleX
+var diffScaleY
+rectTestGraph= new PIXI.Graphics()
+function rectCollisionTest(rectTest,currentPath){
+	diffScaleX=((windowW-windowW*scaleScene.scale.x)/2)/scaleScene.scale.x
+	diffScaleY=((windowH-windowH*scaleScene.scale.x)/2)/scaleScene.scale.x
+	console.log(scaleScene.scale.x+"<----scaleScene.scale.x")
+	console.log(diffScaleX+"<----diffScaleX")
+	console.log(rectTest)
+	rectZoneTest=rectTest.getBounds()
+	allBulle=sceneBulle.children;
+	x1=rectZoneTest.x/scaleScene.scale.x-scene.x-diffScaleX;
+	x2=x1+rectZoneTest.width/scaleScene.scale.x;
+	y1=rectZoneTest.y/scaleScene.scale.x-scene.y-diffScaleY;
+	y2=y1+rectZoneTest.height/scaleScene.scale.x;
+	
+	// rectTestGraph.clear()
+	// rectTestGraph.beginFill(0x373173,0.3)
+	// rectTestGraph.drawPolygon(x1,y1,x2,y1,x2,y2,x1,y2)
+	console.log(rectTestGraph.x)
+	for(i=0;i<allBulle.length;i++){
+		console.log("bulle test par rectTest")
+		bx=allBulle[i].x
+		by=allBulle[i].y
+		console.log(bx+">"+x1+"&&"+bx+"<"+x2+"&&"+by+">"+y1+"&&"+by+"<"+y2)
+		if(bx>x1&&bx<x2&&by>y1&&by<y2){
+			rectTestArray.push(allBulle[i])
+		}
+	}
+	if(rectTestArray.length>0){
+		console.log("au moins Une bulle dans la selection")
+		polygonCollisionTest(rectTestArray,currentPath)
+	}
+	drawnGraphics.clear();
+}
+
+var currentPathX=[]
+var currentPathY=[]
+var smallestX
+var yOfSmallestX
+var smallestXIndex
+var arrayDetect=[]
+var isDetect=false
+function polygonCollisionTest(rectTestArray,currentPath){
+	/* a = $('#canvasId')[0];
+	b = document.getElementById("b");
+	gl = a.getContext("webgl");
+	ctx = b.getContext("2d");
+
+
+	ctx.drawImage(a,0,0);
+
+	for(i=0;i<rectTestArray.length;i++){
+		goodPixelX=Math.round(rectTestArray[i].x)
+		goodPixelY=Math.round(rectTestArray[i].y)
+		pixelData=ctx.getImageData(goodPixelX, goodPixelY, 1, 1).data;
+		console.log(pixelData)
+	} */
+	
+	
+	// console.log(currentPath)
+	for(i=0;i<currentPath.length;i++){
+		
+		if(i % 2==1){
+			currentPathY.push(currentPath[i]/scaleScene.scale.x-scene.y-diffScaleY)
+		}else{
+			currentPathX.push(currentPath[i]/scaleScene.scale.x-scene.x-diffScaleX)
+			if(i==0){
+				smallestX=currentPath[i]
+				smallestXIndex=i/2
+			}else if(currentPath[i]<smallestX){
+				smallestX=currentPath[i]
+				smallestXIndex=i/2
+			}
+		}	
+	}
+	endCurrentPathX=currentPathX.splice(0,smallestXIndex)
+	pathX=$.merge(currentPathX,endCurrentPathX);
+	endCurrentPathY=currentPathY.splice(0,smallestXIndex)
+	pathY=$.merge(currentPathY,endCurrentPathY);
+	if(pathY[0]<pathY[1]&&pathY[0]<pathY[10]){////////////////clockwise or counterClockwise
+		clockwiseSelect=false
+		counterClockwiseSelect=true
+	}else{
+		clockwiseSelect=true
+		counterClockwiseSelect=false
+	}
+	for(j=0;j<rectTestArray.length;j++){
+		console.log(rectTestArray)
+		detectbulleX=rectTestArray[j].x
+		detectbulleY=rectTestArray[j].y
+		yOfSmallestX=pathY[0]
+		for(i=0;i<pathX.length;i++){
+			
+			if(pathX[i]!=pathX[i+1]){//si pathX et pathX+1 sont différent
+				if(pathY[i]>yOfSmallestX){//si pathY est "negatif"
+					if(pathX[i]<pathX[i+1]){/////////si pathX++
+						if(pathX[i]<detectbulleX&&detectbulleX<pathX[i+1]){//si bulle dans interval pathX et pathX+1
+							if(pathY[i]>detectbulleY&&pathY[i+1]>detectbulleY&&detectbulleY>yOfSmallestX){
+								console.log("detection y- path++ Clock--")
+								arrayDetect.push([counterClockwiseSelect,pathY[i]])
+							}else if(pathY[i]>detectbulleY&&detectbulleY>yOfSmallestX||pathY[i+1]>detectbulleY&&detectbulleY>yOfSmallestX){
+								////go to border detect function
+							}
+						}
+					}else if(pathX[i]>pathX[i+1]){////si PathX-- 
+						if(pathX[i]>detectbulleX&&detectbulleX>pathX[i+1]){//si bulle dans interval pathX et pathX+1
+							if(pathY[i]>detectbulleY&&pathY[i+1]>detectbulleY&&detectbulleY>yOfSmallestX){
+							console.log("detection y- path-- Clock++")
+								arrayDetect.push([clockwiseSelect,pathY[i]])
+							}else if(pathY[i]>detectbulleY&&detectbulleY>yOfSmallestX||pathY[i+1]>detectbulleY&&detectbulleY>yOfSmallestX){
+								////go to border detect function
+							}
+						}
+					}
+					
+				}else if(pathY[i]<yOfSmallestX){//si pathY est "positif"
+					if(pathX[i]<pathX[i+1]){/////////si pathX++
+						if(pathX[i]<detectbulleX&&detectbulleX<pathX[i+1]){//si bulle dans interval pathX et pathX+1
+							if(pathY[i]<detectbulleY&&pathY[i+1]<detectbulleY&&detectbulleY<yOfSmallestX){
+								arrayDetect.push([clockwiseSelect,pathY[i]])
+								console.log("detection y+ path++ Clock++")
+							}else if(pathY[i]>detectbulleY&&detectbulleY>yOfSmallestX||pathY[i+1]>detectbulleY&&detectbulleY>yOfSmallestX){
+								////go to border detect function
+							}
+						}
+					}else if(pathX[i]>pathX[i+1]){////si PathX-- 
+						if(pathX[i]>detectbulleX&&detectbulleX>pathX[i+1]){//si bulle dans interval pathX et pathX+1
+							if(pathY[i]<detectbulleY&&pathY[i+1]<detectbulleY&&detectbulleY<yOfSmallestX){
+								arrayDetect.push([counterClockwiseSelect,pathY[i]])
+								console.log("detection y+ path-- Clock--")
+							}else if(pathY[i]>detectbulleY&&detectbulleY>yOfSmallestX||pathY[i+1]>detectbulleY&&detectbulleY>yOfSmallestX){
+								////go to border detect function
+							}
+						}
+					}
+				}
+				
+			}else{////si pathX et pathX+1 sont égaux
+			//tour pour rien
+			}
+		}
+		
+		z=0;
+		function funDelay(){
+			
+			if(z<pathX.length){
+				path.push(pathX[z])
+				path.push(pathY[z])
+				//console.log(pathY[z])
+				detectPathGraphics.clear();
+				detectPathGraphics.lineStyle(5,0x000000,1)
+				detectPathGraphics.beginFill(color);
+				detectPathGraphics.drawPolygon(path)
+				detectPathGraphics.endFill();
+				
+				z+=5
+				window.setTimeout(funDelay, 2);
+			}else{
+				path=[]
+				while(pathX.length>0){
+					pathX.pop()
+				}
+				while(pathY.length>0){
+					pathY.pop()
+				}
+			}
+		} 
+		funDelay()
+		//drawnGraphics.clear();
+		console.log(arrayDetect[0])
+		if(arrayDetect.length==1){//si une detection
+			isDetect=arrayDetect[0][0]
+			console.log("une détéction dans arraydetect")
+			console.log("cette detection est_"+isDetect)
+		}else if(arrayDetect.length>1){//si plusieurs detection 
+			for(i=0;i<arrayDetect.length;i++){
+				diffTemp=Math.abs(arrayDetect[i][1]-detectbulleY)
+				arrayDetect[i][1]=diffTemp
+				if(i>0){
+					if(arrayDetect[i][1]>arrayDetect[i-1][1]){
+						isDetect=arrayDetect[i-1][0]
+					}else{
+						isDetect=arrayDetect[i][0]
+					}
+				}	
+			}
+		}else{//si pas detection
+			isDetect=false
+		}
+		while(arrayDetect.length>0){
+		arrayDetect.pop()
+		}
+		// while(pathX.length>0){
+			// pathX.pop()
+		// }
+		// while(pathY.length>0){
+			// pathY.pop()
+		// }
+		
+		
+		if(isDetect){
+			multiArray.push([rectTestArray[j],spriteMove.x-rectTestArray[j].x,spriteMove.y-rectTestArray[j].y])
+			selectedBulle=rectTestArray[j];
+			circleSize=bulleSize(selectedBulle)
+			circleColor=selectedBulle.getChildAt(0).graphicsData[0].fillColor;
+			
+			selectedBulle.lineStyle(16,circleColor,0.5)
+			selectedBulle.drawCircle(0,0,circleSize)
+			if(circleColor==0xffffff){
+				selectedBulle.lineStyle(16,0x000000,0.5)
+				selectedBulle.drawCircle(0,0,circleSize)
+			}
+			
+		}else{
+		
+		}
+		
+	}
+	multiLinkSelect()
+	while(rectTestArray.length>0){
+		rectTestArray.pop()
+	}
+}
+

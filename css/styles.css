@@ -1,0 +1,260 @@
+html {
+    height:100%;
+}
+body{
+	margin:0;
+	padding:0;
+	border: lime 0em;
+	border-style: dashed;
+	font-family:sans-serif;
+    height:100%;
+}
+#textArea{
+    position: absolute;
+    z-index: 1;
+}
+#goodNews{
+	    border-width: 5px;
+    border-color: white;
+    border-style: dashed;
+	visibility: hidden;
+    position: relative;
+    z-index: 1;
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: white;
+	top: -100px;
+	font-size: xx-large;
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+#fakeclicktrigger{
+
+    position: relative;
+    z-index: 2;
+	cursor:pointer;
+}
+div.counter {
+	position: relative !important;
+
+	z-index:10;
+}
+.gardient {
+width: 100%;
+height: 1.2em;
+margin-top: 3px;
+}
+#menu{
+	z-index: 1;
+	float: right;
+	position: relative;
+	width: 7%;
+	max-width: 100px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+div#gradient {
+	z-index: 1;
+	float: right;
+	position: relative;
+	width: 15%;
+	max-width: 100px;
+	max-height: 100%;
+	min-height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	display:none;
+}
+#menuBtn{
+	width:100%;
+}
+
+#menuBtn_replie{
+	width:100%;
+	display:none;
+}
+#linkBulle{
+	display:none;
+}
+#link2Bulle{
+	display:none;
+}
+#link3Bulle{
+	display:none;
+}
+#textBulle{
+	display:none;
+}
+#supprBulle{
+	display:none;
+}
+#coloBulle{
+	display:none;
+}
+#bordBulle{
+	display:none;
+}
+#multBulle{
+	display:none;
+}
+#drawBulle{
+	display:none;
+}
+#hyperBulle{
+	display:none;
+}
+#scalBulle{
+	display:none;
+}
+#zoomPBulle{
+	display:none;
+}
+#zoomMBulle{
+	display:none;
+}
+#zoomPText{
+	display:none;
+}
+#zoomMText{
+	display:none;
+}
+#scalZPBulle{
+	display:none;
+}
+#scalZMBulle{
+	display:none;
+}
+
+
+.bigBTN img{
+	width:100%;
+	margin-top:2px;
+}
+#edit1{
+	display:none;
+}
+img#editBulle {
+	background: none;
+	border-radius: 100px;
+}
+div#editBackground {
+	background: rgba(6, 255, 0, 0.52);
+	border-radius: 100;
+	border-style: dotted;
+	border-width: 5;
+}
+img#naviBulle {
+	background: none;
+	border-radius: 100px;
+}
+div#navBackground {
+	background: rgba(255, 0, 232, 0.52);
+	border-radius: 100;
+	border-style: dotted;
+	border-width: 5;
+}
+#menu:hover {
+	cursor:pointer;
+}
+
+#open{
+display:none;
+margin: 5%;
+position: fixed;
+background: rgba(255,255,255,0.9);
+width: 90%;
+height: 85%;
+z-index: 2;
+box-shadow: 0px 0px 50px rgba(0,0,0,0.4);
+overflow: auto;
+
+}
+div#btnOpen {
+position: fixed;
+width: 90%;
+}
+img#closeOpen {
+float: right;
+width: 10%;
+background: rgba(255, 0, 0, 0.29);
+cursor: pointer;
+overflow: auto;
+}
+img#saveOpen {
+float: right;
+width: 10%;
+background: rgba(0, 255, 42, 0.29);
+cursor: pointer;
+overflow: auto;
+}
+img#plusOpen {
+float: right;
+width: 10%;
+background: rgba(0, 42, 255, 0.29);
+cursor: pointer;
+overflow: auto;
+}
+
+.open {
+font-family: arial;
+margin: 5%;
+font-size: 200%;
+cursor:pointer;
+}
+
+img.openImgModif {
+margin-left: 2%;
+width: 40px;
+}
+
+img.openImgSuppr {
+margin-left: 2%;
+width: 40px;
+}
+
+div#loading {
+background-color: rgba(255, 255, 0, 0.9);
+height: 100%;
+z-index: 3;
+position: absolute;
+width: 100%;
+display: none; 
+}
+div#imgLoader {
+margin: 0 auto;
+width: 200px;
+font-family: arial;
+margin-top: 30%;
+}
+
+#canvasContainer{
+	float: left;
+	position: fixed;
+	top: 0;
+}
+@media only screen and (max-device-width: 400px) {
+	#menu{
+	width:13%;
+	}
+  html {
+    max-width:400px
+  }
+  #canvasContainer
+  {
+    max-width:400px
+  }
+  div#editBackground {
+	border-width: 3;
+	}
+  div#navBackground {
+	border-width: 3;
+	}
+	#goodNews{
+	max-width: 200px;
+    font-size: x-large;
+	}
+}
