@@ -1,4 +1,4 @@
-﻿function afficheGoodNews() {
+function afficheGoodNews() {
     $("#goodNews").css("visibility", "visible");
     $("#goodNews").css("background-color", "#0F0");
     $("#goodNews").css("top", "0");
@@ -11,4 +11,5 @@ function cacherGoodNews() {
     $("#goodNews").css("background-color", "");
     $("#goodNews").css("top", "");
 }
+//# sourceMappingURL=styleAnim.js.map
 //# sourceMappingURL=styleAnim.js.map

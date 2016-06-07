@@ -1,13 +1,13 @@
-﻿function localSave(array, name) {
+function localSave(array, name) {
     if (typeof sessionStorage != 'undefined') {
         var arrayStringify = JSON.stringify(array);
         localStorage.setItem(name, arrayStringify);
         afficheGoodNews();
-    } else {
+    }
+    else {
         alert("sessionStorage n'est pas supporté");
     }
 }
-
 function localOpen() {
     var arrayLocal;
     for (var i = 0, len = localStorage.length; i < len; i++) {
@@ -15,7 +15,6 @@ function localOpen() {
         document.getElementById('open').innerHTML += "<div class='open' id='" + titre + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' src='images/PLUS.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
         $("img#closeOpen").click(function () {
             openActif = true;
-
             $("#localHome").trigger("click");
         });
         $(".openSpan").click(function () {
@@ -30,4 +29,5 @@ function localLoad(titre) {
     var array = JSON.parse(localStorage.getItem(titre));
     return array;
 }
+//# sourceMappingURL=localStorage.js.map
 //# sourceMappingURL=localStorage.js.map

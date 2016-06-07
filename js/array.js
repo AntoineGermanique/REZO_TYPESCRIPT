@@ -1,8 +1,8 @@
 ///////////////////////////////////////array.js
-
-var bubbleArray=new Array
-
-function array(data){
-	bubbleArray.push([data,[],[]])
-	console.log(bubbleArray)
+"use strict";
+var bubbleArray = new Array;
+function array(data) {
+    bubbleArray.push([data, [], []]);
+    console.log(bubbleArray);
 }
+//# sourceMappingURL=array.js.map
