@@ -1,4 +1,5 @@
 /////////////menu.js
+"use strict";
 var isLocalSave = false;
 var menuActif = false;
 var openActif = false;
@@ -13,6 +14,8 @@ var hyperBool = false;
 var bulleMiddlePoX;
 var bulleMiddlePoY;
 function menu() {
+    var windowW = Rezo.windowW;
+    var windowH = Rezo.windowH;
     $("#menuBtn").click(function () {
         $("#edit1").css("display", "block");
         $("#menuBtn_replie").css("display", "block");
@@ -41,25 +44,26 @@ function menu() {
             hyperPlusFun();
         }
         else {
-            bulleMiddlePoX = windowW / 2 / scaleScene.scale.x - scene.x - (windowW / scaleScene.scale.x - windowW) / 2;
-            bulleMiddlePoY = windowH / 2 / scaleScene.scale.x - scene.y - (windowH / scaleScene.scale.x - windowH) / 2;
+            var scaleScene = Rezo.scaleScene;
+            bulleMiddlePoX = windowW / 2 / scaleScene.scale.x - scaleScene.scene.x - (windowW / scaleScene.scale.x - windowW) / 2;
+            bulleMiddlePoY = windowH / 2 / scaleScene.scale.x - scaleScene.scene.y - (windowH / scaleScene.scale.x - windowH) / 2;
             // dispatchMouseEvent(selectedBulle, 'mousedown', true, true);
             // dispatchMouseEvent(selectedBulle, 'mouseup', true, true);
-            bulle(bulleMiddlePoX, bulleMiddlePoY, "txt", circleColor, 1);
+            scaleScene.scene.sceneBulle.addChild(new Bulle(bulleMiddlePoX, bulleMiddlePoY, "txt", circleColor, 1));
         }
     });
     $("#supprBulle").click(function () { supprFun(); });
-    $("#saveBulle").click(function () { saveStore(); });
+    $("#saveBulle").click(function () { save(); });
     $("#localSaveBulle").click(function () {
         isLocalSave = true;
-        saveStore();
+        save();
         isLocalSave = false;
     });
     $("#linkBulle").click(function () {
-        emptyLinkArray();
-        if (linkBool == false) {
+        Link.emptyLinkArray();
+        if (Link.linkBool == false) {
             invertFilterFun();
-            linkBool = true;
+            Link.linkBool = true;
             $("#linkBulle").css({ "box-shadow": "0px 0px 20px inset", "border-radius": "20px" });
             $("#link2Bulle").css("display", "block");
             $("#link3Bulle").css("display", "block");
@@ -67,12 +71,12 @@ function menu() {
         }
         else {
             supprFilterFun();
-            linkBool = false;
+            Link.linkBool = false;
             $("#linkBulle").css({ "box-shadow": "none" });
-            link2Bool = false;
+            Link.link2Bool = false;
             $("#link2Bulle").css("display", "none");
             $("#link2Bulle").css({ "box-shadow": "none" });
-            link3Bool = false;
+            Link.link3Bool = false;
             $("#link3Bulle").css("display", "none");
             $("#link3Bulle").css({ "box-shadow": "none" });
             $("#menu").css("max-height", "100%");
@@ -80,28 +84,28 @@ function menu() {
         console.log("hop");
     });
     $("#link2Bulle").click(function () {
-        emptyLinkArray();
-        if (link2Bool == false) {
-            link3Bool = false;
+        Link.emptyLinkArray();
+        if (Link.link2Bool == false) {
+            Link.link3Bool = false;
             $("#link3Bulle").css({ "box-shadow": "none" });
-            link2Bool = true;
+            Link.link2Bool = true;
             $("#link2Bulle").css({ "box-shadow": "blue 0px 0px 20px inset", "border-radius": "20px" });
         }
         else {
-            link2Bool = false;
+            Link.link2Bool = false;
             $("#link2Bulle").css({ "box-shadow": "none" });
         }
     });
     $("#link3Bulle").click(function () {
-        emptyLinkArray();
-        if (link3Bool == false) {
-            link2Bool = false;
+        Link.emptyLinkArray();
+        if (Link.link3Bool == false) {
+            Link.link2Bool = false;
             $("#link2Bulle").css({ "box-shadow": "none" });
-            link3Bool = true;
+            Link.link3Bool = true;
             $("#link3Bulle").css({ "box-shadow": "blue 0px 0px 20px inset", "border-radius": "20px" });
         }
         else {
-            link3Bool = false;
+            Link.link3Bool = false;
             $("#link3Bulle").css({ "box-shadow": "none" });
         }
     });
@@ -137,7 +141,7 @@ function menu() {
         }
     });
     $("#textBulle").click(function () {
-        textFun();
+        Rezo.selectedBulle.text.replaceText();
     });
     $("#fastBulle").click(function () {
         fastFun();
@@ -181,7 +185,7 @@ function menu() {
             if (scalBool) {
                 $("#scalBulle").trigger("click");
             }
-            if (linkBool) {
+            if (Link.linkBool) {
                 $("#linkBulle").trigger("click");
             }
             if (coloBool) {
@@ -281,7 +285,7 @@ function menu() {
             multiScaleBullePlus(multiArray);
         }
         else {
-            scaleBullePlus(selectedBulle);
+            scaleBullePlus(Rezo.selectedBulle);
         }
     });
     $("#scalZMBulle").click(function () {
@@ -289,7 +293,7 @@ function menu() {
             multiScaleBulleMoins(multiArray);
         }
         else {
-            scaleBulleMoins(selectedBulle);
+            scaleBulleMoins(Rezo.selectedBulle);
         }
     });
     $("#multBulle").click(function () {

@@ -13,25 +13,26 @@ function gradient(){
 		console.log($("#gradient").children().length)
 		if($("#gradient").children().length==0){
 			for(var i=0;i<gradientArray.length;i++){
-				$("#gradient").append("<div class='gardient' attr='0x"+gradientArray[i]+"' style='background:#"+gradientArray[i]+";'></div>")
+				$("#gradient").append("<div class='gardient' attr='#"+gradientArray[i]+"' style='background:#"+gradientArray[i]+";'></div>")
 				
 				var gradientChild=$("#gradient").children()
 				if(gradientArray[i]=="ffffff"){
 					$(gradientChild[i]).css('border','1px solid black')
 				}
-				$(gradientChild[i]).on('click tap',function() {
-					var goodColor=$(this).attr("attr")
-				  
-					if(!selectedBulle){
+                $(gradientChild[i]).on('click tap', function () {
+                    var goodColor = parseInt($(this).attr("attr").replace(/^#/, ''), 16);
+                    var test = goodColor.toString(16);
+                    var selectedBulle = Rezo.selectedBulle;
+					if(selectedBulle){
 						
 						if(multBool){
 							tempColorArray=multiArray
-							for(i=0;i<tempColorArray.length;i++){
-								setColorFun(tempColorArray[i][0])
+                            for (i = 0; i < tempColorArray.length; i++){
+                                setColorFun(tempColorArray[i][0], goodColor)
 							}
 							tempColorArray=[]
-						}else{
-							setColorFun(selectedBulle)
+                        } else {
+                            setColorFun(selectedBulle, goodColor)
 						}
 					}
 				})
@@ -45,9 +46,9 @@ function gradient(){
 		
 	}
 }
-function setColorFun(bulleToColor: PIXI.Graphics) {
+function setColorFun(bulleToColor: Bulle, goodColor: number) {
     circleSize = bulleSize(bulleToColor);
-    var newColor = <PIXI.Graphics>bulleToColor.getChildAt(0);
+    var newColor = bulleToColor.shape;
 	newColor.clear();
 	newColor.beginFill(goodColor, 1)
 	if(goodColor==0xffffff){
@@ -62,9 +63,11 @@ function setColorFun(bulleToColor: PIXI.Graphics) {
 	bulleToColor.lineStyle(16,goodColor,0.5)
 	bulleToColor.drawCircle(0,0,circleSize)
 	if(goodColor==0xffffff){
-		bulleToColor.clear()
+        bulleToColor.clear();
 		bulleToColor.lineStyle(16,0x000000,0.5)
 		bulleToColor.drawCircle(0,0,circleSize)
 	}
-	circleColor=goodColor;
+    circleColor = goodColor;
+    newColor.rezoColor = goodColor;
+
 }

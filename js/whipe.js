@@ -1,6 +1,6 @@
 ///////////////////////////////////whipe.js
 function whipe() {
-    sceneLink.removeChildren();
-    sceneBulle.removeChildren();
+    Rezo.sceneLink.removeChildren();
+    Rezo.sceneBulle.removeChildren();
 }
 //# sourceMappingURL=whipe.js.map

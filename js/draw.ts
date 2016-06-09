@@ -52,9 +52,6 @@ function drawIntercative(){
 		drawnGraphics.endFill();
 		drawnGraphics.hitArea=new PIXI.Polygon(path);
 		drawnGraphics.interactive=true;
-		    
-        console.log(scene.x + "<-X scene Y->" + scene.y);
-        console.log(scaleScene.scale.x + "<-X scene scale");
         rectCollisionTest(drawnGraphics, path);
 		path = [];
 	}
@@ -66,29 +63,32 @@ function drawIntercative(){
 function draw(){
 	if(drawBool){
 		console.log("it's on!!!")
-		upperScene.interactive=false
+		Rezo.upperScene.interactive=false
 		sceneDraw.interactive=true
 	}else{
 		console.log("it's off...")
-		upperScene.interactive=true
+		Rezo.upperScene.interactive=true
 		sceneDraw.interactive=false
 		drawnGraphics.clear()
 	}
 }
 var diffScaleX
 var diffScaleY
-function rectCollisionTest(rectTest,currentPath){
+function rectCollisionTest(rectTest, currentPath) {
+    var windowH = Rezo.windowH;
+    var windowW = Rezo.windowW;
+    var scaleScene = Rezo.scaleScene;
 	diffScaleX=((windowW-windowW*scaleScene.scale.x)/2)/scaleScene.scale.x
 	diffScaleY=((windowH-windowH*scaleScene.scale.x)/2)/scaleScene.scale.x
 	console.log(scaleScene.scale.x+"<----scaleScene.scale.x")
 	console.log(diffScaleX+"<----diffScaleX")
 	console.log(rectTest)
-	var rectZoneTest=rectTest.getBounds()
-	var allBulle=sceneBulle.children;
-	var x1=rectZoneTest.x/scaleScene.scale.x-scene.x-diffScaleX;
-	var x2=x1+rectZoneTest.width/scaleScene.scale.x;
-	var y1=rectZoneTest.y/scaleScene.scale.x-scene.y-diffScaleY;
-	var y2=y1+rectZoneTest.height/scaleScene.scale.x;
+    var rectZoneTest = rectTest.getBounds()
+    var allBulle = scaleScene.scene.sceneBulle.children;
+    var x1 = rectZoneTest.x / scaleScene.scale.x -scaleScene.scene.x-diffScaleX;
+    var x2 = x1 + rectZoneTest.width / scaleScene.scale.x;
+    var y1 = rectZoneTest.y / scaleScene.scale.x -scaleScene.scene.y-diffScaleY;
+    var y2 = y1 + rectZoneTest.height / scaleScene.scale.x;
 	
 	// rectTestGraph.clear()
 	// rectTestGraph.beginFill(0x373173,0.3)
@@ -135,12 +135,12 @@ function polygonCollisionTest(rectTestArray,currentPath){
 	
 	
 	// console.log(currentPath)
-	for(var i=0;i<currentPath.length;i++){
-		
+    for (var i = 0; i < currentPath.length; i++){
+        var scaleScene = Rezo.scaleScene;
 		if(i % 2==1){
-			currentPathY.push(currentPath[i]/scaleScene.scale.x-scene.y-diffScaleY)
+            currentPathY.push(currentPath[i] / scaleScene.scale.x -scaleScene.scene.y-diffScaleY)
 		}else{
-			currentPathX.push(currentPath[i]/scaleScene.scale.x-scene.x-diffScaleX)
+            currentPathX.push(currentPath[i] / scaleScene.scale.x -scaleScene.scene.x-diffScaleX)
 			if(i==0){
 				smallestX=currentPath[i]
 				smallestXIndex=i/2
@@ -275,11 +275,12 @@ function polygonCollisionTest(rectTestArray,currentPath){
 		// }
 		
 		
-		if(isDetect){
+        if (isDetect) {
+            var selectedBulle = Rezo.selectedBulle;
 			multiArray.push([rectTestArray[j],spriteMove.x-rectTestArray[j].x,spriteMove.y-rectTestArray[j].y])
 			selectedBulle=rectTestArray[j];
             circleSize = bulleSize(selectedBulle)
-            circleColor = (<PIXI.Graphics>selectedBulle.getChildAt(0)).tint;
+            circleColor = (<Bulle>selectedBulle).shape.rezoColor;
 			selectedBulle.lineStyle(16,circleColor,0.5)
 			selectedBulle.drawCircle(0,0,circleSize)
 			if(circleColor==0xffffff){

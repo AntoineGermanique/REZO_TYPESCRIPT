@@ -2,6 +2,11 @@
 function resizeFun(){
 	$( window ).resize(function() {
         updateWindowSize();
+        var renderer = Rezo.renderer
+        var windowW = Rezo.windowW;
+        var windowH = Rezo.windowH;
+        var scaleScene = Rezo.scaleScene;
+        var upperScene = Rezo.upperScene;
         renderer.width = windowW;
         renderer.height = windowH;
         renderer.resize(windowW, windowH);
@@ -19,21 +24,24 @@ function resizeFun(){
         //upperScene.hitArea.height = windowH;
         upperScene.width = windowW;
         upperScene.height = windowH;
-        sensorZoomScene.width = windowW;
-        sensorZoomScene.height = windowH;
-        sensorZoomScene2.width = windowW;
-        sensorZoomScene2.height = windowH;
-        scene.filterArea.width = windowW;
-        scene.filterArea.height = windowH;
+        Rezo.sensorZoomScene.width = windowW;
+        Rezo.sensorZoomScene.height = windowH;
+        Rezo.sensorZoomScene2.width = windowW;
+        Rezo.sensorZoomScene2.height = windowH;
+        scaleScene.scene.filterArea.width = windowW;
+        scaleScene.scene.filterArea.height = windowH;
 		
 	});
 }
 
-function updateWindowSize(){
-	windowH=window.innerHeight;
-	windowW=window.innerWidth;
+function updateWindowSize() {
+    
+	var windowH=window.innerHeight;
+	var windowW=window.innerWidth;
 	if(windowH>screen.height){
 		windowH=screen.height;
 		windowW=screen.width;
-	}
+    }
+    Rezo.windowW = windowW;
+    Rezo.windowH = windowH;
 }

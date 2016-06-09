@@ -2,47 +2,59 @@
 "use strict";
 
 var lastBulleSelected : Bulle;
-var dataFake
+var dataFake;
+var startDragBulle: (data?: any) => void;
+var stopDragBulle: (data?: any) => void;
 function dragBulle(){
-	var startDrag = function(data){
-		console.log(this.x)
+    startDragBulle = function (data) {
+        var bulle
 		if(multBool){
 			if(!data){
 			    data = {data: dataFake }
-			}
-			selectBulleFun(this,data)
-			multiSelect(this)
+            }
+            bulle = <Bulle>data.data.target
+            if (bulle == null) bulle = <Bulle>data.target;
+
+            selectBulleFun(bulle,data)
+            multiSelect(bulle)
 			
 		}else{
 			if(data==undefined){
 			    data = { data: dataFake }
 			}
-			console.log(data)
-			selectBulleFun(this,data)
-			this.dragging = true
+            bulle = <Bulle>data.data.target
+            if (bulle == null) bulle = <Bulle>data.target;
+
+            selectBulleFun(bulle,data)
+            bulle.dragging = true
 
 			lastSelectedBulleFun()
 		
-			linkSelection(this)
-			linkFun()
+            linkSelection(bulle)
+			Link.linkFun()
 		}
 		
     };
 
-    circle.on("mousedown", startDrag);
-    circle.on("touchstart", startDrag);
+    this.on("mousedown", startDragBulle);
+    this.on("touchstart", startDragBulle);
 
 	// set the events for when the mouse is released or a touch is released
-    var stopDrag = function (data){
+    stopDragBulle = function (data){
 		if(multBool){
-		}else{
-			releaseBulle(this)
+        } else {
+            if (!data) {
+                data = { data: dataFake }
+            }
+            var bulle = <Bulle>data.data.target;
+            if (bulle == null) bulle = <Bulle> data.target;
+			releaseBulle(bulle)
 		}
     };
-    circle.on("mouseup", stopDrag);
-    circle.on("mouseupoutside", stopDrag);
-    circle.on("touchend", stopDrag);
-    circle.on("touchendoutside", stopDrag);
+    this.on("mouseup", stopDragBulle);
+    this.on("mouseupoutside", stopDragBulle);
+    this.on("touchend", stopDragBulle);
+    this.on("touchendoutside", stopDragBulle);
 
 	// set the callbacks for when the mouse or a touch moves
 	var drag = function(data){
@@ -53,39 +65,40 @@ function dragBulle(){
 			
 		}
     }
-    circle.on("mousemove", drag);
-    circle.on("touchmove", drag);
+    this.on("mousemove", drag);
+    this.on("touchmove", drag);
 }
 function selectBulleFun(clickedBulle,data){
     data.data.originalEvent.preventDefault();
     if (data.stopPropagation) {
         data.stopPropagation();
     }
+    var selectedBulle = Rezo.selectedBulle;
 	clickedBulle.data = data;
 	//upperScene.dragging = false;
 	if(selectedBulle!=clickedBulle){
 		lastBulleSelected=selectedBulle;
 	}
-	selectedBulle=clickedBulle;
+    Rezo.selectedBulle = clickedBulle;
+    selectedBulle = Rezo.selectedBulle;
     circleSize = bulleSize(selectedBulle)
-    var circleGraphicsColor = <PIXI.Graphics>selectedBulle.getChildAt(0);
-    circleColor = circleGraphicsColor.tint;
+    circleColor = selectedBulle.shape.rezoColor;
 
     if (selectedBulle.lineAlpha == 0) {
-		selectedBulle.lineStyle(16,circleColor,0.5)
-		selectedBulle.drawCircle(0,0,circleSize)
+        selectedBulle.lineStyle(16, circleColor, 0.5);
+        selectedBulle.drawCircle(0, 0, circleSize);
 		if(circleColor==0xffffff){
-			selectedBulle.lineStyle(16,0x000000,0.5)
-			selectedBulle.drawCircle(0,0,circleSize)
+            selectedBulle.lineStyle(16, 0x000000, 0.5);
+            selectedBulle.drawCircle(0, 0, circleSize);
 		}
 		
 	}else{
 		selectedBulle.clear();
-		selectedBulle.lineStyle(16,circleColor,0.5)
-		selectedBulle.drawCircle(0,0,circleSize)
+        selectedBulle.lineStyle(16, circleColor, 0.5);
+        selectedBulle.drawCircle(0, 0, circleSize);
 		if(circleColor==0xffffff){
-			selectedBulle.lineStyle(16,0x000000,0.5)
-			selectedBulle.drawCircle(0,0,circleSize)
+            selectedBulle.lineStyle(16, 0x000000, 0.5);
+            selectedBulle.drawCircle(0, 0, circleSize);
 		}
 	}
 }
@@ -103,7 +116,7 @@ function releaseBulle(releasedBulle){
 	clearMotion()
 }
 function bulleDragging(draggedBulle){
-	if(draggedBulle.dragging&&linkBool==false){
+	if(draggedBulle.dragging&&Link.linkBool==false){
 		var newPosition = draggedBulle.data.data.getLocalPosition(draggedBulle.parent);
 		draggedBulle.position.x = newPosition.x;
 		draggedBulle.position.y = newPosition.y;
@@ -111,17 +124,19 @@ function bulleDragging(draggedBulle){
 	}
 }
 
-function fakeClickFun(fakeBulle){
+function fakeClickFun(fakeBulle: Bulle) {
 	dataFake=new PIXI.interaction.InteractionData()
 	dataFake.target=fakeBulle
 	// dataFake.target=multiArray[multiArray.length-1]
-	var evt = new MouseEvent("mousedown", {
+    var evt = new MouseEvent("mousedown", {
 		view: window,
 		bubbles: true,
 		cancelable: true,
 		clientX: 20,
 	});
-	dataFake.originalEvent=evt
-	fakeBulle.mousedown();
-	fakeBulle.mouseup();
+    dataFake.originalEvent = evt
+    startDragBulle();
+    stopDragBulle();
+    //document.dispatchEvent(dataFake);
+
 }

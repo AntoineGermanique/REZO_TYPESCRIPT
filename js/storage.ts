@@ -1,4 +1,6 @@
 /////////storage.js
+"use strict";
+
 var arrayBulle=[]
 var arrayBulleX=[]
 var arrayBulleY=[]
@@ -13,8 +15,8 @@ function saveStore(){
 	while(arrayBulleY.length > 0) {
 		arrayBulleY.pop();
 	}
-	
-	
+
+    var scene = Rezo.scene;
 	var nbrBulle=scene.children.length
 	for(var i=0;i<nbrBulle;i++){
 		arrayBulleX.push(scene.children[i].x)

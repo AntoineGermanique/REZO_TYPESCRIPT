@@ -13,12 +13,12 @@ function linkSelection(data){
 	}
 	if(selectedLink.length>0){
 		for(var i=0;i<selectedLink[0].length;i++){
-			var indexLink=sceneLink.getChildIndex(selectedLink[0][i])
+			var indexLink=Rezo.sceneLink.getChildIndex(selectedLink[0][i])
 			
-			if(linkArray[indexLink][1]==data){	
-				stillBubbleArray.push(linkArray[indexLink][2])
+            if (Link.linkArray[indexLink][1]==data){	
+                stillBubbleArray.push(Link.linkArray[indexLink][2])
 			}else{
-				stillBubbleArray.push(linkArray[indexLink][1])
+                stillBubbleArray.push(Link.linkArray[indexLink][1])
 			}
 		}
 	}
@@ -39,7 +39,7 @@ function motion(bulleX0,bulleY0){
 			
 			selectedLink[0][i].moveTo(bulleX0,bulleY0);
 			selectedLink[0][i].lineTo(bulleX1,bulleY1);
-			selectedLink[0][i].hitArea=new PIXI.Polygon(bulleX0-lineHitFact,bulleY0-lineHitFact, bulleX0+lineHitFact,bulleY0+lineHitFact, bulleX1+lineHitFact,bulleY1+lineHitFact, bulleX1-lineHitFact,bulleY1-lineHitFact)
+            selectedLink[0][i].hitArea = new PIXI.Polygon(bulleX0 - Link.lineHitFact, bulleY0 - Link.lineHitFact, bulleX0 + Link.lineHitFact, bulleY0 + Link.lineHitFact, bulleX1 + Link.lineHitFact, bulleY1 + Link.lineHitFact, bulleX1 - Link.lineHitFact, bulleY1 - Link.lineHitFact);
 			console.log(selectedLink[0][i].getBounds())
 		}	
 	}

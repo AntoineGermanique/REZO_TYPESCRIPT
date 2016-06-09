@@ -11,23 +11,25 @@ function gradient() {
         console.log($("#gradient").children().length);
         if ($("#gradient").children().length == 0) {
             for (var i = 0; i < gradientArray.length; i++) {
-                $("#gradient").append("<div class='gardient' attr='0x" + gradientArray[i] + "' style='background:#" + gradientArray[i] + ";'></div>");
+                $("#gradient").append("<div class='gardient' attr='#" + gradientArray[i] + "' style='background:#" + gradientArray[i] + ";'></div>");
                 var gradientChild = $("#gradient").children();
                 if (gradientArray[i] == "ffffff") {
                     $(gradientChild[i]).css('border', '1px solid black');
                 }
                 $(gradientChild[i]).on('click tap', function () {
-                    var goodColor = $(this).attr("attr");
-                    if (!selectedBulle) {
+                    var goodColor = parseInt($(this).attr("attr").replace(/^#/, ''), 16);
+                    var test = goodColor.toString(16);
+                    var selectedBulle = Rezo.selectedBulle;
+                    if (selectedBulle) {
                         if (multBool) {
                             tempColorArray = multiArray;
                             for (i = 0; i < tempColorArray.length; i++) {
-                                setColorFun(tempColorArray[i][0]);
+                                setColorFun(tempColorArray[i][0], goodColor);
                             }
                             tempColorArray = [];
                         }
                         else {
-                            setColorFun(selectedBulle);
+                            setColorFun(selectedBulle, goodColor);
                         }
                     }
                 });
@@ -40,9 +42,9 @@ function gradient() {
         $("#bordBulle").css("display", "none");
     }
 }
-function setColorFun(bulleToColor) {
+function setColorFun(bulleToColor, goodColor) {
     circleSize = bulleSize(bulleToColor);
-    var newColor = bulleToColor.getChildAt(0);
+    var newColor = bulleToColor.shape;
     newColor.clear();
     newColor.beginFill(goodColor, 1);
     if (goodColor == 0xffffff) {
@@ -60,5 +62,6 @@ function setColorFun(bulleToColor) {
         bulleToColor.drawCircle(0, 0, circleSize);
     }
     circleColor = goodColor;
+    newColor.rezoColor = goodColor;
 }
 //# sourceMappingURL=gradient.js.map

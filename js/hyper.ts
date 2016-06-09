@@ -3,8 +3,8 @@ var hyper
 var hyperSize=200
 var hyperColor=0x00FFCC
 var hyperScale=1
-var hyperX=windowW/2;
-var hyperY=windowH/2;
+var hyperX=Rezo.windowW/2;
+var hyperY=Rezo.windowH/2;
 var hyperHandlerSize = 40
 var hyperHandler: PIXI.Graphics;
 var hyperText = "texte long pour voir ce que ça donne'"
@@ -32,16 +32,14 @@ function hyperPlusFun(){
     hyperHandler.y = -hyperSize;
 	
     hyperHandler.endFill();
-    var text = new PIXI.Text(wordwrap(hyperText, 15));
-
-
+    var text = new TextRezo(wordwrap(hyperText, 15), TextRezoType.type);
     hyperHandler.addChild(text);
     hyperHandler.addChild(text);
     hyper.addChild(hyperBelly);
     hyper.addChild(hyperHandler);
-    sceneHyper.addChild(hyper);
+    Rezo.sceneHyper.addChild(hyper);
     console.log(hyperHandler);
-	autoSizeTextHyperHandler(hyperHandler,text);
-    textDesign(text);
+	text.autoSizeTextHyperHandler(hyperHandler);
+    text.textDesign(text);
     hyperInteractiveFun();
 }

@@ -5,7 +5,8 @@ var multiExist=false;
 var spriteMove = PIXI.Sprite.fromImage('./images/MOVE.png');
 var nbrDetect = 0
 
-function multi(){
+function multi() {
+    var selectedBulle = Rezo.selectedBulle;
 	if(multBool){
         sceneMulti.addChild(spriteMove)
         spriteMove.x = selectedBulle.x - (<PIXI.Graphics>selectedBulle.getChildAt(0)).width / 2
@@ -20,8 +21,8 @@ function multi(){
 		spriteMove.interactive=false
 		sceneMulti.removeChild(spriteMove)
 		while(multiArray.length>0){
-			fakeClickFun($(multiArray[multiArray.length-1]))
-			multiArray.pop()
+            fakeClickFun(multiArray[multiArray.length - 1][0]);
+            multiArray.pop();
 		}
 		while(multiLinkArray.length>0){
 			multiLinkArray.pop()
@@ -36,7 +37,6 @@ function multiSelect(multiBulle){
 		//console.log(sceneBulle.getChildIndex(multiBulle))
 		
 		if(multiBulle==multiArray[i][0]){
-			console.log(sceneBulle.getChildIndex(multiArray[i][0]))
 			multiExist=true;
 			multiArray.splice(i,1);
 			multiBulle.clear();
@@ -51,7 +51,8 @@ function multiSelect(multiBulle){
 	multiLinkSelect()
 }
 
-function multiLinkSelect(){
+function multiLinkSelect() {
+    var linkArray = Link.linkArray;
 	for(var i=0;i<multiArray.length;i++){
 	console.log('multiarray ok')
 		for(var j=0;j<linkArray.length;j++){
@@ -94,7 +95,8 @@ function multiMove(moveX,moveY){
 		console.log(ii+"__link")
 		console.log(bulleX0+"_bulleX0_"+bulleY0+"_bulleY0_"+bulleX1+"_bulleX1_"+bulleY1+"_bulleY1_")
 		currentLink.moveTo(bulleX0,bulleY0);
-		currentLink.lineTo(bulleX1,bulleY1);
+        currentLink.lineTo(bulleX1, bulleY1);
+        var lineHitFact = Link.lineHitFact;
 		currentLink.hitArea=new PIXI.Polygon(bulleX0-lineHitFact,bulleY0-lineHitFact, bulleX0+lineHitFact,bulleY0+lineHitFact, bulleX1+lineHitFact,bulleY1+lineHitFact, bulleX1-lineHitFact,bulleY1-lineHitFact)
 		currentLink.endFill
 	}
@@ -103,14 +105,15 @@ function multiMove(moveX,moveY){
 
 
 var startDrag = function(data){
-	detectPathGraphics.clear()
+    detectPathGraphics.clear()
+	data.stopPropagation();
+
 	if(drawBool){
 		drawBool=false
 		draw()
 		drawBool=true
 	}
 	data.data.originalEvent.preventDefault();
-	data.stopPropagation();
 	this.dragging = true
 	this.data=data
 	//upperScene.dragging = false;

@@ -1,18 +1,15 @@
 /////////////////////zoom.js
 "use strict";
 function zoomScenePlus() {
-    scaleScene.scale.x *= 2;
-    scaleScene.scale.y *= 2;
-    console.log(scene.width);
-    console.log(scene.x);
+    Rezo.scaleScene.scale.x *= 2;
+    Rezo.scaleScene.scale.y *= 2;
 }
 function zoomSceneMoins() {
-    scaleScene.scale.x /= 2;
-    scaleScene.scale.y /= 2;
-    console.log(scene.width);
-    console.log(scene.x);
+    Rezo.scaleScene.scale.x /= 2;
+    Rezo.scaleScene.scale.y /= 2;
 }
 function scrollZoom() {
+    var scaleScene = Rezo.scaleScene;
     var elem = $('#canvasContainer');
     $(elem).on('mousewheel', function (event) {
         if (scalBool) {
@@ -22,7 +19,6 @@ function scrollZoom() {
             if (event.deltaY < 0) {
                 scaleScene.scale.x /= 1.1;
                 scaleScene.scale.y /= 1.1;
-                console.log(scaleScene.x);
             }
             else {
                 scaleScene.scale.x *= 1.1;
@@ -48,6 +44,9 @@ var newPosition2;
 var calculable1 = false;
 var calculable2 = false;
 function touchZoom() {
+    var sensorZoomScene2 = Rezo.sensorZoomScene2;
+    var sensorZoomScene = Rezo.sensorZoomScene;
+    var upperScene = Rezo.upperScene;
     var touch1Start = function (data) {
         if (touchZoomCounter == 0) {
             data.data.originalEvent.preventDefault();
@@ -152,7 +151,8 @@ var diffX2 = "";
 var diffY1 = "";
 var diffY2 = "";
 function squezeZoomCalc() {
-    if (sensorZoomScene2.dragging && sensorZoomScene.dragging && calculable2 && calculable1) {
+    var scaleScene = Rezo.scaleScene;
+    if (Rezo.sensorZoomScene2.dragging && Rezo.sensorZoomScene.dragging && calculable2 && calculable1) {
         var diffX1 = touch1MoveX1 - touch2MoveX1;
         var diffX2 = touch1MoveX2 - touch2MoveX2;
         var diffY1 = touch1MoveY1 - touch2MoveY1;

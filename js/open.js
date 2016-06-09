@@ -49,27 +49,27 @@ function openLoad(data) {
         $("#homeBulle").trigger("click");
     });
     $("img#saveOpen").click(function () {
-        opened = false;
-        save("Enregistrer le rezo " + rezoName + " sous un nouveau titre");
+        Rezo.opened = false;
+        save("Enregistrer le rezo " + Rezo.rezoName + " sous un nouveau titre");
     });
     $("img#plusOpen").click(function () {
-        rezoName = "";
-        opened = false;
+        Rezo.rezoName = "";
+        Rezo.opened = false;
         while (bubbleArray.length > 0) {
             bubbleArray.pop();
         }
-        while (linkArray.length > 0) {
-            linkArray.pop();
+        while (Link.linkArray.length > 0) {
+            Link.linkArray.pop();
         }
-        sceneBulle.removeChildren();
-        sceneLink.removeChildren();
+        Rezo.sceneBulle.removeChildren();
+        Rezo.sceneLink.removeChildren();
         circleX = screen.width / 2;
         circleY = screen.height / 2;
-        bulle(circleX, circleY, "rezo");
-        scaleScene.scale.x = 1;
-        scaleScene.scale.y = 1;
-        scene.position.x = 0;
-        scene.position.y = 0;
+        new Bulle(circleX, circleY, "rezo");
+        Rezo.scaleScene.scale.x = 1;
+        Rezo.scaleScene.scale.y = 1;
+        Rezo.scene.position.x = 0;
+        Rezo.scene.position.y = 0;
         $("img#closeOpen").trigger("click");
     });
 }
