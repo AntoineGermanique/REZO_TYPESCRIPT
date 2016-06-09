@@ -11,13 +11,13 @@ var Link = (function (_super) {
     }
     Link.prototype.saveBubbleLinked = function () {
         for (var i = 0; i < bubbleArray.length; i++) {
-            if (bubbleArray[i][0] == lastBulleSelected) {
-                bubbleArray[i][1].push(this);
-                bubbleArray[i][2].push(this.parent.getChildIndex(this));
+            if (bubbleArray[i].bulle == lastBulleSelected) {
+                bubbleArray[i].links.push(this);
+                bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
             }
-            if (bubbleArray[i][0] == Rezo.selectedBulle) {
-                bubbleArray[i][1].push(this);
-                bubbleArray[i][2].push(this.parent.getChildIndex(this));
+            if (bubbleArray[i].bulle == Rezo.selectedBulle) {
+                bubbleArray[i].links.push(this);
+                bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
             }
         }
     };
@@ -161,11 +161,13 @@ var Link = (function (_super) {
                 link.interactive = true;
                 link.interactiveLink();
                 var linkArray = Link.linkArray;
-                linkArray.push([link, "", "", "", ""]);
-                linkArray[linkArray.length - 1][1] = lastBulleSelected;
-                linkArray[linkArray.length - 1][2] = selectedBulle;
-                linkArray[linkArray.length - 1][3] = Rezo.sceneBulle.getChildIndex(lastBulleSelected);
-                linkArray[linkArray.length - 1][4] = Rezo.sceneBulle.getChildIndex(selectedBulle);
+                linkArray.push({
+                    link: link,
+                    bulle1: lastBulleSelected,
+                    bulle2: selectedBulle,
+                    indexBulle1: Rezo.sceneBulle.getChildIndex(lastBulleSelected),
+                    indexBulle2: Rezo.sceneBulle.getChildIndex(selectedBulle)
+                });
                 link.saveBubbleLinked();
                 if (Link.link2Bool == true) {
                     Link.emptyLinkArray();
@@ -185,7 +187,7 @@ var Link = (function (_super) {
     Link.link3Bool = false;
     Link.optimizeCounter = 0;
     Link.bubbleLinked = new Array;
-    Link.linkArray = new Array;
+    Link.linkArray = [];
     Link.lineHitFact = 8;
     Link.linkSelected = false;
     Link.linkOptimizedArray = [];

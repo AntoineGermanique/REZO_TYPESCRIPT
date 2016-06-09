@@ -5,69 +5,69 @@ var lastBulleSelected : Bulle;
 var dataFake;
 var startDragBulle: (data?: any) => void;
 var stopDragBulle: (data?: any) => void;
-function dragBulle(){
-    startDragBulle = function (data) {
-        var bulle
-		if(multBool){
-			if(!data){
-			    data = {data: dataFake }
-            }
-            bulle = <Bulle>data.data.target
-            if (bulle == null) bulle = <Bulle>data.target;
+//function dragBulle(){
+//    startDragBulle = function (data) {
+//        var bulle
+//		if(multBool){
+//			if(!data){
+//			    data = {data: dataFake }
+//            }
+//            bulle = <Bulle>data.data.target
+//            if (bulle == null) bulle = <Bulle>data.target;
 
-            selectBulleFun(bulle,data)
-            multiSelect(bulle)
+//            selectBulleFun(bulle,data)
+//            multiSelect(bulle)
 			
-		}else{
-			if(data==undefined){
-			    data = { data: dataFake }
-			}
-            bulle = <Bulle>data.data.target
-            if (bulle == null) bulle = <Bulle>data.target;
+//		}else{
+//			if(data==undefined){
+//			    data = { data: dataFake }
+//			}
+//            bulle = <Bulle>data.data.target
+//            if (bulle == null) bulle = <Bulle>data.target;
 
-            selectBulleFun(bulle,data)
-            bulle.dragging = true
+//            selectBulleFun(bulle,data)
+//            bulle.dragging = true
 
-			lastSelectedBulleFun()
+//			lastSelectedBulleFun()
 		
-            linkSelection(bulle)
-			Link.linkFun()
-		}
+//            linkSelection(bulle)
+//			Link.linkFun()
+//		}
 		
-    };
+//    };
 
-    this.on("mousedown", startDragBulle);
-    this.on("touchstart", startDragBulle);
+//    this.on("mousedown", startDragBulle);
+//    this.on("touchstart", startDragBulle);
 
-	// set the events for when the mouse is released or a touch is released
-    stopDragBulle = function (data){
-		if(multBool){
-        } else {
-            if (!data) {
-                data = { data: dataFake }
-            }
-            var bulle = <Bulle>data.data.target;
-            if (bulle == null) bulle = <Bulle> data.target;
-			releaseBulle(bulle)
-		}
-    };
-    this.on("mouseup", stopDragBulle);
-    this.on("mouseupoutside", stopDragBulle);
-    this.on("touchend", stopDragBulle);
-    this.on("touchendoutside", stopDragBulle);
+//	// set the events for when the mouse is released or a touch is released
+//    stopDragBulle = function (data){
+//		if(multBool){
+//        } else {
+//            if (!data) {
+//                data = { data: dataFake }
+//            }
+//            var bulle = <Bulle>data.data.target;
+//            if (bulle == null) bulle = <Bulle> data.target;
+//			releaseBulle(bulle)
+//		}
+//    };
+//    this.on("mouseup", stopDragBulle);
+//    this.on("mouseupoutside", stopDragBulle);
+//    this.on("touchend", stopDragBulle);
+//    this.on("touchendoutside", stopDragBulle);
 
-	// set the callbacks for when the mouse or a touch moves
-	var drag = function(data){
-		if(multBool){
+//	// set the callbacks for when the mouse or a touch moves
+//	var drag = function(data){
+//		if(multBool){
 		
-		}else if(this.dragging){
-			bulleDragging(this)
+//		}else if(this.dragging){
+//			bulleDragging(this)
 			
-		}
-    }
-    this.on("mousemove", drag);
-    this.on("touchmove", drag);
-}
+//		}
+//    }
+//    this.on("mousemove", drag);
+//    this.on("touchmove", drag);
+//}
 function selectBulleFun(clickedBulle,data){
     data.data.originalEvent.preventDefault();
     if (data.stopPropagation) {

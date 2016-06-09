@@ -5,6 +5,8 @@ var sceneBullePo = [];
 var sceneLinkPo = [];
 var scenePo = [];
 var scalePo = [];
+function save2() {
+}
 function save(data) {
     while (arrayBulleSave.length > 0) {
         arrayBulleSave.pop();

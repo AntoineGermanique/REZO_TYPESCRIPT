@@ -1,6 +1,14 @@
 ////////////////////////////////link.js
 
 
+interface LinkArray {
+    link: Link;
+    bulle1: Bulle;
+    bulle2: Bulle;
+    indexBulle1: number;
+    indexBulle2: number;
+}
+
 class Link extends PIXI.Graphics {
     data: any;
     static linkBool = false;
@@ -8,7 +16,7 @@ class Link extends PIXI.Graphics {
     static link3Bool = false;
     static optimizeCounter = 0
     static bubbleLinked = new Array;
-    static linkArray = new Array;
+    static linkArray: LinkArray[] = [];
     static lineHitFact = 8
     static linkSelected = false;
     static linkOptimizedArray = []
@@ -20,13 +28,13 @@ class Link extends PIXI.Graphics {
 
     saveBubbleLinked() {
         for (var i = 0; i < bubbleArray.length; i++) {
-            if (bubbleArray[i][0] == lastBulleSelected) {
-                bubbleArray[i][1].push(this)
-                bubbleArray[i][2].push(this.parent.getChildIndex(this))
+            if (bubbleArray[i].bulle == lastBulleSelected) {
+                bubbleArray[i].links.push(this);
+                bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
             }
-            if (bubbleArray[i][0] == Rezo.selectedBulle) {
-                bubbleArray[i][1].push(this)
-                bubbleArray[i][2].push(this.parent.getChildIndex(this))
+            if (bubbleArray[i].bulle == Rezo.selectedBulle) {
+                bubbleArray[i].links.push(this);
+                bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
             }
         }
     }
@@ -169,11 +177,13 @@ class Link extends PIXI.Graphics {
                 link.interactive = true
                 link.interactiveLink()
                 var linkArray = Link.linkArray;
-                linkArray.push([link, "", "", "", ""]);
-                linkArray[linkArray.length - 1][1] = lastBulleSelected;
-                linkArray[linkArray.length - 1][2] = selectedBulle;
-                linkArray[linkArray.length - 1][3] = Rezo.sceneBulle.getChildIndex(lastBulleSelected);
-                linkArray[linkArray.length - 1][4] = Rezo.sceneBulle.getChildIndex(selectedBulle);
+                linkArray.push({
+                    link: link,
+                    bulle1: lastBulleSelected,
+                    bulle2: selectedBulle,
+                    indexBulle1: Rezo.sceneBulle.getChildIndex(lastBulleSelected),
+                    indexBulle2: Rezo.sceneBulle.getChildIndex(selectedBulle)
+                });
 
                 link.saveBubbleLinked()
                 if (Link.link2Bool == true) {

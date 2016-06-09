@@ -6,7 +6,47 @@ var sceneLinkPo=[]
 var scenePo=[]
 var scalePo=[]
 
+interface RezoSave {
+    bullesArray: BulleSave[];
+    linkSave: LinkSave[];
+    scale: number;
+    loc: Loc;
+    title: string;
+}
 
+interface BulleSave {
+    loc: Loc;
+    linksIndex: number[];
+    text: string;
+    color: string;
+    scale: number;
+    width: number;
+    height: number;
+    shape: number;
+    polyPath: Loc[];
+    polyTextPath: Loc[];
+}
+
+interface LinkSave {
+    indexBulle1: number;
+    indexBulle2: number;
+    direction: Direction;
+    linkPath: Loc[];
+}
+
+interface Direction {
+    first: number;
+    last: number;
+}
+
+interface Loc {
+    x: number;
+    y: number;
+}
+
+function save2() {
+
+}
 
 function save(data?:any){
 	while(arrayBulleSave.length > 0) {

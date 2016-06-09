@@ -1,9 +1,21 @@
 ///////////////////////////////////////array.js
 "use strict";
 
-var bubbleArray=new Array
+interface BulleArray {
+    bulle: Bulle;
+    links: Link[];
+    linksIndex: number[];
+}
 
-function array(data){
-	bubbleArray.push([data,[],[]])
+var bubbleArray: Array<BulleArray>;
+bubbleArray = [];
+
+function array(data:Bulle) {
+    var bulleArray: BulleArray = {
+        bulle: data,
+        links: [],
+        linksIndex:[]
+    }
+    bubbleArray.push(bulleArray);
 	console.log(bubbleArray)
 }
