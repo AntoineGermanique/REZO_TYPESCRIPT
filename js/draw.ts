@@ -277,7 +277,15 @@ function polygonCollisionTest(rectTestArray,currentPath){
 		
         if (isDetect) {
             var selectedBulle = Rezo.selectedBulle;
-			multiArray.push([rectTestArray[j],spriteMove.x-rectTestArray[j].x,spriteMove.y-rectTestArray[j].y])
+            multiArray.push({
+                bulle: rectTestArray[j],
+                loc: {
+                    x: spriteMove.x - rectTestArray[j].x,
+                    y: spriteMove.y - rectTestArray[j].y
+                },
+                links: [],
+                linksIndex: []
+            });
 			selectedBulle=rectTestArray[j];
             circleSize = bulleSize(selectedBulle)
             circleColor = (<Bulle>selectedBulle).shape.rezoColor;

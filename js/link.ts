@@ -46,24 +46,24 @@ class Link extends PIXI.Graphics {
 
     static optimiseLink(sceneBulle: SceneBulle,sceneLink: PIXI.Container) {
         for (var i = 0; i < Link.linkArray.length; i++) {
-            var indexI1 = sceneBulle.getChildIndex(Link.linkArray[i][1])
-            var indexI2 = sceneBulle.getChildIndex(Link.linkArray[i][2])
+            var indexI1 = sceneBulle.getChildIndex(Link.linkArray[i].bulle1)
+            var indexI2 = sceneBulle.getChildIndex(Link.linkArray[i].bulle2)
             for (var j = 0; j < Link.linkArray.length; j++) {
-                var indexJ1 = sceneBulle.getChildIndex(Link.linkArray[j][1])
-                var indexJ2 = sceneBulle.getChildIndex(Link.linkArray[j][2])
+                var indexJ1 = sceneBulle.getChildIndex(Link.linkArray[j].bulle1)
+                var indexJ2 = sceneBulle.getChildIndex(Link.linkArray[j].bulle2)
                 if (indexI1 == indexJ1 && indexI2 == indexJ2 || indexI1 == indexJ2 && indexI2 == indexJ1) {
                     Link.optimizeCounter++
                     if (Link.optimizeCounter > 1) {
                         if (Link.linkOptimizedArray.length == 0) {
-                            Link.linkOptimizedArray.push(Link.linkArray[j][0])
+                            Link.linkOptimizedArray.push(Link.linkArray[j].link)
                         } else {
-                            var indexLinkJ = sceneLink.getChildIndex(Link.linkArray[j][0])
+                            var indexLinkJ = sceneLink.getChildIndex(Link.linkArray[j].link)
                             for (var k = 0; k < Link.linkOptimizedArray.length; k++) {
                                 var indexLinkK = sceneLink.getChildIndex(Link.linkOptimizedArray[k])
                                 if (indexLinkK == indexLinkJ) {
                                     break
                                 } else if (k == Link.linkOptimizedArray.length - 1) {
-                                    Link.linkOptimizedArray.push(Link.linkArray[j][0])
+                                    Link.linkOptimizedArray.push(Link.linkArray[j].link)
                                 }
                             }
                         }
@@ -123,7 +123,7 @@ class Link extends PIXI.Graphics {
         if (Link.linkSelected) {
             for (var i = 0; i < Link.linkArray.length; i++) {
 
-                if (Link.linkArray[i][0].data) {
+                if (Link.linkArray[i].link.data) {
                     console.log("yoh")
                     this.unclickLink()
                     break

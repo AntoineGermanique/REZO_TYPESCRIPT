@@ -1,9 +1,12 @@
 ////////multi.js
-var multiArray=[];
-var multiLinkArray=[];
+var multiArray: MultiBulleArray[] = [];
+var multiLinkArray: LinkArray[] = [];
 var multiExist=false;
 var spriteMove = PIXI.Sprite.fromImage('./images/MOVE.png');
 var nbrDetect = 0
+interface MultiBulleArray extends BulleArray {
+    loc: Loc;
+}
 
 function multi() {
     var selectedBulle = Rezo.selectedBulle;
@@ -14,14 +17,22 @@ function multi() {
 		console.log(selectedBulle)
 		spriteMove.pivot.x=spriteMove.width/2
 		spriteMove.pivot.y=spriteMove.width/2
-		spriteMove.interactive=true
-		multiArray.push([selectedBulle,spriteMove.x-selectedBulle.x,spriteMove.y-selectedBulle.y])
+        spriteMove.interactive = true
+        multiArray.push({
+            bulle: selectedBulle,
+            loc: {
+                x: spriteMove.x - selectedBulle.x,
+                y: spriteMove.y - selectedBulle.y
+            },
+            links: [],
+            linksIndex: []
+        });
 		multiLinkSelect()
 	}else{
 		spriteMove.interactive=false
 		sceneMulti.removeChild(spriteMove)
-		while(multiArray.length>0){
-            fakeClickFun(multiArray[multiArray.length - 1][0]);
+        while (multiArray.length > 0) {
+            Bulle.fakeClickFun(multiArray[multiArray.length - 1].bulle);
             multiArray.pop();
 		}
 		while(multiLinkArray.length>0){
@@ -31,12 +42,12 @@ function multi() {
 	}
 	
 }
-function multiSelect(multiBulle){
+function multiSelect(multiBulle:Bulle){
 	
 	for(var i=0;i<multiArray.length;i++){
 		//console.log(sceneBulle.getChildIndex(multiBulle))
-		
-		if(multiBulle==multiArray[i][0]){
+
+        if (multiBulle == multiArray[i].bulle) {
 			multiExist=true;
 			multiArray.splice(i,1);
 			multiBulle.clear();
@@ -46,7 +57,15 @@ function multiSelect(multiBulle){
 	if(multiExist){
 		multiExist=false
 	}else{
-		multiArray.push([multiBulle,spriteMove.x-multiBulle.x,spriteMove.y-multiBulle.y])
+        multiArray.push({
+            bulle: multiBulle,
+            loc: {
+                x: spriteMove.x - multiBulle.x,
+                y: spriteMove.y - multiBulle.y
+            },
+            links: [],
+            linksIndex: []
+        })
 	}
 	multiLinkSelect()
 }
@@ -54,9 +73,8 @@ function multiSelect(multiBulle){
 function multiLinkSelect() {
     var linkArray = Link.linkArray;
 	for(var i=0;i<multiArray.length;i++){
-	console.log('multiarray ok')
-		for(var j=0;j<linkArray.length;j++){
-			if(multiArray[i][0]==linkArray[j][1]||multiArray[i][0]==linkArray[j][2]){
+        for (var j = 0; j < linkArray.length; j++){
+            if (multiArray[i].bulle == linkArray[j].bulle1 || multiArray[i].bulle == linkArray[j].bulle2) {
 				
 				if(multiLinkArray.length==0){
 					multiLinkArray.push(linkArray[j])
@@ -75,25 +93,23 @@ function multiLinkSelect() {
 }
 
 function multiMove(moveX,moveY){
-	for(var ii=0;ii<multiArray.length;ii++){
-		multiArray[ii][0].x=moveX-multiArray[ii][1]
-		multiArray[ii][0].y=moveY-multiArray[ii][2]
+    for (var i = 0; i < multiArray.length; i++){
+        multiArray[i].bulle.x = moveX - multiArray[i].loc.x;
+        multiArray[i].bulle.y = moveY - multiArray[i].loc.y;
 	}
-	for(var ii=0;ii<multiLinkArray.length;ii++){
-		var currentLink=multiLinkArray[ii][0]
-		var bulleX0=parseInt(multiLinkArray[ii][1].x)
-		var bulleY0=parseInt(multiLinkArray[ii][1].y)
-		var bulleX1=parseInt(multiLinkArray[ii][2].x)
-		var bulleY1=parseInt(multiLinkArray[ii][2].y)
-		currentLink.clear()
+    for (var i = 0; i < multiLinkArray.length; i++){
+        var currentLink = multiLinkArray[i].link
+        var bulleX0 = multiLinkArray[i].bulle1.x;
+        var bulleY0 = multiLinkArray[i].bulle1.y;
+        var bulleX1 = multiLinkArray[i].bulle2.x;
+        var bulleY1 = multiLinkArray[i].bulle2.y;
+        currentLink.clear();
 		currentLink.beginFill(0x00FF00)
 		if(currentLink.data){
 			currentLink.lineStyle(10, 0xFF0000);
 		}else{
 			currentLink.lineStyle(10, 0x333333);
 		}
-		console.log(ii+"__link")
-		console.log(bulleX0+"_bulleX0_"+bulleY0+"_bulleY0_"+bulleX1+"_bulleX1_"+bulleY1+"_bulleY1_")
 		currentLink.moveTo(bulleX0,bulleY0);
         currentLink.lineTo(bulleX1, bulleY1);
         var lineHitFact = Link.lineHitFact;
@@ -130,7 +146,6 @@ var stopDrag = function(data){
 		drawDown=false
 		draw()
 	}
-	multiLinkMotionFun()//motion.js
 }
 
 spriteMove.on("mouseup", stopDrag);

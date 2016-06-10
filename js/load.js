@@ -1,4 +1,33 @@
 /////////////////////load.js
+function load2(rezoSave) {
+    while (bubbleArray.length > 0) {
+        bubbleArray.pop();
+    }
+    while (Link.linkArray.length > 0) {
+        Link.linkArray.pop();
+    }
+    Rezo.rezoName = rezoSave.title;
+    for (var i = 0; i < rezoSave.bullesArray.length; i++) {
+        var bulleInfo = rezoSave.bullesArray[i];
+        Rezo.sceneBulle.addChild(new Bulle(bulleInfo.loc.x, bulleInfo.loc.y, bulleInfo.text, parseInt(bulleInfo.color.replace(/^#/, ''), 16), bulleInfo.scale.x, bulleInfo.shape));
+    }
+    for (var i = 0; i < rezoSave.linkSave.length; i++) {
+        var lastBulleSelectedIndex = rezoSave.linkSave[i].indexBulle1;
+        lastBulleSelected = Rezo.sceneBulle.getChildAt(lastBulleSelectedIndex);
+        var selectedBulleIndex = rezoSave.linkSave[i].indexBulle2;
+        Rezo.selectedBulle = Rezo.sceneBulle.getChildAt(selectedBulleIndex);
+        Link.bubbleLinked.push(lastBulleSelected);
+        Link.linkBool = true;
+        Link.link2Bool = true;
+        Link.linkFun();
+    }
+    Link.linkBool = false;
+    Link.link2Bool = false;
+    Rezo.scene.position.x = rezoSave.loc.x;
+    Rezo.scene.position.y = rezoSave.loc.y;
+    Rezo.scaleScene.scale.x = rezoSave.scale.x;
+    Rezo.scaleScene.scale.y = rezoSave.scale.y;
+}
 function load(bubble, linkLoad, title, scenePo, scalePo) {
     while (bubbleArray.length > 0) {
         bubbleArray.pop();

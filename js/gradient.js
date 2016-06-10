@@ -24,7 +24,7 @@ function gradient() {
                         if (multBool) {
                             tempColorArray = multiArray;
                             for (i = 0; i < tempColorArray.length; i++) {
-                                setColorFun(tempColorArray[i][0], goodColor);
+                                setColorFun(tempColorArray[i].bulle, goodColor);
                             }
                             tempColorArray = [];
                         }

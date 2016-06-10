@@ -10,6 +10,10 @@ var circleY = Rezo.windowH / 2;
 var circleSize = 50;
 var circleColor = parseInt("#FF00CC".replace(/^#/, ''), 16);
 var circleScale = 1;
+var lastBulleSelected;
+var dataFake;
+var startDragBulle;
+var stopDragBulle;
 var Bulle = (function (_super) {
     __extends(Bulle, _super);
     function Bulle(circleX, circleY, bulleText, circleColor, circleScale, shapeEnum) {
@@ -55,7 +59,7 @@ var Bulle = (function (_super) {
             Rezo.selectedBulle = this;
         }
         else if (multBool) {
-            fakeClickFun(this);
+            Bulle.fakeClickFun(this);
         }
         else {
             lastBulleSelected = selectedBulle;
@@ -65,6 +69,7 @@ var Bulle = (function (_super) {
         text.textDesign(text);
     }
     Bulle.prototype.dragBulle = function () {
+        var _this = this;
         startDragBulle = function (data) {
             var bulle;
             if (multBool) {
@@ -74,7 +79,7 @@ var Bulle = (function (_super) {
                 bulle = data.data.target;
                 if (bulle == null)
                     bulle = data.target;
-                selectBulleFun(bulle, data);
+                _this.selectBulleFun(bulle, data);
                 multiSelect(bulle);
             }
             else {
@@ -84,9 +89,9 @@ var Bulle = (function (_super) {
                 bulle = data.data.target;
                 if (bulle == null)
                     bulle = data.target;
-                selectBulleFun(bulle, data);
+                _this.selectBulleFun(bulle, data);
                 bulle.dragging = true;
-                lastSelectedBulleFun();
+                _this.lastSelectedBulleFun();
                 linkSelection(bulle);
                 Link.linkFun();
             }
@@ -104,7 +109,7 @@ var Bulle = (function (_super) {
                 var bulle = data.data.target;
                 if (bulle == null)
                     bulle = data.target;
-                releaseBulle(bulle);
+                _this.releaseBulle(bulle);
             }
         };
         this.on("mouseup", stopDragBulle);
@@ -115,12 +120,78 @@ var Bulle = (function (_super) {
         var drag = function (data) {
             if (multBool) {
             }
-            else if (this.dragging) {
-                bulleDragging(this);
+            else if (_this.dragging) {
+                _this.bulleDragging(_this);
             }
         };
         this.on("mousemove", drag);
         this.on("touchmove", drag);
+    };
+    Bulle.prototype.selectBulleFun = function (clickedBulle, data) {
+        data.data.originalEvent.preventDefault();
+        if (data.stopPropagation) {
+            data.stopPropagation();
+        }
+        var selectedBulle = Rezo.selectedBulle;
+        clickedBulle.data = data;
+        //upperScene.dragging = false;
+        if (selectedBulle != clickedBulle) {
+            lastBulleSelected = selectedBulle;
+        }
+        Rezo.selectedBulle = clickedBulle;
+        selectedBulle = Rezo.selectedBulle;
+        circleSize = bulleSize(selectedBulle);
+        circleColor = selectedBulle.shape.rezoColor;
+        if (selectedBulle.lineAlpha == 0) {
+            selectedBulle.lineStyle(16, circleColor, 0.5);
+            selectedBulle.drawCircle(0, 0, circleSize);
+            if (circleColor == 0xffffff) {
+                selectedBulle.lineStyle(16, 0x000000, 0.5);
+                selectedBulle.drawCircle(0, 0, circleSize);
+            }
+        }
+        else {
+            selectedBulle.clear();
+            selectedBulle.lineStyle(16, circleColor, 0.5);
+            selectedBulle.drawCircle(0, 0, circleSize);
+            if (circleColor == 0xffffff) {
+                selectedBulle.lineStyle(16, 0x000000, 0.5);
+                selectedBulle.drawCircle(0, 0, circleSize);
+            }
+        }
+    };
+    Bulle.prototype.lastSelectedBulleFun = function () {
+        if (lastBulleSelected) {
+            lastBulleSelected.clear();
+            lastBulleSelected.lineAlpha = 0;
+        }
+    };
+    Bulle.prototype.releaseBulle = function (releasedBulle) {
+        //var positionTemp = releasedBulle.data.getLocalPosition(releasedBulle.parent)
+        releasedBulle.dragging = false;
+        releasedBulle.data = null;
+        clearMotion();
+    };
+    Bulle.prototype.bulleDragging = function (draggedBulle) {
+        if (draggedBulle.dragging && Link.linkBool == false) {
+            var newPosition = draggedBulle.data.data.getLocalPosition(draggedBulle.parent);
+            draggedBulle.position.x = newPosition.x;
+            draggedBulle.position.y = newPosition.y;
+            motion(newPosition.x, newPosition.y);
+        }
+    };
+    Bulle.fakeClickFun = function (fakeBulle) {
+        dataFake = new PIXI.interaction.InteractionData();
+        dataFake.target = fakeBulle;
+        var evt = new MouseEvent("mousedown", {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+            clientX: 20,
+        });
+        dataFake.originalEvent = evt;
+        startDragBulle();
+        stopDragBulle();
     };
     return Bulle;
 }(PIXI.Graphics));
@@ -154,55 +225,4 @@ var Shape = (function (_super) {
     };
     return Shape;
 }(PIXI.Graphics));
-//function bulle(circleX: number, circleY: number, bulleText: string, circleColor?: number, circleScale?: number) {
-//    var circle// = new Bulle();
-//    //circle.beginFill(circleColor, 1);
-//    circle.lineStyle(16, circleColor, 0.5);
-//    circle.drawCircle(0, 0, circleSize);
-//	circle.hitArea = new PIXI.Circle(0, 0, circleSize);
-//	circle.interactive=true
-//    circle.x = circleX;
-//    circle.y = circleY;
-//	if(circleScale==undefined){
-//        circleScale = 1;
-//	}
-//    circle.scale.x = circleScale; 
-//    circle.scale.y = circleScale;
-//    //circle.endFill();
-//    var shape = new Shape();
-//    shape.beginFill(circleColor, 1);
-//    shape.rezoColor = circleColor;
-//	//color.alpha=0.5;
-//	if(circleColor==0xffffff){
-//        console.log(circleColor);
-//        shape.lineStyle(1, 0x000000, 1);
-//        circle.lineStyle(16, 0x000000, 0.5);
-//        circle.drawCircle(0, 0, circleSize);
-//    }
-//    shape.drawCircle(0, 0, circleSize);
-//    shape.endFill();
-//    var text = new PIXI.Text(wordwrap(bulleText, 10));
-//    circle.shape = shape;
-//    circle.addChild(shape);
-//    circle.addChild(text);
-//	dragBulle();
-//	// selectBulle()
-//    array(circle);
-//	sceneBulle.addChild(circle);
-//	autoSizeText(circle,circleSize);
-//	// dispatchMouseEvent(circle, 'mousedown', true, true);
-//	if(!selectedBulle){
-//        selectedBulle = circle;
-//		// selectedBulle.getChildAt(0).alpha=1;
-//	}else if(multBool){
-//        fakeClickFun(circle);
-//	}else{
-//        lastBulleSelected = selectedBulle;
-//        selectedBulle = circle;
-//        lastBulleSelected.clear();
-//		// lastBulleSelected.getChildAt(0).alpha=0.5;
-//		// selectedBulle.getChildAt(0).alpha=1;
-//	}
-//    textDesign(text);
-//}
 //# sourceMappingURL=bulle.js.map

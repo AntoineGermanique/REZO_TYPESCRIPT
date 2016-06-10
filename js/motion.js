@@ -6,10 +6,10 @@ function linkSelection(data) {
     for (var i = 0; i < bubbleArray.length; i++) {
         if (bubbleArray[i].bulle == data) {
             if (bubbleArray[i].links.length > 0) {
-                selectedLinks = bubbleArray[i].links;
+                selectedLinks = bubbleArray[i].links.slice();
                 for (var j = 0; j < bubbleArray[i].links.length; j++) {
                     var indexLink = Rezo.sceneLink.getChildIndex(bubbleArray[i].links[j]);
-                    if (Link.linkArray[indexLink][1] == data) {
+                    if (Link.linkArray[indexLink].bulle1 == data) {
                         stillBubblesArray.push(Link.linkArray[indexLink].bulle2);
                     }
                     else {
@@ -19,16 +19,6 @@ function linkSelection(data) {
             }
         }
     }
-    //if(selectedLink.length>0){
-    //	for(var i=0;i<selectedLink[0].length;i++){
-    //		var indexLink=Rezo.sceneLink.getChildIndex(selectedLink[0][i])
-    //           if (Link.linkArray[indexLink][1] == data) {
-    //               stillBubbleArray.push(Link.linkArray[indexLink].bulle2);
-    //           } else {
-    //               stillBubbleArray.push(Link.linkArray[indexLink].bulle1);
-    //		}
-    //	}
-    //}
 }
 function motion(bulleX0, bulleY0) {
     console.log(selectedLinks);
@@ -61,7 +51,5 @@ function clearMotion() {
     while (stillBubblesArray.length > 0) {
         stillBubblesArray.pop();
     }
-}
-function multiLinkMotionFun() {
 }
 //# sourceMappingURL=motion.js.map

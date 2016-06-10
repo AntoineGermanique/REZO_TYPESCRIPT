@@ -2,7 +2,7 @@
 "use strict";
 
 var scalBullFirstPo
-var tempScaleArray=[]
+var tempScaleArray: MultiBulleArray[] = []
 function scaleBulle() {
     var selectedBulle = Rezo.selectedBulle;
 	var startZoom=function(data){
@@ -13,7 +13,15 @@ function scaleBulle() {
 		if(multBool){
 			tempScaleArray=multiArray
 		}else{
-			tempScaleArray.push([selectedBulle])
+            tempScaleArray.push({
+                bulle: selectedBulle,
+                loc:{
+                    x: selectedBulle.x,
+                    y: selectedBulle.y
+                },
+                links: [],
+                linksIndex: []
+            })
 		}
     }
     var sensorScaleBulleScene = Rezo.sensorScaleBulleScene
@@ -30,14 +38,14 @@ function scaleBulle() {
 			var newPosition = data.getLocalPosition(this.parent);
 			
 			if(newPosition.y<scalBullFirstPo.y){
-				for(var i=0;i<tempScaleArray.length;i++){
-					tempScaleArray[i][0].scale.x*=1.03
-					tempScaleArray[i][0].scale.y*=1.03
+                for (var i = 0; i < tempScaleArray.length; i++){
+                    tempScaleArray[i].bulle.scale.x *= 1.03;
+                    tempScaleArray[i].bulle.scale.y *= 1.03;
 				}
 			}else{
-				for(var i=0;i<tempScaleArray.length;i++){
-					tempScaleArray[i][0].scale.x/=1.03
-					tempScaleArray[i][0].scale.y/=1.03
+                for (var i = 0; i < tempScaleArray.length; i++){
+                    tempScaleArray[i].bulle.scale.x /= 1.03;
+                    tempScaleArray[i].bulle.scale.y /= 1.03;
 				}
 			}
 			
@@ -48,19 +56,27 @@ function scaleBulle() {
 }
 function scaleBulleScroll(scrollEvent){
 	if(multBool){
-		tempScaleArray=multiArray
+        tempScaleArray = multiArray;
 	}else{
-		tempScaleArray.push([Rezo.selectedBulle])
+        tempScaleArray.push({
+            bulle: Rezo.selectedBulle,
+            loc: {
+                x: Rezo.selectedBulle.x,
+                y: Rezo.selectedBulle.y
+            },
+            links: [],
+            linksIndex: []
+        });
 	}
 	if(scrollEvent.deltaY<0){
-		for(var i=0;i<tempScaleArray.length;i++){
-			tempScaleArray[i][0].scale.x/=1.1
-			tempScaleArray[i][0].scale.y/=1.1
+        for (var i = 0; i < tempScaleArray.length; i++){
+            tempScaleArray[i].bulle.scale.x /= 1.1
+            tempScaleArray[i].bulle.scale.y /= 1.1
 		}		
 	}else{
-		for(var i=0;i<tempScaleArray.length;i++){
-			tempScaleArray[i][0].scale.x*=1.1
-			tempScaleArray[i][0].scale.y*=1.1
+        for (var i = 0; i < tempScaleArray.length; i++){
+            tempScaleArray[i].bulle.scale.x *= 1.1
+            tempScaleArray[i].bulle.scale.y *= 1.1
 		}
 	}
 	tempScaleArray=[]
@@ -84,13 +100,13 @@ function scaleBulleTouch(){
 		stage.swapChildren(stage.sensorZoomScene,stage.sensorScaleBulleScene)
 	}
 }
-function multiScaleBullePlus(scaleMultiArray){
+function multiScaleBullePlus(scaleMultiArray: BulleArray[]) {
 	for(var i=0;i<scaleMultiArray.length;i++){
-		scaleBullePlus(scaleMultiArray[i][0])
+		scaleBullePlus(scaleMultiArray[i].bulle)
 	}
 }
-function multiScaleBulleMoins(scaleMultiArray){
+function multiScaleBulleMoins(scaleMultiArray: BulleArray[]) {
 	for(var i=0;i<scaleMultiArray.length;i++){
-		scaleBulleMoins(scaleMultiArray[i][0])
+		scaleBulleMoins(scaleMultiArray[i].bulle)
 	}
 }

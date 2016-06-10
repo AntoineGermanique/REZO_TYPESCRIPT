@@ -6,11 +6,11 @@ function linkSelection(data:Bulle) {
     for (var i = 0; i < bubbleArray.length; i++){
         if (bubbleArray[i].bulle == data) {
             if (bubbleArray[i].links.length > 0) {
-                selectedLinks = bubbleArray[i].links;
+                selectedLinks = bubbleArray[i].links.slice();
                 for (var j = 0; j < bubbleArray[i].links.length; j++) {
                     var indexLink = Rezo.sceneLink.getChildIndex(bubbleArray[i].links[j])
 
-                    if (Link.linkArray[indexLink][1] == data) {
+                    if (Link.linkArray[indexLink].bulle1 == data) {
                         stillBubblesArray.push(Link.linkArray[indexLink].bulle2);
                     } else {
                         stillBubblesArray.push(Link.linkArray[indexLink].bulle1);
@@ -20,17 +20,6 @@ function linkSelection(data:Bulle) {
 			
 		}
 	}
-	//if(selectedLink.length>0){
-	//	for(var i=0;i<selectedLink[0].length;i++){
-	//		var indexLink=Rezo.sceneLink.getChildIndex(selectedLink[0][i])
-			
- //           if (Link.linkArray[indexLink][1] == data) {
- //               stillBubbleArray.push(Link.linkArray[indexLink].bulle2);
- //           } else {
- //               stillBubbleArray.push(Link.linkArray[indexLink].bulle1);
-	//		}
-	//	}
-	//}
 }
 
 function motion(bulleX0, bulleY0) {
@@ -38,7 +27,7 @@ function motion(bulleX0, bulleY0) {
 
     if (selectedLinks && selectedLinks.length > 0 && stillBubblesArray.length>0) {
 		for(var i=0;i<selectedLinks.length;i++){
-			var bulleX1=Number(stillBubblesArray[i].x);
+            var bulleX1 = Number(stillBubblesArray[i].x);
             var bulleY1 = Number(stillBubblesArray[i].y);
             var link = selectedLinks[i];
             link.clear();
@@ -66,8 +55,4 @@ function clearMotion(){
 	while(stillBubblesArray.length > 0) {
 		stillBubblesArray.pop();
 	}
-}
-
-function multiLinkMotionFun(){
-	
 }

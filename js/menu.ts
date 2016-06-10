@@ -59,10 +59,8 @@ function menu() {
 	$("#supprBulle").click(function (){supprFun()})
 
     $("#saveBulle").click(function () { save() })
-	$("#localSaveBulle").click(function (){
-		isLocalSave=true;
-		save();
-		isLocalSave=false;
+    $("#localSaveBulle").click(function () {
+        save2()
 	});
 	$("#linkBulle").click(function (){
 		

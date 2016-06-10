@@ -7,6 +7,14 @@ var circleY = Rezo.windowH/2;
 var circleSize = 50
 var circleColor: number = parseInt("#FF00CC".replace(/^#/, ''), 16);
 var circleScale = 1
+var lastBulleSelected: Bulle;
+var dataFake;
+var startDragBulle: (data?: any) => void;
+var stopDragBulle: (data?: any) => void;
+
+
+
+
 
 
 class Bulle extends PIXI.Graphics {
@@ -59,15 +67,13 @@ class Bulle extends PIXI.Graphics {
         var selectedBulle = Rezo.selectedBulle;
         if (!selectedBulle) {
             Rezo.selectedBulle = this;
-            // selectedBulle.getChildAt(0).alpha=1;
         } else if (multBool) {
-            fakeClickFun(this);
+            Bulle.fakeClickFun(this);
         } else {
             lastBulleSelected = selectedBulle;
             Rezo.selectedBulle = this;
             lastBulleSelected.clear();
-            // lastBulleSelected.getChildAt(0).alpha=0.5;
-            // selectedBulle.getChildAt(0).alpha=1;
+
         }
 
         text.textDesign(text);
@@ -75,7 +81,7 @@ class Bulle extends PIXI.Graphics {
     }
 
     dragBulle():void {
-        startDragBulle = function (data) {
+        startDragBulle = (data) => {
             var bulle
             if (multBool) {
                 if (!data) {
@@ -84,7 +90,7 @@ class Bulle extends PIXI.Graphics {
                 bulle = <Bulle>data.data.target
                 if (bulle == null) bulle = <Bulle>data.target;
 
-                selectBulleFun(bulle, data)
+                this.selectBulleFun(bulle, data)
                 multiSelect(bulle)
 
             } else {
@@ -94,10 +100,10 @@ class Bulle extends PIXI.Graphics {
                 bulle = <Bulle>data.data.target
                 if (bulle == null) bulle = <Bulle>data.target;
 
-                selectBulleFun(bulle, data)
+                this.selectBulleFun(bulle, data)
                 bulle.dragging = true
 
-                lastSelectedBulleFun()
+                this.lastSelectedBulleFun()
 
                 linkSelection(bulle)
                 Link.linkFun()
@@ -109,7 +115,7 @@ class Bulle extends PIXI.Graphics {
         this.on("touchstart", startDragBulle);
 
         // set the events for when the mouse is released or a touch is released
-        stopDragBulle = function (data) {
+        stopDragBulle =(data)=> {
             if (multBool) {
             } else {
                 if (!data) {
@@ -117,7 +123,7 @@ class Bulle extends PIXI.Graphics {
                 }
                 var bulle = <Bulle>data.data.target;
                 if (bulle == null) bulle = <Bulle>data.target;
-                releaseBulle(bulle)
+               this.releaseBulle(bulle)
             }
         };
         this.on("mouseup", stopDragBulle);
@@ -126,18 +132,85 @@ class Bulle extends PIXI.Graphics {
         this.on("touchendoutside", stopDragBulle);
 
         // set the callbacks for when the mouse or a touch moves
-        var drag = function (data) {
+        var drag = (data)=> {
             if (multBool) {
 
             } else if (this.dragging) {
-                bulleDragging(this)
+                this.bulleDragging(this)
 
             }
         }
         this.on("mousemove", drag);
         this.on("touchmove", drag);
     }
+    selectBulleFun(clickedBulle, data) {
+        data.data.originalEvent.preventDefault();
+        if (data.stopPropagation) {
+            data.stopPropagation();
+        }
+        var selectedBulle = Rezo.selectedBulle;
+        clickedBulle.data = data;
+        //upperScene.dragging = false;
+        if (selectedBulle != clickedBulle) {
+            lastBulleSelected = selectedBulle;
+        }
+        Rezo.selectedBulle = clickedBulle;
+        selectedBulle = Rezo.selectedBulle;
+        circleSize = bulleSize(selectedBulle)
+        circleColor = selectedBulle.shape.rezoColor;
 
+        if (selectedBulle.lineAlpha == 0) {
+            selectedBulle.lineStyle(16, circleColor, 0.5);
+            selectedBulle.drawCircle(0, 0, circleSize);
+            if (circleColor == 0xffffff) {
+                selectedBulle.lineStyle(16, 0x000000, 0.5);
+                selectedBulle.drawCircle(0, 0, circleSize);
+            }
+
+        } else {
+            selectedBulle.clear();
+            selectedBulle.lineStyle(16, circleColor, 0.5);
+            selectedBulle.drawCircle(0, 0, circleSize);
+            if (circleColor == 0xffffff) {
+                selectedBulle.lineStyle(16, 0x000000, 0.5);
+                selectedBulle.drawCircle(0, 0, circleSize);
+            }
+        }
+    }
+
+    lastSelectedBulleFun() {
+        if (lastBulleSelected) {
+            lastBulleSelected.clear();
+            lastBulleSelected.lineAlpha = 0
+        }
+    }
+    releaseBulle(releasedBulle) {
+        //var positionTemp = releasedBulle.data.getLocalPosition(releasedBulle.parent)
+        releasedBulle.dragging = false;
+        releasedBulle.data = null;
+        clearMotion()
+    }
+    bulleDragging(draggedBulle) {
+        if (draggedBulle.dragging && Link.linkBool == false) {
+            var newPosition = draggedBulle.data.data.getLocalPosition(draggedBulle.parent);
+            draggedBulle.position.x = newPosition.x;
+            draggedBulle.position.y = newPosition.y;
+            motion(newPosition.x, newPosition.y)
+        }
+    }
+    static fakeClickFun(fakeBulle: Bulle) {
+        dataFake = new PIXI.interaction.InteractionData()
+        dataFake.target = fakeBulle
+        var evt = new MouseEvent("mousedown", {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+            clientX: 20,
+        });
+        dataFake.originalEvent = evt
+        startDragBulle();
+        stopDragBulle();
+    }
 }
 
 enum ShapeEnum {
@@ -166,61 +239,6 @@ class Shape extends PIXI.Graphics {
                 break;
         }
     }
+    
+
 }
-//function bulle(circleX: number, circleY: number, bulleText: string, circleColor?: number, circleScale?: number) {
-//    var circle// = new Bulle();
-//    //circle.beginFill(circleColor, 1);
-//    circle.lineStyle(16, circleColor, 0.5);
-//    circle.drawCircle(0, 0, circleSize);
-//	circle.hitArea = new PIXI.Circle(0, 0, circleSize);
-//	circle.interactive=true
-//    circle.x = circleX;
-//    circle.y = circleY;
-//	if(circleScale==undefined){
-//        circleScale = 1;
-//	}
-//    circle.scale.x = circleScale; 
-//    circle.scale.y = circleScale;
-//    //circle.endFill();
-//    var shape = new Shape();
-//    shape.beginFill(circleColor, 1);
-//    shape.rezoColor = circleColor;
-//	//color.alpha=0.5;
-//	if(circleColor==0xffffff){
-//        console.log(circleColor);
-//        shape.lineStyle(1, 0x000000, 1);
-//        circle.lineStyle(16, 0x000000, 0.5);
-//        circle.drawCircle(0, 0, circleSize);
-			
-//    }
-   
-//    shape.drawCircle(0, 0, circleSize);
-//    shape.endFill();
-//    var text = new PIXI.Text(wordwrap(bulleText, 10));
-//    circle.shape = shape;
-//    circle.addChild(shape);
-//    circle.addChild(text);
-//	dragBulle();
-//	// selectBulle()
-//    array(circle);
-//	sceneBulle.addChild(circle);
-//	autoSizeText(circle,circleSize);
-//	// dispatchMouseEvent(circle, 'mousedown', true, true);
-	
-//	if(!selectedBulle){
-//        selectedBulle = circle;
-//		// selectedBulle.getChildAt(0).alpha=1;
-//	}else if(multBool){
-//        fakeClickFun(circle);
-//	}else{
-//        lastBulleSelected = selectedBulle;
-//        selectedBulle = circle;
-//        lastBulleSelected.clear();
-//		// lastBulleSelected.getChildAt(0).alpha=0.5;
-//		// selectedBulle.getChildAt(0).alpha=1;
-//	}
-	
-//    textDesign(text);
-
-//}
-

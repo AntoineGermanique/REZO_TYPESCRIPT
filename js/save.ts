@@ -9,7 +9,7 @@ var scalePo=[]
 interface RezoSave {
     bullesArray: BulleSave[];
     linkSave: LinkSave[];
-    scale: number;
+    scale: Loc;
     loc: Loc;
     title: string;
 }
@@ -19,7 +19,7 @@ interface BulleSave {
     linksIndex: number[];
     text: string;
     color: string;
-    scale: number;
+    scale: Loc;
     width: number;
     height: number;
     shape: number;
@@ -45,7 +45,64 @@ interface Loc {
 }
 
 function save2() {
+    promptTitle2();
 
+    var linkArraySave: LinkSave[] = [];
+    var bulleArraySave: BulleSave[] = [];
+    for (var i = 0; i < Link.linkArray.length; i++) {
+        linkArraySave.push({
+            indexBulle1: Link.linkArray[i].indexBulle1,
+            indexBulle2: Link.linkArray[i].indexBulle2,
+            direction:null,
+            linkPath:null
+        })
+    }
+    for (var i = 0; i < bubbleArray.length; i++) {
+        var bulleInfo: BulleArray = bubbleArray[i];
+        bulleArraySave.push({
+            loc: {
+                x: bulleInfo.bulle.x,
+                y: bulleInfo.bulle.y
+            },
+            linksIndex: bulleInfo.linksIndex,
+            text: bulleInfo.bulle.text.text,
+            color: "#"+(bulleInfo.bulle.shape.rezoColor).toString(16),
+            scale: { x: bulleInfo.bulle.scale.x, y: bulleInfo.bulle.scale.y },
+            width: bulleInfo.bulle.width,
+            height: bulleInfo.bulle.height,
+            shape: bulleInfo.bulle.shape.shape,
+            polyPath: null,
+            polyTextPath: null
+        })
+    }
+    var rezoSave: RezoSave;
+    rezoSave = {
+        bullesArray: bulleArraySave,
+        linkSave: linkArraySave,
+        scale: { x: Rezo.scaleScene.scale.x, y: Rezo.scaleScene.scale.y },
+        loc: { x: Rezo.scene.x, y: Rezo.scene.y },
+        title: Rezo.rezoName
+    }
+    localSave(rezoSave, Rezo.rezoName);
+
+}
+
+function promptTitle2() {
+    var title = prompt("titre", Rezo.rezoName);
+
+    if (title != "" && isNameValid(title)) {
+        Rezo.rezoName = title;
+    } else {
+        promptTitle2();
+    }
+}
+function isNameValid(newName: string): boolean {
+    var pattern: RegExp = new RegExp("^[a-zA-Z_][a-zA-Z_0-9]{1,50}$");
+    if (pattern.test(newName)) {
+        return true
+    } else {
+        return false
+    }
 }
 
 function save(data?:any){

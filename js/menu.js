@@ -55,9 +55,7 @@ function menu() {
     $("#supprBulle").click(function () { supprFun(); });
     $("#saveBulle").click(function () { save(); });
     $("#localSaveBulle").click(function () {
-        isLocalSave = true;
-        save();
-        isLocalSave = false;
+        save2();
     });
     $("#linkBulle").click(function () {
         Link.emptyLinkArray();

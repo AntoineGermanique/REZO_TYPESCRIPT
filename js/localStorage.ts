@@ -21,7 +21,15 @@ function localOpen() {
         $(".openSpan").click(function () {
             arrayLocal = localLoad($(this).attr("id"));
             whipe();
-            load(arrayLocal[0], arrayLocal[1], titre, arrayLocal[3], arrayLocal[4]);
+            if (!arrayLocal.bullesArray && !arrayLocal.arrayBubble) {
+                load(arrayLocal[0], arrayLocal[1], titre, arrayLocal[3], arrayLocal[4]);
+            } else if (arrayLocal.arrayBubble){
+                load(arrayLocal.arrayBubble, arrayLocal.arrayLink, titre, arrayLocal.scenePo, arrayLocal.scalePo);
+
+            } else {
+                load2(arrayLocal);
+            }
+
             $("#localHome").trigger("click");
         });
     }
