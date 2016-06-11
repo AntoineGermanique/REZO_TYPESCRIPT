@@ -1,21 +1,5 @@
 ////////rezo.js
 "use strict";
-//var stage: PIXI.Container;
-//var scene: PIXI.Graphics;
-//var sceneLink: PIXI.Container;
-//var scaleScene: PIXI.Graphics;
-//var sceneHyper: PIXI.Container;
-//var rezoName = "";
-//var opened = false;;
-//var windowH = window.innerHeight;
-//var windowW = window.innerWidth;
-//var renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
-//var sceneBulle: PIXI.Container;
-//var upperScene: PIXI.Graphics;
-//var selectedBulle: Bulle;
-//var sensorZoomScene: PIXI.Graphics;
-//var sensorZoomScene2: PIXI.Graphics;
-//var sensorScaleBulleScene: PIXI.Container;
 function init() {
     new Rezo();
 }
@@ -126,6 +110,7 @@ var Rezo = (function () {
         menu();
     }
     ;
+    Rezo.isDriveConnected = false;
     Rezo.rezoName = "";
     Rezo.opened = false;
     Rezo.windowH = window.innerHeight;

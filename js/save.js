@@ -5,7 +5,21 @@ var sceneBullePo = [];
 var sceneLinkPo = [];
 var scenePo = [];
 var scalePo = [];
-function save2() {
+function saveLocal() {
+    var rezoSave = createJsonRezo();
+    localSave(rezoSave, Rezo.rezoName);
+}
+function saveDrive() {
+    if (Rezo.isDriveConnected) {
+        var rezoSave = createJsonRezo();
+        var blob = new Blob([rezoSave], { type: "application/json;charset=utf-8;" });
+        drive.tempBlob = blob;
+        drive.createFile(Rezo.rezoName, drive.updateFile);
+    }
+    else {
+    }
+}
+function createJsonRezo() {
     promptTitle2();
     var linkArraySave = [];
     var bulleArraySave = [];
@@ -43,7 +57,7 @@ function save2() {
         loc: { x: Rezo.scene.x, y: Rezo.scene.y },
         title: Rezo.rezoName
     };
-    localSave(rezoSave, Rezo.rezoName);
+    return JSON.stringify(rezoSave);
 }
 function promptTitle2() {
     var title = prompt("titre", Rezo.rezoName);

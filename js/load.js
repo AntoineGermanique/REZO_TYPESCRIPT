@@ -27,6 +27,7 @@ function load2(rezoSave) {
     Rezo.scene.position.y = rezoSave.loc.y;
     Rezo.scaleScene.scale.x = rezoSave.scale.x;
     Rezo.scaleScene.scale.y = rezoSave.scale.y;
+    $('#loading').css("display", "none");
 }
 function load(bubble, linkLoad, title, scenePo, scalePo) {
     while (bubbleArray.length > 0) {

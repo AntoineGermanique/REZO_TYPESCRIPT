@@ -14,7 +14,7 @@ body{
     z-index: 1;
 }
 #goodNews{
-	    border-width: 5px;
+	border-width: 5px;
     border-color: white;
     border-style: dashed;
 	visibility: hidden;
@@ -128,6 +128,14 @@ div#gradient {
 #scalZMBulle{
 	display:none;
 }
+img#saveBulle {
+    display: none;
+}
+
+img#homeBulle {
+    display: none;
+}
+
 
 
 .bigBTN img{
@@ -143,9 +151,9 @@ img#editBulle {
 }
 div#editBackground {
 	background: rgba(6, 255, 0, 0.52);
-	border-radius: 100;
+	border-radius: 100px;
 	border-style: dotted;
-	border-width: 5;
+	border-width: 5px;
 }
 img#naviBulle {
 	background: none;
@@ -153,9 +161,9 @@ img#naviBulle {
 }
 div#navBackground {
 	background: rgba(255, 0, 232, 0.52);
-	border-radius: 100;
+	border-radius: 100px;
 	border-style: dotted;
-	border-width: 5;
+	border-width: 5px;
 }
 #menu:hover {
 	cursor:pointer;

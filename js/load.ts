@@ -33,6 +33,8 @@ function load2(rezoSave: RezoSave) {
     Rezo.scaleScene.scale.x = rezoSave.scale.x;
     Rezo.scaleScene.scale.y = rezoSave.scale.y;
 
+    $('#loading').css("display", "none");
+
 
 }
 

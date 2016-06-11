@@ -53,9 +53,10 @@ function menu() {
         }
     });
     $("#supprBulle").click(function () { supprFun(); });
-    $("#saveBulle").click(function () { save(); });
+    $("#driveBulle").click(function (event) { drive.handleAuthClick(event); });
+    $("#saveBulle").click(function () { saveDrive(); });
     $("#localSaveBulle").click(function () {
-        save2();
+        saveLocal();
     });
     $("#linkBulle").click(function () {
         Link.emptyLinkArray();
@@ -110,10 +111,11 @@ function menu() {
     $("#homeBulle").click(function () {
         if (openActif == false) {
             $('#loading').css("display", "block");
-            $.post("php/open.php", function (data) {
-                $('#loading').css("display", "none");
-                open(data);
-            });
+            drive.updateConnection();
+            //$.post("php/open.php",function(data){
+            //	$('#loading').css("display","none");
+            //	openLoad(data);
+            //})
             $("#open").css("display", "block");
             openActif = true;
         }

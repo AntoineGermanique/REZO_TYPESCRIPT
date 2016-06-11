@@ -56,11 +56,11 @@ function menu() {
 		}
 		})
 	
-	$("#supprBulle").click(function (){supprFun()})
-
-    $("#saveBulle").click(function () { save() })
+    $("#supprBulle").click(function () { supprFun() })
+    $("#driveBulle").click(function (event) { drive.handleAuthClick(event) })
+    $("#saveBulle").click(function () { saveDrive() })
     $("#localSaveBulle").click(function () {
-        save2()
+        saveLocal()
 	});
 	$("#linkBulle").click(function (){
 		
@@ -112,16 +112,18 @@ function menu() {
             Link.link3Bool=false;
 			$( "#link3Bulle" ).css({"box-shadow":"none"})
 		}	
-	})
+    })
+
 	$("#homeBulle").click(function(){
 		if(openActif==false){
-			$('#loading').css("display","block");
-			$.post("php/open.php",function(data){
-				$('#loading').css("display","none");
-				open(data);
-			})
+            $('#loading').css("display", "block");
+            drive.updateConnection();
+			//$.post("php/open.php",function(data){
+			//	$('#loading').css("display","none");
+			//	openLoad(data);
+			//})
 			$("#open").css("display","block")
-			openActif=true
+            openActif = true;
 		}else{
 			$("#open").css("display","none");
 			$( ".open" ).remove();

@@ -1,24 +1,34 @@
 /////////////open.js
+"use strict"
+
 var bubbleTemp
 var isTitreInvalid
 var titre;
+var drive: DriveAPI = new DriveAPI();
+var counter :number=0;
+
+
+
 function openLoad(data){
 	
-	$("#open").append(data)
-	$(".openSpan").click(function(){
-		titre=$(this).attr("id")
-		$('#loading').css("display","block");
-		$.post("php/load.php",{"id":titre},
-			function(data){
-				$('#loading').css("display","none");
-				console.log(data)
-				bubbleTemp = $.parseJSON (data);
-				console.log("open")
-				whipe()
-				load(bubbleTemp.arrayBubble,bubbleTemp.arrayLink,bubbleTemp.title,bubbleTemp.scenePo,bubbleTemp.scalePo)
-				$("img#closeOpen").trigger("click");
-			}
-		)
+    $("#open").append(data)
+
+    $(".openSpan").click(function () {
+        console.log(counter++)
+        var id = $(this).parent().attr("id")
+        $('#loading').css("display", "block");
+        drive.getFile(id, (file) => { drive.downloadFile(file, load2 ) })
+		//$.post("php/load.php",{"id":titre},
+		//	function(data){
+		//		$('#loading').css("display","none");
+		//		console.log(data)
+		//		bubbleTemp = $.parseJSON (data);
+		//		console.log("open")
+		//		whipe()
+		//		load(bubbleTemp.arrayBubble,bubbleTemp.arrayLink,bubbleTemp.title,bubbleTemp.scenePo,bubbleTemp.scalePo)
+		//		$("img#closeOpen").trigger("click");
+		//	}
+		//)
 	})
 	$(".openImgModif").click(function(){
 		var oldTitle=$(this).parent().attr("id")
@@ -72,8 +82,8 @@ function openLoad(data){
         Rezo.sceneLink.removeChildren();
 		
 		circleX=screen.width/2;
-		circleY=screen.height/2;
-		new Bulle(circleX,circleY,"rezo");
+        circleY = screen.height / 2;
+        Rezo.scene.addChild(new Bulle(circleX, circleY, "rezo"));
         Rezo.scaleScene.scale.x=1
         Rezo.scaleScene.scale.y=1
         Rezo.scene.position.x=0

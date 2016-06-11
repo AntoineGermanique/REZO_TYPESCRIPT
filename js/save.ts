@@ -44,7 +44,26 @@ interface Loc {
     y: number;
 }
 
-function save2() {
+function saveLocal() {
+    var rezoSave = createJsonRezo();
+
+    localSave(rezoSave, Rezo.rezoName);
+
+}
+
+function saveDrive() {
+    if (Rezo.isDriveConnected) {
+
+        var rezoSave = createJsonRezo();
+        var blob = new Blob([rezoSave], { type: "application/json;charset=utf-8;" });
+        drive.tempBlob = blob;
+        drive.createFile(Rezo.rezoName, drive.updateFile);
+    } else {
+
+    }
+}
+
+function createJsonRezo(): string {
     promptTitle2();
 
     var linkArraySave: LinkSave[] = [];
@@ -53,8 +72,8 @@ function save2() {
         linkArraySave.push({
             indexBulle1: Link.linkArray[i].indexBulle1,
             indexBulle2: Link.linkArray[i].indexBulle2,
-            direction:null,
-            linkPath:null
+            direction: null,
+            linkPath: null
         })
     }
     for (var i = 0; i < bubbleArray.length; i++) {
@@ -66,7 +85,7 @@ function save2() {
             },
             linksIndex: bulleInfo.linksIndex,
             text: bulleInfo.bulle.text.text,
-            color: "#"+(bulleInfo.bulle.shape.rezoColor).toString(16),
+            color: "#" + (bulleInfo.bulle.shape.rezoColor).toString(16),
             scale: { x: bulleInfo.bulle.scale.x, y: bulleInfo.bulle.scale.y },
             width: bulleInfo.bulle.width,
             height: bulleInfo.bulle.height,
@@ -83,8 +102,7 @@ function save2() {
         loc: { x: Rezo.scene.x, y: Rezo.scene.y },
         title: Rezo.rezoName
     }
-    localSave(rezoSave, Rezo.rezoName);
-
+    return JSON.stringify(rezoSave);
 }
 
 function promptTitle2() {
