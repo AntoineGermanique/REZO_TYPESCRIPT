@@ -12,17 +12,6 @@ function openLoad(data) {
         var id = $(this).parent().attr("id");
         $('#loading').css("display", "block");
         drive.getFile(id, function (file) { drive.downloadFile(file, load2); });
-        //$.post("php/load.php",{"id":titre},
-        //	function(data){
-        //		$('#loading').css("display","none");
-        //		console.log(data)
-        //		bubbleTemp = $.parseJSON (data);
-        //		console.log("open")
-        //		whipe()
-        //		load(bubbleTemp.arrayBubble,bubbleTemp.arrayLink,bubbleTemp.title,bubbleTemp.scenePo,bubbleTemp.scalePo)
-        //		$("img#closeOpen").trigger("click");
-        //	}
-        //)
     });
     $(".openImgModif").click(function () {
         var oldTitle = $(this).parent().attr("id");
@@ -32,7 +21,7 @@ function openLoad(data) {
         isTitreInvalid = titreIsValid(newTitle);
         console.log(isTitreInvalid);
         if (isTitreInvalid == true) {
-            alert("le titre du rezo contient des caractères interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
+            alert("le titre du rezo contient des caract�res interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
             $(this).trigger("click");
         }
         else {

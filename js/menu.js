@@ -110,6 +110,7 @@ function menu() {
     });
     $("#homeBulle").click(function () {
         if (openActif == false) {
+            $(".open").remove();
             $('#loading').css("display", "block");
             drive.updateConnection();
             //$.post("php/open.php",function(data){

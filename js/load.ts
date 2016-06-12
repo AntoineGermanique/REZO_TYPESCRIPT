@@ -2,6 +2,9 @@
 
 
 function load2(rezoSave: RezoSave) {
+
+    Rezo.sceneBulle.removeChildren();
+    Rezo.sceneLink.removeChildren();
     while (bubbleArray.length > 0) {
         bubbleArray.pop();
     }

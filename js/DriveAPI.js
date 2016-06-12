@@ -29,7 +29,6 @@ var DriveAPI = (function () {
      * @param {Object} authResult Authorization result.
      */
     DriveAPI.prototype.handleAuthResult = function (authResult, auto) {
-        $('#loading').css("display", "none");
         if (authResult && !authResult.error) {
             // Hide auth UI, then load client library.
             var event = new CustomEvent("authon");
@@ -93,6 +92,7 @@ var DriveAPI = (function () {
                 }
                 openLoad(_this.innerHTML);
                 _this.innerHTML = "";
+                $('#loading').css("display", "none");
             }
             else {
                 _this.appendPre("", null);
@@ -138,6 +138,7 @@ var DriveAPI = (function () {
             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
             xhr.onload = function () {
                 var obj = JSON.parse(xhr.response);
+                Rezo.rezoId = file.id;
                 callback(obj);
             };
             xhr.onerror = function () {
@@ -183,7 +184,6 @@ var DriveAPI = (function () {
             }
         });
         request.execute(function (resp) {
-            console.log(DriveAPI.counter++);
             _this.getFile(resp.id, function (fileMetada) { _this.updateFile(resp.id, fileMetada, _this.tempBlob, null); });
         });
     };
@@ -227,10 +227,7 @@ var DriveAPI = (function () {
             });
             if (!callback) {
                 callback = function () {
-                    var event = new CustomEvent("updatecloudselect");
-                    document.dispatchEvent(event);
-                    event = new CustomEvent("successave");
-                    document.dispatchEvent(event);
+                    Rezo.load.style.display = "none";
                 };
             }
             request.execute(callback);

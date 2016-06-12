@@ -56,16 +56,13 @@ function menu() {
 		}
 		})
 	
-    $("#supprBulle").click(function () { supprFun() })
-    $("#driveBulle").click(function (event) { drive.handleAuthClick(event) })
-    $("#saveBulle").click(function () { saveDrive() })
+    $("#supprBulle").click(function () { supprFun() });
+    $("#driveBulle").click(function (event) { drive.handleAuthClick(event) });
+    $("#saveBulle").click(function () { saveDrive() });
     $("#localSaveBulle").click(function () {
-        saveLocal()
+        saveLocal();
 	});
 	$("#linkBulle").click(function (){
-		
-	
-	
         Link.emptyLinkArray()
         if (Link.linkBool==false){
 			invertFilterFun()
@@ -115,7 +112,9 @@ function menu() {
     })
 
 	$("#homeBulle").click(function(){
-		if(openActif==false){
+        if (openActif == false) {
+            $(".open").remove();
+
             $('#loading').css("display", "block");
             drive.updateConnection();
 			//$.post("php/open.php",function(data){

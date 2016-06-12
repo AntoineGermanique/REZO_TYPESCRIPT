@@ -110,6 +110,7 @@ var Rezo = (function () {
         menu();
     }
     ;
+    Rezo.load = document.getElementById("loading");
     Rezo.isDriveConnected = false;
     Rezo.rezoName = "";
     Rezo.opened = false;

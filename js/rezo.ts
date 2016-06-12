@@ -6,7 +6,9 @@ function init() {
 }
 
 class Rezo {
-    static isDriveConnected: boolean=false;
+    static load: HTMLElement = <HTMLElement>document.getElementById("loading");
+    static rezoId: string;
+    static isDriveConnected: boolean = false;
     static stage: Stage;
     static scene: Scene;
     static sceneLink: SceneLink;

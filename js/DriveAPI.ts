@@ -43,6 +43,7 @@ class DriveAPI {
 
     updateConnection() {
         $('#loading').css("display", "block");
+        
         gapi.auth.authorize(
             {
                 'client_id': this.CLIENT_ID,
@@ -57,7 +58,6 @@ class DriveAPI {
      * @param {Object} authResult Authorization result.
      */
     handleAuthResult(authResult, auto?) {
-        $('#loading').css("display", "none");
 
         if (authResult && !authResult.error) {
             // Hide auth UI, then load client library.
@@ -128,6 +128,7 @@ class DriveAPI {
                 }
                 openLoad(this.innerHTML);
                 this.innerHTML = "";
+                $('#loading').css("display", "none");
 
             } else {
                 this.appendPre("", null);
@@ -180,6 +181,7 @@ class DriveAPI {
             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
             xhr.onload = function () {
                 var obj = JSON.parse(xhr.response);
+                Rezo.rezoId = file.id;
                 callback(obj);
             };
             xhr.onerror = function () {
@@ -227,8 +229,6 @@ class DriveAPI {
         });
 
         request.execute((resp) => {
-            console.log(DriveAPI.counter++)
-
             this.getFile(resp.id, (fileMetada) => { this.updateFile(resp.id, fileMetada, this.tempBlob, null) })
         });
 
@@ -277,10 +277,8 @@ class DriveAPI {
             });
             if (!callback) {
                 callback = () => {
-                    var event = new CustomEvent("updatecloudselect");
-                    document.dispatchEvent(event)
-                    event = new CustomEvent("successave");
-                    document.dispatchEvent(event)
+                    Rezo.load.style.display = "none";
+
 
                 };
             }

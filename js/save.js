@@ -11,10 +11,22 @@ function saveLocal() {
 }
 function saveDrive() {
     if (Rezo.isDriveConnected) {
+        var previousName = Rezo.rezoName;
         var rezoSave = createJsonRezo();
+        Rezo.load.style.display = "block";
         var blob = new Blob([rezoSave], { type: "application/json;charset=utf-8;" });
         drive.tempBlob = blob;
-        drive.createFile(Rezo.rezoName, drive.updateFile);
+        if (previousName == Rezo.rezoName) {
+            if (Rezo.rezoId != "") {
+                drive.getFile(Rezo.rezoId, function (fileMetada) { drive.updateFile(Rezo.rezoId, fileMetada, drive.tempBlob, null); });
+            }
+            else {
+                drive.createFile(Rezo.rezoName, drive.updateFile);
+            }
+        }
+        else {
+            drive.createFile(Rezo.rezoName, drive.updateFile);
+        }
     }
     else {
     }
