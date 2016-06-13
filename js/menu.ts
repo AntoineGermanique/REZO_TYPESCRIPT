@@ -10,7 +10,7 @@ var naviBool=false;
 var scalBool=false;
 var coloBool=false;
 var multBool=false;
-var drawBool=false;
+var selectBool=false;
 var hyperBool = false;
 
 var bulleMiddlePoX: number;
@@ -61,51 +61,32 @@ function menu() {
     $("#saveBulle").click(function () { saveDrive() });
     $("#localSaveBulle").click(function () {
         saveLocal();
-	});
-	$("#linkBulle").click(function (){
-        Link.emptyLinkArray()
-        if (Link.linkBool==false){
-			invertFilterFun()
-            Link.linkBool=true;
-			$( "#linkBulle" ).css({"box-shadow":"0px 0px 20px inset","border-radius":"20px"})
-			$("#link2Bulle").css("display","block")
-			$("#link3Bulle").css("display","block")
-			$("#menu").css("max-height","none")
-			
-		}else{
-			supprFilterFun()
-            Link.linkBool=false;
-			$( "#linkBulle" ).css({"box-shadow":"none"})
-            Link.link2Bool=false;
-			$("#link2Bulle").css("display","none")
-			$("#link2Bulle").css({"box-shadow":"none"})
-            Link.link3Bool=false;
-			$("#link3Bulle").css("display","none")
-			$("#link3Bulle").css({"box-shadow":"none"})
-			$("#menu").css("max-height","100%")
-		}
-			console.log("hop")
-	})
+    });
+    $("#linkBulle").click(linkButton);
 	$("#link2Bulle").click(function (){
         Link.emptyLinkArray()
-        if (Link.link2Bool==false){
+        if (Link.link2Bool == false) {
+            setBackground(Ressource.pathImgLink2)
             Link.link3Bool=false;
 			$("#link3Bulle").css({"box-shadow":"none"})
             Link.link2Bool=true;
-			$( "#link2Bulle" ).css({"box-shadow":"blue 0px 0px 20px inset","border-radius":"20px"})
+			$( "#link2Bulle" ).css({"box-shadow":"purple 0px 0px 20px inset","border-radius":"20px"})
 		}else{
-            Link.link2Bool=false;
+            Link.link2Bool = false;
+            setBackground(Ressource.pathImgLink)
 			$( "#link2Bulle" ).css({"box-shadow":"none"})
 		}	
 	})
 	$("#link3Bulle").click(function (){
         Link.emptyLinkArray()
-        if (Link.link3Bool==false){
+        if (Link.link3Bool == false) {
+            setBackground(Ressource.pathImgLink3);
             Link.link2Bool=false;
 			$("#link2Bulle").css({"box-shadow":"none"})
             Link.link3Bool=true;
-			$( "#link3Bulle" ).css({"box-shadow":"blue 0px 0px 20px inset","border-radius":"20px"})
-		}else{
+            $("#link3Bulle").css({ "box-shadow":"purple 0px 0px 20px inset","border-radius":"20px"})
+        } else {
+            setBackground(Ressource.pathImgLink);
             Link.link3Bool=false;
 			$( "#link3Bulle" ).css({"box-shadow":"none"})
 		}	
@@ -149,52 +130,9 @@ function menu() {
         Rezo.selectedBulle.text.replaceText();
 	})
 	$("#fastBulle").click(function(){
-		fastFun();
+        fastFun();
 	})
-	$("#editBulle").click(function(){
-		if(!editBool){
-			editBool=true;
-			$("#supprBulle").css("display","block");
-			$("#textBulle").css("display","block");
-			$("#linkBulle").css("display","block");
-			$("#coloBulle").css("display","block");
-			$("#scalBulle").css("display","block");
-			$("#multBulle").css("display","block");
-			$("#hyperBulle").css("display","block");
-			//$("#plusBulle").css("display","none");
-			/* $("#saveBulle").css("display","none");
-			$("#fastBulle").css("display","none");
-			$("#homeBulle").css("display","none");
-			$("#naviBulle").css("display","none");
-			$("#navBackground").css("display","none"); */
-			$("#editBulle").css("background","white");
-
-			
-		}else{
-			editBool=false;
-			$("#supprBulle").css("display","none");
-			$("#textBulle").css("display","none");
-			$("#linkBulle").css("display","none");
-			$("#link2Bulle").css("display","none");
-			$("#link3Bulle").css("display","none");
-			$("#coloBulle").css("display","none");
-			$("#scalBulle").css("display","none");
-			$("#multBulle").css("display","none");
-			$("#hyperBulle").css("display","none");
-			//$("#plusBulle").css("display","block");
-			/* $("#saveBulle").css("display","block");
-			$("#fastBulle").css("display","block");
-			$("#homeBulle").css("display","block");
-			$("#naviBulle").css("display","block");
-			$("#navBackground").css("display","block"); */
-			$("#editBulle").css("background","none");
-			if(scalBool){$("#scalBulle").trigger("click")}
-            if (Link.linkBool){$("#linkBulle").trigger("click")}
-			if(coloBool){$("#coloBulle").trigger("click")}
-			if(multBool){$("#multBulle").trigger("click")}
-
-		}
-	})
+    $("#editBulle").click(editButton)
 	$("#naviBulle").click(function(){
 		if(!naviBool){
 			naviBool=true;
@@ -258,7 +196,8 @@ function menu() {
 	})
 	$("#scalBulle").click(function(){
 		if(!scalBool){
-			scalBool=true
+            scalBool = true
+            setBackgroundScale();
 			$( "#scalBackground" ).css({"box-shadow":"0px 0px 20px inset","border-radius":"100px"})
 			$("#scalZPBulle").css("display","block")
 			$("#scalZMBulle").css("display","block")
@@ -267,8 +206,9 @@ function menu() {
 			
 
 		}else{
-			scalBool=false
-			$( "#scalBackground" ).css({"box-shadow":"none"})
+            scalBool = false
+            setBackgroundScale();
+            $("#scalBackground").css({ "box-shadow": "none" })
 			$("#scalZPBulle").css("display","none")
 			$("#scalZMBulle").css("display","none")
 			$("#scalBackground").css("background","none")
@@ -292,35 +232,22 @@ function menu() {
 		}else{
             scaleBulleMoins(Rezo.selectedBulle)
 		}
-	})
-	$("#multBulle").click(function(){
-		if(! multBool){
-			multBool=true
-			$("#drawBulle").css("display","block")
-			$( "#multiBackground" ).css({"box-shadow":"0px 0px 20px inset","border-radius":"100px"})
-			multi()
-
-		}else{
-			multBool=false
-			$("#drawBulle").css("display","none")
-			$( "#multiBackground" ).css({"box-shadow":"none"})
-			multi()
-			if(drawBool){$("#drawBulle").trigger("click")}
+    })
+    $("#multBulle").click(multiButton);
+	$("#selectBulle").click(function(){
+        if (selectBool) {
+            setBackground();
+            selectBool=false
+			select();
 			detectPathGraphics.clear()
-		}
-	})
-	$("#drawBulle").click(function(){
-		if(drawBool){
-			drawBool=false
-			draw();
-			detectPathGraphics.clear()
-			$("#drawBulle").css({"background": "none","border-radius": "100px","box-shadow": "none"})
+            $("#selectBulle").css({"background": "none","border-radius": "100px","box-shadow": "none"})
 			
-		}else{
+        } else {
+            setBackground(Ressource.pathImgSelect);
 			if(scalBool){$("#scalBulle").trigger("click")}
-			drawBool=true
-			draw()
-			$("#drawBulle").css({"background": "rgba(255, 255, 0, 0.44)","border-radius": "100px","box-shadow": "0PX 0PX 5PX 5px orangered"})
+            selectBool=true
+            select();
+            $("#selectBulle").css({"background": "rgba(255, 255, 0, 0.44)","border-radius": "100px","box-shadow": "0PX 0PX 5PX 5px orangered"})
 			
 		}
 	})
@@ -344,6 +271,128 @@ function menu() {
 	
 }
 
-function affichageMenu(){
+function linkButton () {
 
+    Link.emptyLinkArray()
+    if (Link.linkBool == false) {
+        if (multBool) {
+            $("#multBulle").trigger("click");
+        }
+        setBackground(Ressource.pathImgLink);
+        disableButton($("#multBulle"));
+        Link.linkBool = true;
+        $("#linkBulle").css({ "box-shadow": "0px 0px 20px inset", "border-radius": "20px" })
+        $("#link2Bulle").css("display", "block")
+        $("#link3Bulle").css("display", "block")
+        $("#menu").css("max-height", "none")
+
+    } else {
+        setBackground();
+        enableButton($("#multBulle"), multiButton);
+        Link.linkBool = false;
+        $("#linkBulle").css({ "box-shadow": "none" })
+        Link.link2Bool = false;
+        $("#link2Bulle").css("display", "none")
+        $("#link2Bulle").css({ "box-shadow": "none" })
+        Link.link3Bool = false;
+        $("#link3Bulle").css("display", "none")
+        $("#link3Bulle").css({ "box-shadow": "none" })
+        $("#menu").css("max-height", "100%")
+    }
+    console.log("hop")
+};
+
+function multiButton () {
+    if (!multBool) {
+        setBackground(Ressource.pathImgMulti);
+        if (Link.linkBool) {
+            $("#linkBulle").trigger("click");
+        }
+        disableButton($("#linkBulle"));
+        multBool = true
+        $("#selectBulle").css("display", "block")
+        $("#multiBackground").css({ "box-shadow": "0px 0px 20px inset", "border-radius": "100px" })
+        multi();
+
+    } else {
+        setBackground();
+        multBool = false
+        enableButton($("#linkBulle"), linkButton);
+
+        $("#selectBulle").css("display", "none")
+        $("#multiBackground").css({ "box-shadow": "none" })
+        multi()
+        if (selectBool) { $("#selectBulle").trigger("click") }
+        detectPathGraphics.clear()
+    }
+}
+function editButton() {
+    if (!editBool) {
+        editBool = true;
+        $("#supprBulle").css("display", "block");
+        $("#textBulle").css("display", "block");
+        $("#linkBulle").css("display", "block");
+        $("#coloBulle").css("display", "block");
+        $("#scalBulle").css("display", "block");
+        $("#multBulle").css("display", "block");
+        $("#hyperBulle").css("display", "block");
+        //$("#plusBulle").css("display","none");
+        /* $("#saveBulle").css("display","none");
+        $("#fastBulle").css("display","none");
+        $("#homeBulle").css("display","none");
+        $("#naviBulle").css("display","none");
+        $("#navBackground").css("display","none"); */
+        $("#editBulle").css("background", "white");
+
+
+    } else {
+        editBool = false;
+        $("#supprBulle").css("display", "none");
+        $("#textBulle").css("display", "none");
+        $("#linkBulle").css("display", "none");
+        $("#link2Bulle").css("display", "none");
+        $("#link3Bulle").css("display", "none");
+        $("#coloBulle").css("display", "none");
+        $("#scalBulle").css("display", "none");
+        $("#multBulle").css("display", "none");
+        $("#hyperBulle").css("display", "none");
+        //$("#plusBulle").css("display","block");
+        /* $("#saveBulle").css("display","block");
+        $("#fastBulle").css("display","block");
+        $("#homeBulle").css("display","block");
+        $("#naviBulle").css("display","block");
+        $("#navBackground").css("display","block"); */
+        $("#editBulle").css("background", "none");
+        if (scalBool) { $("#scalBulle").trigger("click") }
+        if (Link.linkBool) { $("#linkBulle").trigger("click") }
+        if (coloBool) { $("#coloBulle").trigger("click") }
+        if (multBool) { $("#multBulle").trigger("click") }
+
+    }
+}
+function enableButton(button: JQuery,callback:()=>void) {
+    button.css("opacity", "1");
+    button.css("cursor", "pointer");
+    button.on("click",callback);
+}
+function disableButton(button: JQuery) {
+    button.css("opacity", "0.2");
+    button.css("cursor", "not-allowed");
+    button.off();
+}
+function setBackground(path?: string) {
+    if (path) {
+        $("#background").css("background", "url('" + path + "')");
+        setBackgroundScale();
+    } else {
+        $("#background").css("background", "none");
+        setBackgroundScale();
+    }
+}
+function setBackgroundScale() {
+    if (scalBool) {
+        $("#background-scale").css("background", "url('" + Ressource.pathImgScale + "')");
+    } else {
+        $("#background-scale").css("background", "none");
+    }
 }

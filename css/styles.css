@@ -101,7 +101,7 @@ div#gradient {
 #multBulle{
 	display:none;
 }
-#drawBulle{
+#selectBulle{
 	display:none;
 }
 #hyperBulle{
@@ -265,4 +265,17 @@ margin-top: 30%;
 	max-width: 200px;
     font-size: x-large;
 	}
+}
+#background{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+}
+#background-scale{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    background-position: 6% 5%!important;
 }

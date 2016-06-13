@@ -124,10 +124,10 @@ var startDrag = function(data){
     detectPathGraphics.clear()
 	data.stopPropagation();
 
-	if(drawBool){
-		drawBool=false
-		draw()
-		drawBool=true
+    if (selectBool){
+        selectBool=false
+        select()
+        selectBool=true
 	}
 	data.data.originalEvent.preventDefault();
 	this.dragging = true
@@ -142,9 +142,9 @@ spriteMove.on("touchstart", startDrag);
 var stopDrag = function(data){
 	this.dragging = false;
 	this.data = null;
-	if(drawBool){
-		drawDown=false
-		draw()
+    if (selectBool){
+		selectDown=false
+        select()
 	}
 }
 

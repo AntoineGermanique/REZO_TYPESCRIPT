@@ -10,18 +10,18 @@ var detectPathGraphics = new PIXI.Graphics();
 drawnGraphics.alpha = 0.2;
 detectPathGraphics.alpha = 0.3;
 var rectTestArray = [];
-var drawDown = false;
+var selectDown = false;
 var clockwiseSelect = true;
 var counterClockwiseSelect = false;
 
-function drawIntercative(){
+function selectIntercative(){
     sceneDraw.addChild(drawnGraphics);
     sceneMulti.addChild(detectPathGraphics);
     sceneMulti.addChild(rectTestGraph);
 	var drawStart=function(data){
         updateWindowSize();
         drawnGraphics.clear();
-		drawDown = true;
+		selectDown = true;
 		path = [];
         color = 0x5D0776;
     }
@@ -30,7 +30,7 @@ function drawIntercative(){
 
 	var draw = function(data)
 	{
-		if(!drawDown)return;
+        if (!selectDown)return;
 		
 		path.push(data.data.global.x);
 		path.push(data.data.global.y);
@@ -46,7 +46,7 @@ function drawIntercative(){
 
 	var drawStop = function()
 	{
-		drawDown = false;
+        selectDown = false;
 		drawnGraphics.beginFill(color);
         drawnGraphics.drawPolygon(path);
 		drawnGraphics.endFill();
@@ -60,8 +60,8 @@ function drawIntercative(){
     sceneDraw.on("touchend", drawStop);
     sceneDraw.on("touchendoutside", drawStop);
 }
-function draw(){
-	if(drawBool){
+function select(){
+    if (selectBool){
 		console.log("it's on!!!")
 		Rezo.upperScene.interactive=false
 		sceneDraw.interactive=true

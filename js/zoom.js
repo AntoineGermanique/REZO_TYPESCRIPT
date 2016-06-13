@@ -68,7 +68,7 @@ function touchZoom() {
         diffX1 = diffX2 = diffY1 = diffY2 = "";
         squeze1 = 0;
         upperScene.interactive = true;
-        if (drawBool) {
+        if (selectBool) {
             upperScene.interactive = false;
         }
         sensorZoomScene2.interactive = false;
@@ -114,7 +114,7 @@ function touchZoom() {
         this.dragging = false;
         touchZoomCounter = 0;
         upperScene.interactive = true;
-        if (drawBool) {
+        if (selectBool) {
             upperScene.interactive = false;
         }
         touch2MoveX1 = touch2MoveY1 = touch2MoveX2 = touch2MoveY2 = 0;

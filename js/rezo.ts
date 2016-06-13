@@ -145,7 +145,7 @@ class Rezo {
         touchZoom();
         resizeFun();
         scaleBulle();
-        drawIntercative();
+        selectIntercative();
         menu();
 
     }

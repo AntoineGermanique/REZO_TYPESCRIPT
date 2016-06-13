@@ -21,7 +21,7 @@ function openLoad(data) {
         isTitreInvalid = titreIsValid(newTitle);
         console.log(isTitreInvalid);
         if (isTitreInvalid == true) {
-            alert("le titre du rezo contient des caract�res interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
+            alert("le titre du rezo contient des caractères interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
             $(this).trigger("click");
         }
         else {

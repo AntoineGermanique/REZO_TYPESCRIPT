@@ -2,8 +2,13 @@
 var sensorFast;
 function fastFun() {
     if (!fastBool) {
+        if (editBool) {
+            $("#editBulle").trigger("click");
+        }
+        disableButton($("#editBulle"));
+        setBackground(Ressource.pathImgFast);
         $("#fastBulle").css({ "box-shadow": "lime 0px 0px 20px inset", "border-radius": "20px", "padding": "3px" });
-        $("body").css({ "border": "lime 1em dashed" });
+        //$( "body" ).css({"border": "lime 1em dashed"})
         //renderer.transparent=true
         //console.log(renderer)
         var windowH = Rezo.windowH;
@@ -36,6 +41,8 @@ function fastFun() {
         fastBool = true;
     }
     else {
+        enableButton($("#editBulle"), editButton);
+        setBackground();
         $("body").css({ "border": "0em" });
         $("#fastBulle").css({ "box-shadow": "none", "border-radius": "20px", "padding": "0px" });
         //console.log(renderer)

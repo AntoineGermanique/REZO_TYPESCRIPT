@@ -33,7 +33,7 @@ function scaleBulle() {
     sensorScaleBulleScene.on("touchend", stopZoom);
     sensorScaleBulleScene.on("touchendouside", stopZoom);
 	var zoomTouch = function (data){
-		if(this.dragging&&drawBool==false){
+        if (this.dragging &&selectBool==false){
 			
 			var newPosition = data.getLocalPosition(this.parent);
 			

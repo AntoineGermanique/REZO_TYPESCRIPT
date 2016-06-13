@@ -106,7 +106,7 @@ var Rezo = (function () {
         touchZoom();
         resizeFun();
         scaleBulle();
-        drawIntercative();
+        selectIntercative();
         menu();
     }
     ;
