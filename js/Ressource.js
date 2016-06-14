@@ -10,6 +10,7 @@ var Ressource = (function () {
     Ressource.pathImgScale = Ressource.pathImg + "scal_back.png";
     Ressource.pathImgMulti = Ressource.pathImg + "mult_back.png";
     Ressource.pathImgSelect = Ressource.pathImg + "select_back.png";
+    Ressource.confirmLocalOverwriting = "Ce nom de rezo existe déjà, je l'écrase ?";
     return Ressource;
 }());
 //# sourceMappingURL=Ressource.js.map

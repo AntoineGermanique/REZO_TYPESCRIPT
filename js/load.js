@@ -1,5 +1,5 @@
 /////////////////////load.js
-function load2(rezoSave) {
+function load2(rezoSave, title, timeStamp) {
     Rezo.sceneBulle.removeChildren();
     Rezo.sceneLink.removeChildren();
     while (bubbleArray.length > 0) {
@@ -8,7 +8,8 @@ function load2(rezoSave) {
     while (Link.linkArray.length > 0) {
         Link.linkArray.pop();
     }
-    Rezo.rezoName = rezoSave.title;
+    Rezo.rezoName = title;
+    Rezo.rezoNameDiv.html(title);
     for (var i = 0; i < rezoSave.bullesArray.length; i++) {
         var bulleInfo = rezoSave.bullesArray[i];
         Rezo.sceneBulle.addChild(new Bulle(bulleInfo.loc.x, bulleInfo.loc.y, bulleInfo.text, parseInt(bulleInfo.color.replace(/^#/, ''), 16), bulleInfo.scale.x, bulleInfo.shape));

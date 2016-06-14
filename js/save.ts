@@ -12,6 +12,7 @@ interface RezoSave {
     scale: Loc;
     loc: Loc;
     title: string;
+    timeStamp: number;
 }
 
 interface BulleSave {
@@ -46,8 +47,20 @@ interface Loc {
 
 function saveLocal() {
     var rezoSave = createJsonRezo();
+    if (rezoSave) {
+        for (var i = 0; i < localStorage.length; i++) {
+            if (Rezo.rezoName == localStorage.key(i)) {
+                if (confirm(Ressource.confirmLocalOverwriting)) {
+                    localSave(rezoSave, Rezo.rezoName);
+                    break;
+                } else {
+                    break;
+                }
+            }
+        }
+        localSave(rezoSave, Rezo.rezoName);
+    }
 
-    localSave(rezoSave, Rezo.rezoName);
 
 }
 
@@ -55,74 +68,96 @@ function saveDrive() {
     if (Rezo.isDriveConnected) {
         var previousName = Rezo.rezoName;
         var rezoSave = createJsonRezo();
-        Rezo.load.style.display = "block";
+        if (rezoSave) {
+            Rezo.load.style.display = "block";
 
-        var blob = new Blob([rezoSave], { type: "application/json;charset=utf-8;" });
-        drive.tempBlob = blob;
-        if (previousName == Rezo.rezoName) {
-            if (Rezo.rezoId != "") {
-                drive.getFile(Rezo.rezoId, (fileMetada) => { drive.updateFile(Rezo.rezoId, fileMetada, drive.tempBlob, null) })
+            var blob = new Blob([JSON.stringify(rezoSave)], { type: "application/json;charset=utf-8;" });
+            drive.tempBlob = blob;
+            if (previousName == Rezo.rezoName) {
+                if (Rezo.rezoId != "") {
+                    drive.getFile(Rezo.rezoId, (fileMetada) => { drive.updateFile(Rezo.rezoId, fileMetada, drive.tempBlob, null) })
+                } else {
+                    drive.createFile(Rezo.rezoName, drive.updateFile);
+                }
+
             } else {
                 drive.createFile(Rezo.rezoName, drive.updateFile);
             }
-
-        } else {
-            drive.createFile(Rezo.rezoName, drive.updateFile);
         }
     } else {
 
     }
 }
 
-function createJsonRezo(): string {
-    promptTitle2();
+function createJsonRezo(): RezoSave {
+    if (promptTitle2()) {
 
-    var linkArraySave: LinkSave[] = [];
-    var bulleArraySave: BulleSave[] = [];
-    for (var i = 0; i < Link.linkArray.length; i++) {
-        linkArraySave.push({
-            indexBulle1: Link.linkArray[i].indexBulle1,
-            indexBulle2: Link.linkArray[i].indexBulle2,
-            direction: null,
-            linkPath: null
-        })
-    }
-    for (var i = 0; i < bubbleArray.length; i++) {
-        var bulleInfo: BulleArray = bubbleArray[i];
-        bulleArraySave.push({
-            loc: {
-                x: bulleInfo.bulle.x,
-                y: bulleInfo.bulle.y
-            },
-            linksIndex: bulleInfo.linksIndex,
-            text: bulleInfo.bulle.text.text,
-            color: "#" + (bulleInfo.bulle.shape.rezoColor).toString(16),
-            scale: { x: bulleInfo.bulle.scale.x, y: bulleInfo.bulle.scale.y },
-            width: bulleInfo.bulle.width,
-            height: bulleInfo.bulle.height,
-            shape: bulleInfo.bulle.shape.shape,
-            polyPath: null,
-            polyTextPath: null
-        })
-    }
-    var rezoSave: RezoSave;
-    rezoSave = {
-        bullesArray: bulleArraySave,
-        linkSave: linkArraySave,
-        scale: { x: Rezo.scaleScene.scale.x, y: Rezo.scaleScene.scale.y },
-        loc: { x: Rezo.scene.x, y: Rezo.scene.y },
-        title: Rezo.rezoName
-    }
-    return JSON.stringify(rezoSave);
-}
-
-function promptTitle2() {
-    var title = prompt("titre", Rezo.rezoName);
-
-    if (title != "" && isNameValid(title)) {
-        Rezo.rezoName = title;
+        var linkArraySave: LinkSave[] = [];
+        var bulleArraySave: BulleSave[] = [];
+        for (var i = 0; i < Link.linkArray.length; i++) {
+            linkArraySave.push({
+                indexBulle1: Link.linkArray[i].indexBulle1,
+                indexBulle2: Link.linkArray[i].indexBulle2,
+                direction: null,
+                linkPath: null
+            })
+        }
+        for (var i = 0; i < bubbleArray.length; i++) {
+            var bulleInfo: BulleArray = bubbleArray[i];
+            bulleArraySave.push({
+                loc: {
+                    x: bulleInfo.bulle.x,
+                    y: bulleInfo.bulle.y
+                },
+                linksIndex: bulleInfo.linksIndex,
+                text: bulleInfo.bulle.text.text,
+                color: "#" + (bulleInfo.bulle.shape.rezoColor).toString(16),
+                scale: { x: bulleInfo.bulle.scale.x, y: bulleInfo.bulle.scale.y },
+                width: bulleInfo.bulle.width,
+                height: bulleInfo.bulle.height,
+                shape: bulleInfo.bulle.shape.shape,
+                polyPath: null,
+                polyTextPath: null,
+            })
+        }
+        var rezoSave: RezoSave;
+        rezoSave = {
+            bullesArray: bulleArraySave,
+            linkSave: linkArraySave,
+            scale: { x: Rezo.scaleScene.scale.x, y: Rezo.scaleScene.scale.y },
+            loc: { x: Rezo.scene.x, y: Rezo.scene.y },
+            title: Rezo.rezoName,
+            timeStamp: Date.now(),
+        }
+        return rezoSave;
     } else {
-        promptTitle2();
+        return null;
+    }
+}
+function cleanName(newName:string): string {
+    newName = Utilitary.replaceAll(newName, "é", "e");
+    newName = Utilitary.replaceAll(newName, "è", "e");
+    newName = Utilitary.replaceAll(newName, "à", "a");
+    newName = Utilitary.replaceAll(newName, "ù", "u");
+    newName = Utilitary.replaceAll(newName, " ", "_");
+    newName = Utilitary.replaceAll(newName, "'", "_");
+    return newName;
+}
+function promptTitle2():string  {
+    var title = prompt("titre", Rezo.rezoName);
+    if (title) {
+        title = cleanName(title);
+        if (title != "" && isNameValid(title)) {
+            Rezo.rezoName = title;
+            Rezo.rezoNameDiv.html(title);
+            return title;
+
+
+        } else {
+           return promptTitle2();
+        }
+    } else {
+        return title;
     }
 }
 function isNameValid(newName: string): boolean {

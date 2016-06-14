@@ -9,4 +9,5 @@ class Ressource {
     static pathImgScale: string = Ressource.pathImg + "scal_back.png";
     static pathImgMulti: string = Ressource.pathImg + "mult_back.png";
     static pathImgSelect: string = Ressource.pathImg + "select_back.png";
+    static confirmLocalOverwriting: string = "Ce nom de rezo existe déjà, je l'écrase ?";
 }

@@ -8,9 +8,12 @@ declare var gapi
 
 interface DriveFile {
     id: string
+    title: string;
     name: string;
     downloadUrl: string;
     webContentLink: string;
+    modifiedDate: string;
+    fileExtension: string;
 
 }
 
@@ -25,7 +28,7 @@ class DriveAPI {
     lastSavedFileId: string;
     lastSavedFileMetadata: string;
     tempBlob: Blob;
-    innerHTML: string
+    innerHTML: string = "";
     extension: string = ".rezo";
     static counter: number = 0;
 
@@ -87,10 +90,15 @@ class DriveAPI {
      * @param {Event} event Button click event.
      */
     handleAuthClick(event) {
-        gapi.auth.authorize(
-            { client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false },
-            (authResult) => { this.handleAuthResult(authResult) });
-        return false;
+        if (gapi) {
+            gapi.auth.authorize(
+                { client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false },
+                (authResult) => { this.handleAuthResult(authResult) });
+            return false;
+        } else {
+            alert("connexion au drive impossible, vérifiez votre connexion  internet")
+            Utilitary.stopLoad();
+        }
     }
 
     /**
@@ -120,9 +128,9 @@ class DriveAPI {
             var files = resp.items;
             if (files && files.length > 0) {
                 for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
+                    var file: DriveFile = files[i];
                     if (file.fileExtension == "rezo") {
-                        this.appendPre(file.title, file.id);
+                        this.appendPre(file.title, file.id, file.modifiedDate);
 
                     }
                 }
@@ -131,21 +139,21 @@ class DriveAPI {
                 $('#loading').css("display", "none");
 
             } else {
-                this.appendPre("", null);
+                this.appendPre("", null,null);
             }
         });
     }
 
-    getFileMetadata(fileId) {
-        var request = gapi.client.drive.files.get({
-            'fileId': fileId
-        });
-        request.execute((file) => {
-            console.log(DriveAPI.counter++)
+    //getFileMetadata(fileId) {
+    //    var request = gapi.client.drive.files.get({
+    //        'fileId': fileId
+    //    });
+    //    request.execute((file) => {
+    //        console.log(DriveAPI.counter++)
 
-            this.appendPre(file.title, file.id);
-        })
-    }
+    //        this.appendPre(file.title, file.id);
+    //    })
+    //}
 
 
 
@@ -156,10 +164,11 @@ class DriveAPI {
      *
      * @param {string} message Text to be placed in pre element.
      */
-    appendPre(name: string, id: string) {
+    appendPre(name: string, id: string, timeStamp: string) {
         //var option = document.createElement("option");
         var titre = name.replace(/.rezo$/, '');
-        var innerHTML = "<div class='open' id='" + id + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' src='images/PLUS.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
+        var timeStampNumber = Date.parse(timeStamp);
+        var innerHTML = "<div class='open' id='" + id + " ' attr='" + timeStampNumber + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' id='" + titre + "' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
         //document.getElementById('open').innerHTML += innerHTML;
         this.innerHTML += innerHTML;
 
@@ -173,7 +182,7 @@ class DriveAPI {
  * @param {File} file Drive File instance.
  * @param {Function} callback Function to call when the request is complete.
  */
-    downloadFile(file: DriveFile, callback) {
+    downloadFile(file: DriveFile, callback: (rezoSave: RezoSave, title: string, timeStamp: number) => void) {
         if (file.downloadUrl) {
             var accessToken = gapi.auth.getToken().access_token;
             var xhr = new XMLHttpRequest();
@@ -182,14 +191,16 @@ class DriveAPI {
             xhr.onload = function () {
                 var obj = JSON.parse(xhr.response);
                 Rezo.rezoId = file.id;
-                callback(obj);
+                var title = file.title.replace(".rezo", "");
+                var timeStamp = Date.parse(file.modifiedDate);
+                callback(obj, title, timeStamp);
             };
             xhr.onerror = function () {
-                callback(null);
+                callback(null,null,null);
             };
             xhr.send();
         } else {
-            callback(null);
+            callback(null,null,null);
         }
     }
     /**
@@ -285,6 +296,18 @@ class DriveAPI {
             request.execute(callback);
         }
     }
+    updateName(newname:string,id:string) {
+        var request = gapi.client.drive.files.update({
+            'fileId': id,
+            'resource': {
+                'title': newname + '.rezo'
+            }
+        })
+        request.execute((resp) => {
+            $(".open").remove();
+            this.updateConnection();
+        })
+    }
     trashFile(fileId: string) {
         var event = new CustomEvent("startloaddrive");
         document.dispatchEvent(event);
@@ -293,7 +316,9 @@ class DriveAPI {
         });
         request.execute(function (resp) {
             console.log(DriveAPI.counter++)
-
+            $(".open").remove();
+            $('#loading').css("display", "block");
+            drive.updateConnection();
             var event = new CustomEvent("updatecloudselect");
             document.dispatchEvent(event)
         });
@@ -302,9 +327,8 @@ class DriveAPI {
 
         $("#saveBulle").css("display", "none");
         $("#homeBulle").css("display", "none");
-        document.getElementById('open').innerHTML = "";
-        $("#driveBulle").css("opacity", "0.5");
-
+        $("#driveBulle").css("display", "block");
+        $(".open").remove();
         window.open("https://accounts.google.com/logout", "newwindow", "width=500,height=700")
     }
 }

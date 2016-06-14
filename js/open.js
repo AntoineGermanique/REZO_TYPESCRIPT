@@ -6,7 +6,9 @@ var titre;
 var drive = new DriveAPI();
 var counter = 0;
 function openLoad(data) {
-    $("#open").append(data);
+    if (data) {
+        $("#openContainer").append(data);
+    }
     $(".openSpan").click(function () {
         console.log(counter++);
         var id = $(this).parent().attr("id");
@@ -14,28 +16,28 @@ function openLoad(data) {
         drive.getFile(id, function (file) { drive.downloadFile(file, load2); });
     });
     $(".openImgModif").click(function () {
-        var oldTitle = $(this).parent().attr("id");
+        var oldTitle = $(this).attr("id");
+        var id = $(this).parent().attr("id");
         var goodMenu = $(this).parent().children(".openSpan");
         console.log($(this).parent().children(".openSpan"));
         var newTitle = prompt("modifier le titre du rezo", oldTitle);
-        isTitreInvalid = titreIsValid(newTitle);
-        console.log(isTitreInvalid);
-        if (isTitreInvalid == true) {
-            alert("le titre du rezo contient des caractères interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
-            $(this).trigger("click");
-        }
-        else {
-            postModify(newTitle, oldTitle, goodMenu);
+        if (newTitle) {
+            isTitreInvalid = titreIsValid(newTitle);
+            console.log(isTitreInvalid);
+            if (isTitreInvalid == true) {
+                alert("le titre du rezo contient des caract�res interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
+                $(this).trigger("click");
+            }
+            else {
+                Utilitary.startLoad();
+                drive.updateName(newTitle, id);
+            }
         }
     });
     $(".openImgSuppr").click(function () {
         titre = $(this).parent().attr("id");
         if (confirm('voulez vous vraiment supprimer ce Rezo?')) {
-            $.post('php/suppr.php', { "titre": titre }, function (data) {
-                $("#homeBulle").trigger("click");
-                $("#homeBulle").trigger("click");
-                console.log(data);
-            });
+            drive.trashFile($(this).parent().attr("id"));
         }
         else {
         }
@@ -44,30 +46,14 @@ function openLoad(data) {
         openActif = true;
         $("#homeBulle").trigger("click");
     });
-    $("img#saveOpen").click(function () {
-        Rezo.opened = false;
-        save("Enregistrer le rezo " + Rezo.rezoName + " sous un nouveau titre");
+    //$("img#saveOpen").click(function(){
+    //	Rezo.opened=false;
+    //	save("Enregistrer le rezo "+Rezo.rezoName+" sous un nouveau titre")
+    //})
+    $("img#driveOpen").click(function () {
+        drive.logOut();
     });
-    $("img#plusOpen").click(function () {
-        Rezo.rezoName = "";
-        Rezo.opened = false;
-        while (bubbleArray.length > 0) {
-            bubbleArray.pop();
-        }
-        while (Link.linkArray.length > 0) {
-            Link.linkArray.pop();
-        }
-        Rezo.sceneBulle.removeChildren();
-        Rezo.sceneLink.removeChildren();
-        circleX = screen.width / 2;
-        circleY = screen.height / 2;
-        Rezo.scene.addChild(new Bulle(circleX, circleY, "rezo"));
-        Rezo.scaleScene.scale.x = 1;
-        Rezo.scaleScene.scale.y = 1;
-        Rezo.scene.position.x = 0;
-        Rezo.scene.position.y = 0;
-        $("img#closeOpen").trigger("click");
-    });
+    $("img#plusOpen").click(Rezo.newRezo);
 }
 function titreIsValid(newTitle) {
     var iChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
@@ -78,13 +64,97 @@ function titreIsValid(newTitle) {
     }
     return false;
 }
-function postModify(newTitle, oldTitle, goodMenu) {
-    $('#loading').css("display", "block");
-    $.post("php/modif.php", { "newTitle": newTitle, "oldTitle": oldTitle }, function (data) {
-        $('#loading').css("display", "none");
-        $(goodMenu).text(newTitle);
-        $(goodMenu).attr("id", newTitle);
-        $(goodMenu).parent().attr("id", newTitle);
+//function postModify(newTitle,oldTitle,goodMenu){
+//	$('#loading').css("display","block");
+//	$.post("php/modif.php",{"newTitle":newTitle,"oldTitle":oldTitle},function(data){
+//			$('#loading').css("display","none");
+//			$(goodMenu).text(newTitle);
+//			$(goodMenu).attr("id",newTitle);
+//			$(goodMenu).parent().attr("id",newTitle);
+//		})
+//}
+var Sort;
+(function (Sort) {
+    Sort[Sort["nameUp"] = 0] = "nameUp";
+    Sort[Sort["nameDown"] = 1] = "nameDown";
+    Sort[Sort["dateUp"] = 2] = "dateUp";
+    Sort[Sort["dateDown"] = 3] = "dateDown";
+})(Sort || (Sort = {}));
+function setSortingListener() {
+    console.log("set listeners");
+    $("#orderName .arrowUp").click(function () { sort(Sort.nameUp); });
+    $("#orderName .arrowDown").click(function () { sort(Sort.nameDown); });
+    $("#orderDate .arrowUp").click(function () { sort(Sort.dateUp); });
+    $("#orderDate .arrowDown").click(function () { sort(Sort.dateDown); });
+}
+function sort(sort) {
+    console.log("general sort");
+    var nodeList = document.getElementsByClassName("open");
+    var array = [];
+    for (var i = 0; i < nodeList.length; i++) {
+        array.push(nodeList.item(i));
+    }
+    switch (sort) {
+        case Sort.nameUp:
+            array = sortUpName(array);
+            break;
+        case Sort.nameDown:
+            array = sortDownName(array);
+            break;
+        case Sort.dateUp:
+            array = sortUpDate(array);
+            break;
+        case Sort.dateDown:
+            array = sortDownDate(array);
+            break;
+    }
+    $(".open").remove();
+    for (var i = 0; i < array.length; i++) {
+        $("#openContainer").append(array[i]);
+    }
+}
+function sortUpDate(array) {
+    console.log("sortUpDate");
+    array.sort(function (b, a) {
+        if ($(a).attr("attr") < $(b).attr("attr"))
+            return 1;
+        if ($(a).attr("attr") > $(b).attr("attr"))
+            return -1;
+        return 0;
     });
+    return array;
+}
+function sortDownDate(array) {
+    console.log("sortDownDate");
+    array.sort(function (a, b) {
+        if ($(a).attr("attr") < $(b).attr("attr"))
+            return 1;
+        if ($(a).attr("attr") > $(b).attr("attr"))
+            return -1;
+        return 0;
+    });
+    return array;
+}
+function sortUpName(array) {
+    console.log("sortUpName");
+    array.sort(function (b, a) {
+        if ($(a).children(".openSpan").attr("id") < $(b).children(".openSpan").attr("id"))
+            return 1;
+        if ($(a).children(".openSpan").attr("id") > $(b).children(".openSpan").attr("id"))
+            return -1;
+        return 0;
+    });
+    return array;
+}
+function sortDownName(array) {
+    console.log("sortDownName");
+    array.sort(function (a, b) {
+        if ($(a).children(".openSpan").attr("id") < $(b).children(".openSpan").attr("id"))
+            return 1;
+        if ($(a).children(".openSpan").attr("id") > $(b).children(".openSpan").attr("id"))
+            return -1;
+        return 0;
+    });
+    return array;
 }
 //# sourceMappingURL=open.js.map

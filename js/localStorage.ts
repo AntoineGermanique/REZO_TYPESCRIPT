@@ -9,7 +9,10 @@
 }
 
 function localOpen() {
+    $("driveBulle").hide();
+    $(".open").remove();
     var arrayLocal;
+
     for (var i = 0, len = localStorage.length; i < len; i++) {
         var titre = localStorage.key(i);
         document.getElementById('open').innerHTML += "<div class='open' id='" + titre + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' src='images/PLUS.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
@@ -27,15 +30,22 @@ function localOpen() {
                 load(arrayLocal.arrayBubble, arrayLocal.arrayLink, titre, arrayLocal.scenePo, arrayLocal.scalePo);
 
             } else {
-                load2(arrayLocal);
+                load2(arrayLocal, $(this).attr("id"));
             }
 
             $("#localHome").trigger("click");
         });
+        $("img#plusOpen").click(Rezo.newRezo);
+
     }
+}
+function localClose() {
+    $("driveBulle").show();
+
 }
 function localLoad(titre) {
     var array = JSON.parse(localStorage.getItem(titre));
+    Rezo.rezoId = "";
     return array;
 }
 //# sourceMappingURL=localStorage.js.map

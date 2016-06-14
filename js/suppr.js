@@ -29,7 +29,7 @@ function supprFun() {
                 bubbleArray[Bulle1index].linksIndex.splice(i, 1);
             }
         }
-        for (i = 0; i < bubbleArray[Bulle2index][1].length; i++) {
+        for (i = 0; i < bubbleArray[Bulle2index].links.length; i++) {
             if (bubbleArray[Bulle2index].links[i] == supprlink) {
                 bubbleArray[Bulle2index].links.splice(i, 1);
                 bubbleArray[Bulle2index].linksIndex.splice(i, 1);

@@ -9,6 +9,14 @@ body{
 	font-family:sans-serif;
     height:100%;
 }
+div#rezoName {
+    position:fixed;
+    float: left;
+    font-weight: 600;
+    font-size: 2em;
+    color: white;
+    text-shadow: 2px 2px 0 rgba(255, 0, 153, 0.31), -2px -2px 0 rgba(251, 255, 0, 0.54), 2px -2px 0 rgba(0, 255, 0, 0.58), -2px 2px 0 rgba(0, 255, 255, 0.59);
+}
 #textArea{
     position: absolute;
     z-index: 1;
@@ -52,7 +60,7 @@ margin-top: 3px;
 	z-index: 1;
 	float: right;
 	position: relative;
-	width: 7%;
+    width:3em;
 	max-width: 100px;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -181,39 +189,62 @@ box-shadow: 0px 0px 50px rgba(0,0,0,0.4);
 overflow: auto;
 
 }
+.orders {
+    margin-top: 0.5em;
+    float: left;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+.orderText {
+    margin-top: 0.3em;
+}
+.arrow {
+    cursor:pointer;
+    width: 1.5em;
+}
+.inOrder {
+    margin-left: 0.5em;
+    float: left;
+    float:left;
+}
+
 div#btnOpen {
-position: fixed;
-width: 90%;
+    position: fixed;
+    width: 90%;
+    z-index: 1;
+}
+.buttonOpen {
+    float: right;
+    width: 3em;
+    cursor: pointer;
+    overflow: auto;
 }
 img#closeOpen {
-float: right;
-width: 10%;
-background: rgba(255, 0, 0, 0.29);
-cursor: pointer;
-overflow: auto;
+    background: rgba(255, 0, 0, 0.29);  
 }
-img#saveOpen {
-float: right;
-width: 10%;
-background: rgba(0, 255, 42, 0.29);
-cursor: pointer;
-overflow: auto;
+img#driveOpen {
+    background: rgba(0, 255, 42, 0.29);
 }
 img#plusOpen {
-float: right;
-width: 10%;
-background: rgba(0, 42, 255, 0.29);
-cursor: pointer;
-overflow: auto;
+    background: rgba(0, 42, 255, 0.29);
 }
-
+div#openContainer {
+    margin-top: 2em;
+}
 .open {
-font-family: arial;
-margin: 5%;
-font-size: 200%;
-cursor:pointer;
+    font-family: arial;
+    margin: 0.5em;
+    font-size: 200%;
+    cursor:pointer;
+    float: left;
+    position: relative;
+    width: 80%;
 }
-
+.openSpan:hover {
+    text-shadow: 2px 2px 0 #ff0099,
+        -2px -2px 0 #fbff00,
+        2px -2px 0 lime,
+        -2px 2px 0 cyan;
+}
 img.openImgModif {
 margin-left: 2%;
 width: 40px;
@@ -246,7 +277,7 @@ margin-top: 30%;
 }
 @media only screen and (max-device-width: 400px) {
 	#menu{
-	width:13%;
+	width:10%;
 	}
   html {
     max-width:400px
@@ -265,6 +296,9 @@ margin-top: 30%;
 	max-width: 200px;
     font-size: x-large;
 	}
+    .buttonOpen {
+        width:2em;
+    }
 }
 #background{
     width:100%;

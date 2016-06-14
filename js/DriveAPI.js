@@ -6,6 +6,7 @@ var DriveAPI = (function () {
         this.SCOPES = ['https://www.googleapis.com/auth/drive'];
         this.faustFolder = "FaustPlayground";
         this.isFaustFolderPresent = false;
+        this.innerHTML = "";
         this.extension = ".rezo";
     }
     /**
@@ -57,8 +58,14 @@ var DriveAPI = (function () {
      */
     DriveAPI.prototype.handleAuthClick = function (event) {
         var _this = this;
-        gapi.auth.authorize({ client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false }, function (authResult) { _this.handleAuthResult(authResult); });
-        return false;
+        if (gapi) {
+            gapi.auth.authorize({ client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false }, function (authResult) { _this.handleAuthResult(authResult); });
+            return false;
+        }
+        else {
+            alert("connexion au drive impossible, vérifiez votre connexion  internet");
+            Utilitary.stopLoad();
+        }
     };
     /**
      * Load Drive API client library.
@@ -87,7 +94,7 @@ var DriveAPI = (function () {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if (file.fileExtension == "rezo") {
-                        _this.appendPre(file.title, file.id);
+                        _this.appendPre(file.title, file.id, file.modifiedDate);
                     }
                 }
                 openLoad(_this.innerHTML);
@@ -95,30 +102,30 @@ var DriveAPI = (function () {
                 $('#loading').css("display", "none");
             }
             else {
-                _this.appendPre("", null);
+                _this.appendPre("", null, null);
             }
         });
     };
-    DriveAPI.prototype.getFileMetadata = function (fileId) {
-        var _this = this;
-        var request = gapi.client.drive.files.get({
-            'fileId': fileId
-        });
-        request.execute(function (file) {
-            console.log(DriveAPI.counter++);
-            _this.appendPre(file.title, file.id);
-        });
-    };
+    //getFileMetadata(fileId) {
+    //    var request = gapi.client.drive.files.get({
+    //        'fileId': fileId
+    //    });
+    //    request.execute((file) => {
+    //        console.log(DriveAPI.counter++)
+    //        this.appendPre(file.title, file.id);
+    //    })
+    //}
     /**
      * Append a pre element to the body containing the given message
      * as its text node.
      *
      * @param {string} message Text to be placed in pre element.
      */
-    DriveAPI.prototype.appendPre = function (name, id) {
+    DriveAPI.prototype.appendPre = function (name, id, timeStamp) {
         //var option = document.createElement("option");
         var titre = name.replace(/.rezo$/, '');
-        var innerHTML = "<div class='open' id='" + id + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' src='images/PLUS.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
+        var timeStampNumber = Date.parse(timeStamp);
+        var innerHTML = "<div class='open' id='" + id + " ' attr='" + timeStampNumber + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' id='" + titre + "' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
         //document.getElementById('open').innerHTML += innerHTML;
         this.innerHTML += innerHTML;
         //var event = new CustomEvent("fillselect", { 'detail': option })
@@ -139,15 +146,17 @@ var DriveAPI = (function () {
             xhr.onload = function () {
                 var obj = JSON.parse(xhr.response);
                 Rezo.rezoId = file.id;
-                callback(obj);
+                var title = file.title.replace(".rezo", "");
+                var timeStamp = Date.parse(file.modifiedDate);
+                callback(obj, title, timeStamp);
             };
             xhr.onerror = function () {
-                callback(null);
+                callback(null, null, null);
             };
             xhr.send();
         }
         else {
-            callback(null);
+            callback(null, null, null);
         }
     };
     /**
@@ -233,6 +242,19 @@ var DriveAPI = (function () {
             request.execute(callback);
         };
     };
+    DriveAPI.prototype.updateName = function (newname, id) {
+        var _this = this;
+        var request = gapi.client.drive.files.update({
+            'fileId': id,
+            'resource': {
+                'title': newname + '.rezo'
+            }
+        });
+        request.execute(function (resp) {
+            $(".open").remove();
+            _this.updateConnection();
+        });
+    };
     DriveAPI.prototype.trashFile = function (fileId) {
         var event = new CustomEvent("startloaddrive");
         document.dispatchEvent(event);
@@ -241,6 +263,9 @@ var DriveAPI = (function () {
         });
         request.execute(function (resp) {
             console.log(DriveAPI.counter++);
+            $(".open").remove();
+            $('#loading').css("display", "block");
+            drive.updateConnection();
             var event = new CustomEvent("updatecloudselect");
             document.dispatchEvent(event);
         });
@@ -248,8 +273,8 @@ var DriveAPI = (function () {
     DriveAPI.prototype.logOut = function () {
         $("#saveBulle").css("display", "none");
         $("#homeBulle").css("display", "none");
-        document.getElementById('open').innerHTML = "";
-        $("#driveBulle").css("opacity", "0.5");
+        $("#driveBulle").css("display", "block");
+        $(".open").remove();
         window.open("https://accounts.google.com/logout", "newwindow", "width=500,height=700");
     };
     DriveAPI.counter = 0;

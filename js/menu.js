@@ -53,8 +53,11 @@ function menu() {
         }
     });
     $("#supprBulle").click(function () { supprFun(); });
-    $("#driveBulle").click(function (event) { drive.handleAuthClick(event); });
-    $("#saveBulle").click(function () { saveDrive(); });
+    $("#driveBulle").click(function (event) {
+        $('#loading').css("display", "block");
+        drive.handleAuthClick(event);
+    });
+    $("#saveBulle").click(saveDrive);
     $("#localSaveBulle").click(function () {
         saveLocal();
     });
@@ -120,6 +123,7 @@ function menu() {
             $("img#closeOpen").off();
             $(".open").remove();
             openActif = false;
+            localClose();
         }
     });
     $("#textBulle").click(function () {
@@ -234,7 +238,7 @@ function menu() {
     $("#multBulle").click(multiButton);
     $("#selectBulle").click(function () {
         if (selectBool) {
-            setBackground();
+            setBackground(Ressource.pathImgMulti);
             selectBool = false;
             select();
             detectPathGraphics.clear();
