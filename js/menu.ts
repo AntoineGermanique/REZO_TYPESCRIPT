@@ -12,6 +12,8 @@ var coloBool=false;
 var multBool=false;
 var selectBool=false;
 var hyperBool = false;
+var isLocalHome = false;
+var isDriveHome = false;
 
 var bulleMiddlePoX: number;
 var bulleMiddlePoY: number;
@@ -97,6 +99,7 @@ function menu() {
 
 	$("#homeBulle").click(function(){
         if (openActif == false) {
+            isDriveHome = true;
             $(".open").remove();
 
             $('#loading').css("display", "block");
@@ -112,21 +115,25 @@ function menu() {
 			$( ".open" ).remove();
 			$("img#closeOpen").off();
 			$("img#saveOpen").off();
-			openActif=false;
-			
+            openActif = false;
+            isDriveHome = false;
 		}
 	})
 	$("#localHome").click(function(){
-		if(openActif==false){	
+        if (openActif == false) {
+            isLocalHome = true;
 			var arrayLocal=localOpen();
 			$("#open").css("display","block")
-			openActif=true
+            openActif = true
+            setSortingListener()
+
 		}else{
 			$("#open").css("display","none");
 			$("img#closeOpen").off();
 			$( ".open" ).remove();
             openActif = false;
             localClose();
+            isLocalHome = false;
 			
 		}
 	})
@@ -144,12 +151,6 @@ function menu() {
 			$("#zoomMBulle").css("display","block");
 			$("#zoomPText").css("display","block");
 			$("#zoomMText").css("display","block");
-			/* $("#plusBulle").css("display","none");
-			$("#saveBulle").css("display","none");
-			$("#fastBulle").css("display","none");
-			$("#homeBulle").css("display","none");
-			$("#editBulle").css("display","none"); 
-			$("#editBackground").css("display","none");*/
 			$("#naviBulle").css("background","white");
 			
 			
@@ -159,12 +160,6 @@ function menu() {
 			$("#zoomMBulle").css("display","none");
 			$("#zoomPText").css("display","none");
 			$("#zoomMText").css("display","none");
-			/* $("#plusBulle").css("display","block");
-			$("#saveBulle").css("display","block");
-			$("#fastBulle").css("display","block");
-			$("#homeBulle").css("display","block");
-			$("#editBulle").css("display","block");
-			$("#editBackground").css("display","block"); */
 			$("#naviBulle").css("background","none");
 
 		}
@@ -319,7 +314,6 @@ function multiButton () {
         multi();
 
     } else {
-        setBackground();
         multBool = false
         enableButton($("#linkBulle"), linkButton);
 
@@ -328,6 +322,8 @@ function multiButton () {
         multi()
         if (selectBool) { $("#selectBulle").trigger("click") }
         detectPathGraphics.clear()
+        setBackground();
+
     }
 }
 function editButton() {

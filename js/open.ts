@@ -13,18 +13,23 @@ function openLoad(data){
     if (data) {
         $("#openContainer").append(data);
     }
+    addListenersDrive();
 
+    
+}
+
+function addListenersDrive() {
     $(".openSpan").click(function () {
         console.log(counter++)
         var id = $(this).parent().attr("id")
         $('#loading').css("display", "block");
-        drive.getFile(id, (file) => { drive.downloadFile(file, load2 ) })
-	})
-	$(".openImgModif").click(function(){
+        drive.getFile(id, (file) => { drive.downloadFile(file, load2) })
+    })
+    $(".openImgModif").click(function () {
         var oldTitle = $(this).attr("id")
         var id = $(this).parent().attr("id")
-		var goodMenu=$(this).parent().children(".openSpan");
-		console.log($(this).parent().children(".openSpan"))
+        var goodMenu = $(this).parent().children(".openSpan");
+        console.log($(this).parent().children(".openSpan"))
         var newTitle = prompt("modifier le titre du rezo", oldTitle)
         if (newTitle) {
             isTitreInvalid = titreIsValid(newTitle)
@@ -37,32 +42,32 @@ function openLoad(data){
                 drive.updateName(newTitle, id);
             }
         }
-		
-	})
-	$(".openImgSuppr").click(function(){
-		titre=$(this).parent().attr("id")
-        if (confirm('voulez vous vraiment supprimer ce Rezo?')) {
-            drive.trashFile($(this).parent().attr("id"))
-		} else {
-			// Do nothing!
-		}
-		
-	})
-	$("img#closeOpen").click(function(){
-		openActif=true;
-		$( "#homeBulle" ).trigger( "click" );
+
     })
-	//$("img#saveOpen").click(function(){
+    $(".openImgSuppr").click(function () {
+        titre = $(this).parent().attr("id")
+        if (confirm(Ressource.confirmSupprRezo)) {
+            drive.trashFile($(this).parent().attr("id"))
+        } else {
+            // Do nothing!
+        }
 
-	//	Rezo.opened=false;
-	//	save("Enregistrer le rezo "+Rezo.rezoName+" sous un nouveau titre")
+    })
+    $("img#closeOpen").click(function () {
+        openActif = true;
+        $("#homeBulle").trigger("click");
+    })
+    //$("img#saveOpen").click(function(){
 
-	//})
+    //	Rezo.opened=false;
+    //	save("Enregistrer le rezo "+Rezo.rezoName+" sous un nouveau titre")
+
+    //})
     $("img#driveOpen").click(function () {
         drive.logOut();
     })
     $("img#plusOpen").click(Rezo.newRezo);
-	
+
 }
 function titreIsValid(newTitle) {
     var iChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
@@ -120,8 +125,14 @@ function sort(sort: Sort) {
             break;
     }
     $(".open").remove();
+    var nodeListSorted: NodeListOf<HTMLElement>;
     for (var i = 0; i < array.length; i++) {
         $("#openContainer").append(array[i]);
+    }
+    if (isLocalHome) {
+        addListenersLocal()
+    } else if (isDriveHome) {
+        addListenersDrive();
     }
 }
 
@@ -154,9 +165,9 @@ function sortUpName(array: Array<HTMLElement>): Array<HTMLElement> {
     console.log("sortUpName");
 
     array.sort((b, a): number => {
-        if ($(a).children(".openSpan").attr("id") < $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() < $(b).children(".openSpan").attr("id").toLowerCase())
             return 1;
-        if ($(a).children(".openSpan").attr("id") > $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() > $(b).children(".openSpan").attr("id").toLowerCase())
             return -1;
         return 0;
     })
@@ -166,9 +177,9 @@ function sortUpName(array: Array<HTMLElement>): Array<HTMLElement> {
 function sortDownName(array: Array<HTMLElement>): Array<HTMLElement> {
     console.log("sortDownName")
     array.sort((a, b): number => {
-        if ($(a).children(".openSpan").attr("id") < $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() < $(b).children(".openSpan").attr("id").toLowerCase())
             return 1;
-        if ($(a).children(".openSpan").attr("id") > $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() > $(b).children(".openSpan").attr("id").toLowerCase())
             return -1;
         return 0;
     })

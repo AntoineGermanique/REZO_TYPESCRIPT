@@ -168,7 +168,7 @@ class DriveAPI {
         //var option = document.createElement("option");
         var titre = name.replace(/.rezo$/, '');
         var timeStampNumber = Date.parse(timeStamp);
-        var innerHTML = "<div class='open' id='" + id + " ' attr='" + timeStampNumber + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' id='" + titre + "' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
+        var innerHTML = "<div class='open' id='" + id + "' attr='" + timeStampNumber + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' id='" + titre + "' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
         //document.getElementById('open').innerHTML += innerHTML;
         this.innerHTML += innerHTML;
 
@@ -210,8 +210,7 @@ class DriveAPI {
  */
     getFile(fileId, callback): any {
         var request = gapi.client.drive.files.get({
-            'fileId': fileId,
-
+            'fileId': fileId
         });
         try {
             request.execute((resp) => {

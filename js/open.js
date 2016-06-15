@@ -9,6 +9,9 @@ function openLoad(data) {
     if (data) {
         $("#openContainer").append(data);
     }
+    addListenersDrive();
+}
+function addListenersDrive() {
     $(".openSpan").click(function () {
         console.log(counter++);
         var id = $(this).parent().attr("id");
@@ -36,7 +39,7 @@ function openLoad(data) {
     });
     $(".openImgSuppr").click(function () {
         titre = $(this).parent().attr("id");
-        if (confirm('voulez vous vraiment supprimer ce Rezo?')) {
+        if (confirm(Ressource.confirmSupprRezo)) {
             drive.trashFile($(this).parent().attr("id"));
         }
         else {
@@ -109,8 +112,15 @@ function sort(sort) {
             break;
     }
     $(".open").remove();
+    var nodeListSorted;
     for (var i = 0; i < array.length; i++) {
         $("#openContainer").append(array[i]);
+    }
+    if (isLocalHome) {
+        addListenersLocal();
+    }
+    else if (isDriveHome) {
+        addListenersDrive();
     }
 }
 function sortUpDate(array) {
@@ -138,9 +148,9 @@ function sortDownDate(array) {
 function sortUpName(array) {
     console.log("sortUpName");
     array.sort(function (b, a) {
-        if ($(a).children(".openSpan").attr("id") < $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() < $(b).children(".openSpan").attr("id").toLowerCase())
             return 1;
-        if ($(a).children(".openSpan").attr("id") > $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() > $(b).children(".openSpan").attr("id").toLowerCase())
             return -1;
         return 0;
     });
@@ -149,9 +159,9 @@ function sortUpName(array) {
 function sortDownName(array) {
     console.log("sortDownName");
     array.sort(function (a, b) {
-        if ($(a).children(".openSpan").attr("id") < $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() < $(b).children(".openSpan").attr("id").toLowerCase())
             return 1;
-        if ($(a).children(".openSpan").attr("id") > $(b).children(".openSpan").attr("id"))
+        if ($(a).children(".openSpan").attr("id").toLowerCase() > $(b).children(".openSpan").attr("id").toLowerCase())
             return -1;
         return 0;
     });

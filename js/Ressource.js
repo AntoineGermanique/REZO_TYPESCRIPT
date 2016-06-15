@@ -11,6 +11,7 @@ var Ressource = (function () {
     Ressource.pathImgMulti = Ressource.pathImg + "mult_back.png";
     Ressource.pathImgSelect = Ressource.pathImg + "select_back.png";
     Ressource.confirmLocalOverwriting = "Ce nom de rezo existe déjà, je l'écrase ?";
+    Ressource.confirmSupprRezo = 'voulez vous vraiment supprimer ce Rezo?';
     return Ressource;
 }());
 //# sourceMappingURL=Ressource.js.map
