@@ -60,9 +60,13 @@ var Rezo = (function () {
         Rezo.scene = scene;
         //sceneMulti
         sceneMulti = new PIXI.Container();
+        //sceneSelect
+        sceneSelect = new PIXI.Container();
+        sceneSelect.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
         //sceneDraw
-        sceneDraw = new PIXI.Container();
+        sceneDraw = new SceneDraw();
         sceneDraw.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
+        Rezo.sceneDraw = sceneDraw;
         //sceneBulle;
         var sceneBulle = new PIXI.Container();
         Rezo.sceneBulle = sceneBulle;
@@ -76,7 +80,8 @@ var Rezo = (function () {
         stage.addChild(sensorZoomScene);
         stage.addChild(sensorZoomScene2);
         stage.addChild(sensorScaleBulleScene);
-        stage.addChildAt(sceneDraw, 0);
+        stage.addChildAt(sceneSelect, 0);
+        stage.addChild(sceneDraw);
         sensorZoomScene.addChild(upperScene);
         upperScene.addChild(scaleScene);
         scaleScene.addChild(scene);

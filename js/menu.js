@@ -10,6 +10,7 @@ var scalBool = false;
 var coloBool = false;
 var multBool = false;
 var selectBool = false;
+var drawBool = false;
 var hyperBool = false;
 var isLocalHome = false;
 var isDriveHome = false;
@@ -265,6 +266,7 @@ function menu() {
             $("#hyperBulle").css({ "background": "rgba(0, 0, 255, 0.44)", "border-radius": "100px", "box-shadow": "0PX 0PX 5PX 5px blue" });
         }
     });
+    $("#drawBulle").click(SceneDraw.toggleDrawingMode);
 }
 function linkButton() {
     Link.emptyLinkArray();

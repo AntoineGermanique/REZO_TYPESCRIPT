@@ -2,7 +2,7 @@
 "use strict";
 var rectTestGraph = new PIXI.Graphics();
 var sceneMulti;
-var sceneDraw;
+var sceneSelect;
 var path = [];
 var color;
 var drawnGraphics = new PIXI.Graphics();
@@ -14,7 +14,7 @@ var selectDown = false;
 var clockwiseSelect = true;
 var counterClockwiseSelect = false;
 function selectIntercative() {
-    sceneDraw.addChild(drawnGraphics);
+    sceneSelect.addChild(drawnGraphics);
     sceneMulti.addChild(detectPathGraphics);
     sceneMulti.addChild(rectTestGraph);
     var selectStart = function (data) {
@@ -25,8 +25,8 @@ function selectIntercative() {
         path = [];
         color = 0x5D0776;
     };
-    sceneDraw.on("mousedown", selectStart);
-    sceneDraw.on("touchstart", selectStart);
+    sceneSelect.on("mousedown", selectStart);
+    sceneSelect.on("touchstart", selectStart);
     var select = function (data) {
         if (!selectDown)
             return;
@@ -37,8 +37,8 @@ function selectIntercative() {
         drawnGraphics.drawPolygon(path);
         drawnGraphics.endFill();
     };
-    sceneDraw.on("mousemove", select);
-    sceneDraw.on("touchmove", select);
+    sceneSelect.on("mousemove", select);
+    sceneSelect.on("touchmove", select);
     var selectStop = function () {
         selectDown = false;
         drawnGraphics.beginFill(color);
@@ -49,23 +49,23 @@ function selectIntercative() {
         rectCollisionTest(drawnGraphics, path);
         path = [];
     };
-    sceneDraw.on("mouseup", selectStop);
-    sceneDraw.on("mouseupoutside", selectStop);
-    sceneDraw.on("touchend", selectStop);
-    sceneDraw.on("touchendoutside", selectStop);
+    sceneSelect.on("mouseup", selectStop);
+    sceneSelect.on("mouseupoutside", selectStop);
+    sceneSelect.on("touchend", selectStop);
+    sceneSelect.on("touchendoutside", selectStop);
 }
 function select() {
     if (selectBool) {
         console.log("it's on!!!");
         Rezo.sensorZoomScene.interactive = false;
         Rezo.upperScene.interactive = false;
-        sceneDraw.interactive = true;
+        sceneSelect.interactive = true;
     }
     else {
         console.log("it's off...");
         Rezo.upperScene.interactive = true;
         Rezo.sensorZoomScene.interactive = true;
-        sceneDraw.interactive = false;
+        sceneSelect.interactive = false;
         drawnGraphics.clear();
     }
 }
