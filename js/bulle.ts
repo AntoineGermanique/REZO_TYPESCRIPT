@@ -23,6 +23,7 @@ class Bulle extends PIXI.Graphics {
     shape: Shape;
     text: TextRezo;
     link;
+    dragging: boolean;
     constructor(circleX: number, circleY: number, bulleText: string, circleColor?: number, circleScale?: number, shapeEnum?: ShapeEnum) {
         super();
         //init and set Bulle params

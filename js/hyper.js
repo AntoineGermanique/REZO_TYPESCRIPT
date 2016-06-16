@@ -7,7 +7,7 @@ var hyperX = Rezo.windowW / 2;
 var hyperY = Rezo.windowH / 2;
 var hyperHandlerSize = 40;
 var hyperHandler;
-var hyperText = "texte long pour voir ce que �a donne'";
+var hyperText = "texte long pour voir ce que ça donne'";
 var selectedHyper;
 function hyperPlusFun() {
     hyper = new PIXI.Container();

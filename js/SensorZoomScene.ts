@@ -3,4 +3,5 @@
 
 class SensorZoomScene extends PIXI.Graphics {
     upperScene: UpperScene;
+    dragging: boolean;
 }

@@ -78,7 +78,7 @@ function touchZoom() {
     var touch1Move = function (data) {
         if (this.dragging && touchZoomCounter == 2) {
             squeze1 += 1;
-            newPosition1 = this.data.getLocalPosition(this.parent);
+            newPosition1 = this.data.data.getLocalPosition(this.parent);
             if (squeze1 == 1) {
                 touch1MoveX1 = newPosition1.x;
                 touch1MoveY1 = newPosition1.y;
@@ -96,8 +96,9 @@ function touchZoom() {
     };
     sensorZoomScene.on("touchmove", touch1Move);
     var touch2Start = function (data) {
+        console.log("sensor2 Touch");
         if (touchZoomCounter == 1) {
-            data.originalEvent.preventDefault();
+            data.data.originalEvent.preventDefault();
             this.data = data;
             //this.interactive=false
             touchZoomCounter += 1;

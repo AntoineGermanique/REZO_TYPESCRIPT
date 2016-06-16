@@ -76,7 +76,6 @@ var Rezo = (function () {
         stage.addChild(sensorZoomScene);
         stage.addChild(sensorZoomScene2);
         stage.addChild(sensorScaleBulleScene);
-        stage.addChild(sceneDraw);
         sensorZoomScene.addChild(upperScene);
         upperScene.addChild(scaleScene);
         scaleScene.addChild(scene);
@@ -84,6 +83,7 @@ var Rezo = (function () {
         scene.addChild(sceneLink);
         scene.addChild(sceneBulle);
         scene.addChild(sceneMulti);
+        sceneMulti.addChild(sceneDraw);
         stage.sensorScaleBulleScene = sensorScaleBulleScene;
         stage.sensorZoomScene = sensorZoomScene;
         stage.sensorZoomScene2 = sensorZoomScene2;

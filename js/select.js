@@ -17,16 +17,17 @@ function selectIntercative() {
     sceneDraw.addChild(drawnGraphics);
     sceneMulti.addChild(detectPathGraphics);
     sceneMulti.addChild(rectTestGraph);
-    var drawStart = function (data) {
+    var selectStart = function (data) {
         updateWindowSize();
         drawnGraphics.clear();
         selectDown = true;
         path = [];
         color = 0x5D0776;
     };
-    sceneDraw.on("mousedown", drawStart);
-    sceneDraw.on("touchstart", drawStart);
-    var draw = function (data) {
+    sceneDraw;
+    sceneDraw.on("mousedown", selectStart);
+    sceneDraw.on("touchstart", selectStart);
+    var select = function (data) {
         if (!selectDown)
             return;
         path.push(data.data.global.x);
@@ -36,9 +37,9 @@ function selectIntercative() {
         drawnGraphics.drawPolygon(path);
         drawnGraphics.endFill();
     };
-    sceneDraw.on("mousemove", draw);
-    sceneDraw.on("touchmove", draw);
-    var drawStop = function () {
+    sceneDraw.on("mousemove", select);
+    sceneDraw.on("touchmove", select);
+    var selectStop = function () {
         selectDown = false;
         drawnGraphics.beginFill(color);
         drawnGraphics.drawPolygon(path);
@@ -48,10 +49,10 @@ function selectIntercative() {
         rectCollisionTest(drawnGraphics, path);
         path = [];
     };
-    sceneDraw.on("mouseup", drawStop);
-    sceneDraw.on("mouseupoutside", drawStop);
-    sceneDraw.on("touchend", drawStop);
-    sceneDraw.on("touchendoutside", drawStop);
+    sceneDraw.on("mouseup", selectStop);
+    sceneDraw.on("mouseupoutside", selectStop);
+    sceneDraw.on("touchend", selectStop);
+    sceneDraw.on("touchendoutside", selectStop);
 }
 function select() {
     if (selectBool) {

@@ -296,7 +296,6 @@ declare module PIXI {
         blendMode: number;
         isMask: boolean;
         boundsPadding: number;
-        dragging: boolean;
 
         clone(): Graphics;
         lineStyle(lineWidth?: number, color?: number, alpha?: number): Graphics;

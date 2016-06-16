@@ -1,1 +1,1 @@
-{"version":3,"file":"SensorZoomScene.js","sourceRoot":"","sources":["SensorZoomScene.ts"],"names":[],"mappings":"AAAC,2EAA2E;AAC5E,oCAAoC;;;;;;AAEpC;IAA8B,mCAAa;IAA3C;QAA8B,8BAAa;IAE3C,CAAC;IAAD,sBAAC;AAAD,CAAC,AAFD,CAA8B,IAAI,CAAC,QAAQ,GAE1C"}
+{"version":3,"file":"SensorZoomScene.js","sourceRoot":"","sources":["SensorZoomScene.ts"],"names":[],"mappings":"AAAA,2EAA2E;AAC3E,oCAAoC;;;;;;AAEpC;IAA8B,mCAAa;IAA3C;QAA8B,8BAAa;IAG3C,CAAC;IAAD,sBAAC;AAAD,CAAC,AAHD,CAA8B,IAAI,CAAC,QAAQ,GAG1C"}
