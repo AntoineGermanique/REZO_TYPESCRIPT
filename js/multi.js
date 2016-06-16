@@ -2,11 +2,13 @@
 var multiArray = [];
 var multiLinkArray = [];
 var multiExist = false;
-var spriteMove = PIXI.Sprite.fromImage('./images/MOVE.png');
+var spriteMove;
 var nbrDetect = 0;
 function multi() {
     var selectedBulle = Rezo.selectedBulle;
     if (multBool) {
+        spriteMove = PIXI.Sprite.fromImage('./images/MOVE.png');
+        setSpriteMoveMultiListeners();
         sceneMulti.addChild(spriteMove);
         spriteMove.x = selectedBulle.x - selectedBulle.getChildAt(0).width / 2;
         spriteMove.y = selectedBulle.y - selectedBulle.getChildAt(0).width / 2;
@@ -111,43 +113,46 @@ function multiMove(moveX, moveY) {
         currentLink.endFill;
     }
 }
-var startDrag = function (data) {
-    detectPathGraphics.clear();
-    data.stopPropagation();
-    if (selectBool) {
-        selectBool = false;
-        select();
-        selectBool = true;
-    }
-    data.data.originalEvent.preventDefault();
-    this.dragging = true;
-    this.data = data;
-    //upperScene.dragging = false;
-    console.log("wouf");
-};
-spriteMove.on("mousedown", startDrag);
-spriteMove.on("touchstart", startDrag);
-var stopDrag = function (data) {
-    this.dragging = false;
-    this.data = null;
-    if (selectBool) {
-        selectDown = false;
-        select();
-    }
-};
-spriteMove.on("mouseup", stopDrag);
-spriteMove.on("mouseupoutside", stopDrag);
-spriteMove.on("touchend", stopDrag);
-spriteMove.on("touchendoutside", stopDrag);
-var drag = function (data) {
-    if (this.dragging) {
-        var newPosition = this.data.data.getLocalPosition(this.parent);
-        this.position.x = newPosition.x;
-        this.position.y = newPosition.y;
-        //motion(newPosition.x,newPosition.y)
-        multiMove(newPosition.x, newPosition.y);
-    }
-};
-spriteMove.on("mousemove", drag);
-spriteMove.on("touchmove", drag);
+function setSpriteMoveMultiListeners() {
+    var startDrag = function (data) {
+        console.log("spriteMove");
+        detectPathGraphics.clear();
+        data.stopPropagation();
+        if (selectBool) {
+            selectBool = false;
+            select();
+            selectBool = true;
+        }
+        data.data.originalEvent.preventDefault();
+        this.dragging = true;
+        this.data = data;
+        //upperScene.dragging = false;
+        console.log("wouf");
+    };
+    spriteMove.on("mousedown", startDrag);
+    spriteMove.on("touchstart", startDrag);
+    var stopDrag = function (data) {
+        this.dragging = false;
+        this.data = null;
+        if (selectBool) {
+            selectDown = false;
+            select();
+        }
+    };
+    spriteMove.on("mouseup", stopDrag);
+    spriteMove.on("mouseupoutside", stopDrag);
+    spriteMove.on("touchend", stopDrag);
+    spriteMove.on("touchendoutside", stopDrag);
+    var drag = function (data) {
+        if (this.dragging) {
+            var newPosition = this.data.data.getLocalPosition(this.parent);
+            this.position.x = newPosition.x;
+            this.position.y = newPosition.y;
+            //motion(newPosition.x,newPosition.y)
+            multiMove(newPosition.x, newPosition.y);
+        }
+    };
+    spriteMove.on("mousemove", drag);
+    spriteMove.on("touchmove", drag);
+}
 //# sourceMappingURL=multi.js.map

@@ -111,6 +111,7 @@ class Rezo {
         stage.addChild(sensorZoomScene)
         stage.addChild(sensorZoomScene2)
         stage.addChild(sensorScaleBulleScene)
+        stage.addChildAt(sceneDraw,0)
         sensorZoomScene.addChild(upperScene)
 
         upperScene.addChild(scaleScene)
@@ -119,7 +120,6 @@ class Rezo {
         scene.addChild(sceneLink)
         scene.addChild(sceneBulle)
         scene.addChild(sceneMulti)
-        sceneMulti.addChild(sceneDraw)
 
         stage.sensorScaleBulleScene = sensorScaleBulleScene;
         stage.sensorZoomScene = sensorZoomScene;

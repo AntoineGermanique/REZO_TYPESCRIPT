@@ -40,9 +40,9 @@ class UpperScene extends PIXI.Graphics {
                 var newPosition = this.data.data.getLocalPosition(this.parent);
                 scene.position.x = (newPosition.x - oldPosition.x + oldX) / scaleScene.scale.x
                 scene.position.y = (newPosition.y - oldPosition.y + oldY) / scaleScene.scale.x
-
-
-                // this.hitArea.x=-this.position.x+windowW/2*this.scale.x
+                //Rezo.sceneDraw.position.x = Rezo.sceneDraw.position.x -scene.position.x;
+                //Rezo.sceneDraw.position.y = Rezo.sceneDraw.position.y -scene.position.y;
+                //// this.hitArea.x=-this.position.x+windowW/2*this.scale.x
                 // this.hitArea.y=-this.position.y+windowH/2*this.scale.y
 
                 // this.clear();

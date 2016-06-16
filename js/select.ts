@@ -19,13 +19,13 @@ function selectIntercative(){
     sceneMulti.addChild(detectPathGraphics);
     sceneMulti.addChild(rectTestGraph);
     var selectStart = function (data) {
+        console.log("select")
         updateWindowSize();
         drawnGraphics.clear();
-        selectDown = true;
-        path = [];
+		selectDown = true;
+		path = [];
         color = 0x5D0776;
-    };
-    sceneDraw
+    }
     sceneDraw.on("mousedown", selectStart);
     sceneDraw.on("touchstart", selectStart);
 
@@ -63,12 +63,16 @@ function selectIntercative(){
 }
 function select(){
     if (selectBool){
-		console.log("it's on!!!")
+        console.log("it's on!!!");
+        Rezo.sensorZoomScene.interactive = false;
+
 		Rezo.upperScene.interactive=false
 		sceneDraw.interactive=true
 	}else{
 		console.log("it's off...")
-		Rezo.upperScene.interactive=true
+        Rezo.upperScene.interactive = true
+        Rezo.sensorZoomScene.interactive = true;
+
 		sceneDraw.interactive=false
 		drawnGraphics.clear()
 	}
