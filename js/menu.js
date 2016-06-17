@@ -20,25 +20,27 @@ function menu() {
     var windowW = Rezo.windowW;
     var windowH = Rezo.windowH;
     $("#menuBtn").click(function () {
-        $("#edit1").css("display", "block");
-        $("#menuBtn_replie").css("display", "block");
-        $("#menuBtn").css("display", "none");
-        if (naviBool) {
-            $("#naviBulle").trigger("click");
+        if (!menuActif) {
+            menuActif = true;
+            $("#menuContainer").css("display", "block");
+            $("#menuBtn").removeClass("menuBtn").addClass("menuBtn_replie");
+            if (naviBool) {
+                $("#naviBulle").trigger("click");
+            }
+            if (editBool) {
+                $("#editBulle").trigger("click");
+            }
         }
-        if (editBool) {
-            $("#editBulle").trigger("click");
-        }
-    });
-    $("#menuBtn_replie").click(function () {
-        $("#edit1").css("display", "none");
-        $("#menuBtn_replie").css("display", "none");
-        $("#menuBtn").css("display", "block");
-        if (naviBool) {
-            $("#naviBulle").trigger("click");
-        }
-        if (editBool) {
-            $("#editBulle").trigger("click");
+        else {
+            menuActif = false;
+            $("#menuBtn").removeClass("menuBtn_replie").addClass("menuBtn");
+            $("#menuContainer").css("display", "none");
+            if (naviBool) {
+                $("#naviBulle").trigger("click");
+            }
+            if (editBool) {
+                $("#editBulle").trigger("click");
+            }
         }
     });
     $("#plusBulle").click(function () {
@@ -144,19 +146,19 @@ function menu() {
     $("#naviBulle").click(function () {
         if (!naviBool) {
             naviBool = true;
-            $("#zoomPBulle").css("display", "block");
-            $("#zoomMBulle").css("display", "block");
-            $("#zoomPText").css("display", "block");
-            $("#zoomMText").css("display", "block");
-            $("#naviBulle").css("background", "white");
+            $("#zoomPBulle").removeClass("hiddenButton");
+            $("#zoomMBulle").removeClass("hiddenButton");
+            $("#zoomPText").removeClass("hiddenButton");
+            $("#zoomMText").removeClass("hiddenButton");
+            $("#naviBulle").addClass("whiteBackground");
         }
         else {
             naviBool = false;
-            $("#zoomPBulle").css("display", "none");
-            $("#zoomMBulle").css("display", "none");
-            $("#zoomPText").css("display", "none");
-            $("#zoomMText").css("display", "none");
-            $("#naviBulle").css("background", "none");
+            $("#zoomPBulle").addClass("hiddenButton");
+            $("#zoomMBulle").addClass("hiddenButton");
+            $("#zoomPText").addClass("hiddenButton");
+            $("#zoomMText").addClass("hiddenButton");
+            $("#naviBulle").removeClass("whiteBackground");
         }
     });
     $("#zoomPBulle").click(function () {
@@ -339,7 +341,7 @@ function editButton() {
         $("#homeBulle").css("display","none");
         $("#naviBulle").css("display","none");
         $("#navBackground").css("display","none"); */
-        $("#editBulle").css("background", "white");
+        $("#editBulle").addClass("whiteBackground");
     }
     else {
         editBool = false;
@@ -358,7 +360,7 @@ function editButton() {
         $("#homeBulle").css("display","block");
         $("#naviBulle").css("display","block");
         $("#navBackground").css("display","block"); */
-        $("#editBulle").css("background", "none");
+        $("#editBulle").removeClass("whiteBackground");
         if (scalBool) {
             $("#scalBulle").trigger("click");
         }

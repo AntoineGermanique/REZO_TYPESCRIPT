@@ -50,12 +50,25 @@ class SceneDraw extends PIXI.Container {
     static toggleDrawingMode() {
         if (!drawBool) {
             drawBool = true;
+            $("#drawBulle").addClass("buttonOpened")
+            $(".drawBTN").addClass("drawBTNFloat");
+            $("#drawing").addClass("drawingExpend");
+            $("#circleBulle").removeClass("hiddenButton");
+            $("#writeBulle").removeClass("hiddenButton");
+
+            setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
             Rezo.upperScene.interactive = false;
             Rezo.sensorZoomScene.interactive = false;
             Rezo.stage.swapChildren(Rezo.sensorZoomScene, Rezo.sceneDraw)
         } else {
             drawBool = false;
+            $("#drawBulle").removeClass("buttonOpened")
+            $(".drawBTN").removeClass("drawBTNFloat");
+            $("#drawing").removeClass("drawingExpend");
+            $("#circleBulle").addClass("hiddenButton");
+            $("#writeBulle").addClass("hiddenButton");
+            setBackground();
             Rezo.sceneDraw.interactive = false;
             Rezo.upperScene.interactive = true;
             Rezo.sensorZoomScene.interactive = true;
