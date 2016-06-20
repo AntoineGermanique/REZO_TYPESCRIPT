@@ -99,7 +99,7 @@ var Rezo = (function () {
         scene.sceneHyper = sceneHyper;
         scene.sceneLink = sceneLink;
         scene.sceneMulti = sceneMulti;
-        var primaryBulle = new Bulle(circleX, circleY, "rezo", circleColor, circleScale);
+        var primaryBulle = new Bulle(bulleX, bulleY, "rezo", color, defaultScale);
         Rezo.sceneBulle.addChild(primaryBulle);
         requestAnimationFrame(animate);
         function animate() {
@@ -136,9 +136,9 @@ var Rezo = (function () {
         }
         Rezo.sceneBulle.removeChildren();
         Rezo.sceneLink.removeChildren();
-        circleX = Rezo.windowW / 2;
-        circleY = Rezo.windowH / 2;
-        Rezo.sceneBulle.addChild(new Bulle(circleX, circleY, "rezo", circleColor, circleScale, ShapeEnum.circle));
+        bulleX = Rezo.windowW / 2;
+        bulleY = Rezo.windowH / 2;
+        Rezo.sceneBulle.addChild(new Bulle(bulleX, bulleY, "rezo", bulleColor, defaultScale, ShapeEnum.circle));
         Rezo.scaleScene.scale.x = 1;
         Rezo.scaleScene.scale.y = 1;
         Rezo.scene.position.x = 0;

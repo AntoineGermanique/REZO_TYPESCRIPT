@@ -9,40 +9,115 @@ var SceneDraw = (function (_super) {
     function SceneDraw() {
         _super.call(this);
         this._drawDown = false;
+        this._drawPause = false;
         this.setListeners();
     }
     SceneDraw.prototype.setListeners = function () {
         var _this = this;
         var drawStart = function (data) {
-            var loc = {
-                x: data.data.global.x,
-                y: data.data.global.y
-            };
-            _this._draw = new Draw(loc);
-            _this.addChild(_this._draw);
             _this._drawDown = true;
+            if (SceneDraw.isWriting) {
+                _this.drawWriteStart(data);
+            }
+            else if (SceneDraw.isBulling) {
+                _this.drawBulleStart(data);
+            }
         };
         this.on("mousedown", drawStart);
         this.on("touchstart", drawStart);
         var draw = function (data) {
             if (_this._drawDown) {
-                _this._draw.addPathPoint(data.data.global.x, data.data.global.y);
-                _this._draw.lineStyle(2, 0x000000, 1);
-                _this._draw.moveTo(_this._draw.getPreviousPoint().x, _this._draw.getPreviousPoint().y);
-                _this._draw.lineTo(_this._draw.getLastPoint().x, _this._draw.getLastPoint().y);
-                //this._draw.drawPolygon(this._draw.getPath())
-                _this._draw.endFill();
+                if (SceneDraw.isWriting) {
+                    if (_this._drawPause) {
+                        _this._draw.addPathPoint(data.data.global.x, data.data.global.y);
+                        _this._drawPause = false;
+                    }
+                    _this.drawWrite(data);
+                }
+                else if (SceneDraw.isBulling) {
+                    _this.drawBulle(data);
+                }
             }
         };
         this.on("mousemove", draw);
         this.on("touchmove", draw);
         var drawStop = function () {
             _this._drawDown = false;
+            if (SceneDraw.isWriting) {
+                _this._drawPause = true;
+            }
+            else {
+                _this._drawBulle = _this._draw;
+                if (_this._drawText) {
+                    _this.createDrawBulle();
+                }
+                _this.cleanSceneDraw();
+            }
         };
         this.on("mouseup", drawStop);
         this.on("mouseupoutside", drawStop);
         this.on("touchend", drawStop);
         this.on("touchendoutside", drawStop);
+    };
+    SceneDraw.prototype.createDrawBulle = function () {
+        console.log("createBulle");
+        var x = this._drawBulle.getLocalBounds().x;
+        var y = this._drawBulle.getLocalBounds().y;
+        this._drawBulle.setPathNumber(this.correctDrawingPathNumber(this._drawBulle.getPathNumber(), x, y));
+        this._drawBulle.setPath(this.correctDrawingPath(this._drawBulle.getPath(), x, y));
+        this._drawText.setPathNumber(this.correctDrawingPathNumber(this._drawText.getPathNumber(), x, y));
+        this._drawText.setPath(this.correctDrawingPath(this._drawText.getPath(), x, y));
+        Rezo.sceneBulle.addChild(new Bulle(x, y, "", bulleColor, defaultScale, ShapeEnum.poly, this._drawBulle, this._drawText));
+    };
+    SceneDraw.prototype.correctDrawingPathNumber = function (path, x, y) {
+        var newPath = [];
+        for (var i = 0; i < path.length; i++) {
+            if (i % 2 == 0) {
+                newPath.push(path[i] - x);
+            }
+            else {
+                newPath.push(path[i] - y);
+            }
+        }
+        return newPath;
+    };
+    SceneDraw.prototype.correctDrawingPath = function (path, x, y) {
+        var newPath = [];
+        for (var i = 0; i < path.length; i++) {
+            newPath.push({ x: path[i].x - x, y: path[i].y - y });
+        }
+        return newPath;
+    };
+    SceneDraw.prototype.drawWriteStart = function (data) {
+        var loc = {
+            x: data.data.global.x,
+            y: data.data.global.y
+        };
+        if (!this._draw)
+            this._draw = new Draw(loc);
+        this.addChild(this._draw);
+        this._drawDown = true;
+    };
+    SceneDraw.prototype.drawBulleStart = function (data) {
+        var loc = {
+            x: data.data.global.x,
+            y: data.data.global.y
+        };
+        if (!this._draw)
+            this._draw = new Draw(loc, true);
+        this.addChild(this._draw);
+        this._drawDown = true;
+    };
+    SceneDraw.prototype.drawWrite = function (data) {
+        this._draw.addPathPoint(data.data.global.x, data.data.global.y);
+        this._draw.lineStyle(2, 0x000000, 1);
+        this._draw.moveTo(this._draw.getPreviousPoint().x, this._draw.getPreviousPoint().y);
+        this._draw.lineTo(this._draw.getLastPoint().x, this._draw.getLastPoint().y);
+        this._draw.endFill();
+    };
+    SceneDraw.prototype.drawBulle = function (data) {
+        this._draw.addPolyPathPoint(data.data.global.x, data.data.global.y);
+        this._draw.drawPoly();
     };
     SceneDraw.toggleDrawingMode = function () {
         if (!drawBool) {
@@ -52,6 +127,7 @@ var SceneDraw = (function (_super) {
             $("#drawing").addClass("drawingExpend");
             $("#circleBulle").removeClass("hiddenButton");
             $("#writeBulle").removeClass("hiddenButton");
+            SceneDraw.toggleDrawingWrite();
             setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
             Rezo.upperScene.interactive = false;
@@ -72,6 +148,44 @@ var SceneDraw = (function (_super) {
             Rezo.stage.swapChildren(Rezo.sensorZoomScene, Rezo.sceneDraw);
         }
     };
+    SceneDraw.toggleDrawingWrite = function () {
+        if (!SceneDraw.isWriting) {
+            SceneDraw.isWriting = true;
+            $("#writeBulle").addClass("whiteBackground");
+            if (SceneDraw.isBulling) {
+                SceneDraw.toggleDrawingBulle();
+            }
+        }
+        else {
+            $("#writeBulle").removeClass("whiteBackground");
+            SceneDraw.isWriting = false;
+        }
+    };
+    SceneDraw.toggleDrawingBulle = function () {
+        if (!SceneDraw.isBulling) {
+            SceneDraw.isBulling = true;
+            $("#circleBulle").addClass("whiteBackground");
+            Rezo.sceneDraw._drawText = Rezo.sceneDraw._draw;
+            Rezo.sceneDraw._draw = null;
+            if (SceneDraw.isWriting) {
+                SceneDraw.toggleDrawingWrite();
+            }
+        }
+        else {
+            $("#circleBulle").removeClass("whiteBackground");
+            SceneDraw.isBulling = false;
+        }
+    };
+    SceneDraw.prototype.cleanSceneDraw = function () {
+        this.removeChild(this._drawText);
+        this._drawText = null;
+        this.removeChild(this._drawBulle);
+        this._drawBulle = null;
+        this._draw = null;
+        this._drawDown = false;
+    };
+    SceneDraw.isWriting = false;
+    SceneDraw.isBulling = false;
     return SceneDraw;
 }(PIXI.Container));
 //# sourceMappingURL=SceneDraw.js.map

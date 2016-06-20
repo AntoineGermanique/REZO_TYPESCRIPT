@@ -43,7 +43,7 @@ function gradient() {
     }
 }
 function setColorFun(bulleToColor, goodColor) {
-    circleSize = bulleSize(bulleToColor);
+    var circleSize = bulleSize(bulleToColor);
     var newColor = bulleToColor.shape;
     newColor.clear();
     newColor.beginFill(goodColor, 1);
@@ -61,7 +61,7 @@ function setColorFun(bulleToColor, goodColor) {
         bulleToColor.lineStyle(16, 0x000000, 0.5);
         bulleToColor.drawCircle(0, 0, circleSize);
     }
-    circleColor = goodColor;
+    bulleColor = goodColor;
     newColor.rezoColor = goodColor;
 }
 //# sourceMappingURL=gradient.js.map

@@ -47,7 +47,7 @@ function gradient(){
 	}
 }
 function setColorFun(bulleToColor: Bulle, goodColor: number) {
-    circleSize = bulleSize(bulleToColor);
+    var circleSize = bulleSize(bulleToColor);
     var newColor = bulleToColor.shape;
 	newColor.clear();
 	newColor.beginFill(goodColor, 1)
@@ -66,8 +66,8 @@ function setColorFun(bulleToColor: Bulle, goodColor: number) {
         bulleToColor.clear();
 		bulleToColor.lineStyle(16,0x000000,0.5)
 		bulleToColor.drawCircle(0,0,circleSize)
-	}
-    circleColor = goodColor;
+    }
+    bulleColor = goodColor;
     newColor.rezoColor = goodColor;
 
 }

@@ -16,6 +16,10 @@ var TextRezo = (function (_super) {
         this.kind = kind;
         this.text = text;
     }
+    TextRezo.prototype.setTextDraw = function (textDraw) {
+        this.textDraw = textDraw;
+        this.polyPathNumber = textDraw.getPath();
+    };
     TextRezo.prototype.replaceText = function () {
         if (hyperBool && selectedHyper) {
         }

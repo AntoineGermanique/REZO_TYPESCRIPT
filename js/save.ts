@@ -121,7 +121,7 @@ function createJsonRezo(): RezoSave {
                 scale: { x: bulleInfo.bulle.scale.x, y: bulleInfo.bulle.scale.y },
                 width: bulleInfo.bulle.width,
                 height: bulleInfo.bulle.height,
-                shape: bulleInfo.bulle.shape.shape,
+                shape: bulleInfo.bulle.shape.kind,
                 polyPath: null,
                 polyTextPath: null,
             })

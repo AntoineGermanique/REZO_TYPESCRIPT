@@ -7,11 +7,22 @@ var __extends = (this && this.__extends) || function (d, b) {
 var sceneDraw;
 var Draw = (function (_super) {
     __extends(Draw, _super);
-    function Draw(loc) {
+    function Draw(loc, isPolygon) {
         _super.call(this);
         this._path = [];
-        this._path.push(loc);
+        this._polyPath = [];
+        if (!isPolygon) {
+            this._path.push(loc);
+        }
+        else {
+            this._polyPath.push(loc.x);
+            this._polyPath.push(loc.y);
+        }
     }
+    Draw.prototype.addPolyPathPoint = function (x, y) {
+        this._polyPath.push(x);
+        this._polyPath.push(y);
+    };
     Draw.prototype.addPathPointLoc = function (loc) {
         this._path.push(loc);
     };
@@ -25,6 +36,9 @@ var Draw = (function (_super) {
     Draw.prototype.getPath = function () {
         return this._path;
     };
+    Draw.prototype.getPathNumber = function () {
+        return this._polyPath;
+    };
     Draw.prototype.getLastPoint = function () {
         if (this._path[this._path.length - 1])
             return this._path[this._path.length - 1];
@@ -37,11 +51,23 @@ var Draw = (function (_super) {
         return null;
     };
     ;
+    Draw.prototype.setPath = function (path) {
+        this._path = path;
+    };
+    Draw.prototype.setPathNumber = function (path) {
+        this._polyPath = path;
+    };
     Draw.prototype.drawLine = function () {
         this.moveTo(this._path[0].x, this._path[0].y);
         for (var i = 1; i < this._path.length; i++) {
             this.lineTo(this._path[i].x, this._path[i].y);
         }
+    };
+    Draw.prototype.drawPoly = function () {
+        this.clear();
+        this.beginFill(bulleColor);
+        this.drawPolygon(this._polyPath);
+        this.endFill();
     };
     return Draw;
 }(PIXI.Graphics));

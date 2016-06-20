@@ -54,7 +54,7 @@ function menu() {
             bulleMiddlePoY = windowH / 2 / scaleScene.scale.x - scaleScene.scene.y - (windowH / scaleScene.scale.x - windowH) / 2;
             // dispatchMouseEvent(selectedBulle, 'mousedown', true, true);
             // dispatchMouseEvent(selectedBulle, 'mouseup', true, true);
-            scaleScene.scene.sceneBulle.addChild(new Bulle(bulleMiddlePoX, bulleMiddlePoY, "txt", circleColor, 1));
+            scaleScene.scene.sceneBulle.addChild(new Bulle(bulleMiddlePoX, bulleMiddlePoY, "txt", bulleColor, 1));
         }
     });
     $("#supprBulle").click(function () { supprFun(); });
@@ -269,6 +269,8 @@ function menu() {
         }
     });
     $("#drawBulle").click(SceneDraw.toggleDrawingMode);
+    $("#writeBulle").click(SceneDraw.toggleDrawingWrite);
+    $("#circleBulle").click(SceneDraw.toggleDrawingBulle);
 }
 function linkButton() {
     Link.emptyLinkArray();
@@ -335,13 +337,6 @@ function editButton() {
         $("#scalBulle").css("display", "block");
         $("#multBulle").css("display", "block");
         $("#hyperBulle").css("display", "block");
-        //$("#plusBulle").css("display","none");
-        /* $("#saveBulle").css("display","none");
-        $("#fastBulle").css("display","none");
-        $("#homeBulle").css("display","none");
-        $("#naviBulle").css("display","none");
-        $("#navBackground").css("display","none"); */
-        $("#editBulle").addClass("whiteBackground");
     }
     else {
         editBool = false;

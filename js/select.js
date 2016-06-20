@@ -282,13 +282,13 @@ function polygonCollisionTest(rectTestArray, currentPath) {
                 linksIndex: []
             });
             selectedBulle = rectTestArray[j];
-            circleSize = bulleSize(selectedBulle);
-            circleColor = selectedBulle.shape.rezoColor;
-            selectedBulle.lineStyle(16, circleColor, 0.5);
-            selectedBulle.drawCircle(0, 0, circleSize);
-            if (circleColor == 0xffffff) {
+            bulleDefaultSize = bulleSize(selectedBulle);
+            color = selectedBulle.shape.rezoColor;
+            selectedBulle.lineStyle(16, color, 0.5);
+            selectedBulle.drawCircle(0, 0, bulleDefaultSize);
+            if (color == 0xffffff) {
                 selectedBulle.lineStyle(16, 0x000000, 0.5);
-                selectedBulle.drawCircle(0, 0, circleSize);
+                selectedBulle.drawCircle(0, 0, bulleDefaultSize);
             }
         }
         else {

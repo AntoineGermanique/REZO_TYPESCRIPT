@@ -5,14 +5,21 @@ enum TextRezoType {
 }
 
 class TextRezo extends PIXI.Text {
+    textDraw: Draw;
     text: string;
     kind: TextRezoType;
+    polyPathNumber: Loc[];
 
     constructor(text: string, kind: TextRezoType) {
         super(text);
         this.kind = kind;
         this.text = text;
     }
+    setTextDraw(textDraw: Draw): void {
+        this.textDraw = textDraw;
+        this.polyPathNumber = textDraw.getPath();
+    }
+
     replaceText() {
         if (hyperBool && selectedHyper) {
 
