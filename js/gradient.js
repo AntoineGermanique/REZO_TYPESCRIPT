@@ -45,21 +45,32 @@ function gradient() {
 function setColorFun(bulleToColor, goodColor) {
     var circleSize = bulleSize(bulleToColor);
     var newColor = bulleToColor.shape;
-    newColor.clear();
-    newColor.beginFill(goodColor, 1);
-    if (goodColor == 0xffffff) {
-        console.log(goodColor);
-        newColor.lineStyle(1, 0x000000, 1);
-    }
-    newColor.drawCircle(0, 0, circleSize);
-    newColor.endFill();
-    bulleToColor.clear();
-    bulleToColor.lineStyle(16, goodColor, 0.5);
-    bulleToColor.drawCircle(0, 0, circleSize);
-    if (goodColor == 0xffffff) {
+    if (bulleToColor.shape.kind == ShapeEnum.circle) {
+        newColor.clear();
+        newColor.beginFill(goodColor, 1);
+        if (goodColor == 0xffffff) {
+            console.log(goodColor);
+            newColor.lineStyle(1, 0x000000, 1);
+        }
+        newColor.drawCircle(0, 0, circleSize);
+        newColor.endFill();
         bulleToColor.clear();
-        bulleToColor.lineStyle(16, 0x000000, 0.5);
+        bulleToColor.lineStyle(16, goodColor, 0.5);
         bulleToColor.drawCircle(0, 0, circleSize);
+        if (goodColor == 0xffffff) {
+            bulleToColor.clear();
+            bulleToColor.lineStyle(16, 0x000000, 0.5);
+            bulleToColor.drawCircle(0, 0, circleSize);
+        }
+    }
+    else {
+        bulleToColor.clear();
+        bulleToColor.lineStyle(16, goodColor, 0.5);
+        bulleToColor.drawPolygon(bulleToColor.polyPathNumber);
+        bulleToColor.endFill();
+        newColor.beginFill(goodColor, 1);
+        newColor.drawPolygon(bulleToColor.polyPathNumber);
+        newColor.endFill();
     }
     bulleColor = goodColor;
     newColor.rezoColor = goodColor;

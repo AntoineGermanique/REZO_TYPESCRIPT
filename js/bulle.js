@@ -55,7 +55,8 @@ var Bulle = (function (_super) {
         text.setTextDraw(textDraw);
         this.shape = shape;
         this.text = text;
-        this.text.textDraw.setTransform(-posX, -posY);
+        if (this.text.textDraw.getBounds().x != 0 && this.text.textDraw.getBounds().y != 0)
+            this.text.textDraw.setTransform(-posX, -posY);
         this.addChild(this.shape);
         this.addChild(this.text.textDraw);
         this.dragBulle();
@@ -228,6 +229,7 @@ var Bulle = (function (_super) {
                 }
             }
             else if (selectedBulle.shape.kind == ShapeEnum.poly) {
+                selectedBulle.clear();
                 selectedBulle.lineStyle(16, color, 0.5);
                 selectedBulle.drawPolygon(selectedBulle.polyPathNumber);
                 selectedBulle.endFill();

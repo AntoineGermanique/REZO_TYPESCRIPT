@@ -24,7 +24,7 @@ interface BulleSave {
     width: number;
     height: number;
     shape: number;
-    polyPath: Loc[];
+    polyPath: number[];
     polyTextPath: Loc[];
 }
 
@@ -122,8 +122,8 @@ function createJsonRezo(): RezoSave {
                 width: bulleInfo.bulle.width,
                 height: bulleInfo.bulle.height,
                 shape: bulleInfo.bulle.shape.kind,
-                polyPath: null,
-                polyTextPath: null,
+                polyPath: bulleInfo.bulle.shape.polyPathNumber,
+                polyTextPath: bulleInfo.bulle.text.polyPathNumber
             })
         }
         var rezoSave: RezoSave;

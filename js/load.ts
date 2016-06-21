@@ -16,7 +16,27 @@ function load2(rezoSave: RezoSave, title: string, timeStamp?:number) {
 
     for (var i = 0; i < rezoSave.bullesArray.length; i++) {
         var bulleInfo: BulleSave = rezoSave.bullesArray[i];
-        Rezo.sceneBulle.addChild(new Bulle(bulleInfo.loc.x, bulleInfo.loc.y, bulleInfo.text, parseInt(bulleInfo.color.replace(/^#/, ''), 16), bulleInfo.scale.x, bulleInfo.shape));
+        if (bulleInfo.shape == ShapeEnum.circle) {
+            Rezo.sceneBulle.addChild(new Bulle(bulleInfo.loc.x, bulleInfo.loc.y, bulleInfo.text, parseInt(bulleInfo.color.replace(/^#/, ''), 16), bulleInfo.scale.x, bulleInfo.shape));
+        } else if (bulleInfo.shape == ShapeEnum.poly) {
+            var drawText = new Draw(bulleInfo.polyTextPath[0]);
+            drawText.setPath(bulleInfo.polyTextPath);
+            var drawBulle = new Draw({ x: bulleInfo.polyPath[0], y: bulleInfo.polyPath[0] }, true);
+            drawBulle.setPathNumber(bulleInfo.polyPath);
+            Rezo.sceneBulle.addChild(new Bulle(
+                bulleInfo.loc.x,
+                bulleInfo.loc.y,
+                bulleInfo.text,
+                parseInt(bulleInfo.color.replace(/^#/, ''), 16),
+                bulleInfo.scale.x, bulleInfo.shape,
+                drawBulle,
+                drawText
+                )
+            )
+            drawText.drawLine();
+            //drawText.setTransform(0, 0);
+
+        }
     }
     for (var i = 0; i < rezoSave.linkSave.length; i++) {
         var lastBulleSelectedIndex = rezoSave.linkSave[i].indexBulle1;

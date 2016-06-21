@@ -58,6 +58,7 @@ var Draw = (function (_super) {
         this._polyPath = path;
     };
     Draw.prototype.drawLine = function () {
+        this.lineStyle(2, 0x000000, 1);
         this.moveTo(this._path[0].x, this._path[0].y);
         for (var i = 1; i < this._path.length; i++) {
             this.lineTo(this._path[i].x, this._path[i].y);

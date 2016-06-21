@@ -68,6 +68,7 @@ var SceneDraw = (function (_super) {
         this._drawText.setPathNumber(this.correctDrawingPathNumber(this._drawText.getPathNumber(), x, y));
         this._drawText.setPath(this.correctDrawingPath(this._drawText.getPath(), x, y));
         Rezo.sceneBulle.addChild(new Bulle(x, y, "", bulleColor, defaultScale, ShapeEnum.poly, this._drawBulle, this._drawText));
+        SceneDraw.toggleDrawingWrite();
     };
     SceneDraw.prototype.correctDrawingPathNumber = function (path, x, y) {
         var newPath = [];

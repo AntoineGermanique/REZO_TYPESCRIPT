@@ -51,6 +51,7 @@ class Draw extends PIXI.Graphics {
         this._polyPath = path;
     }
     drawLine() {
+        this.lineStyle(2, 0x000000, 1);
         this.moveTo(this._path[0].x, this._path[0].y)
         for (var i = 1; i < this._path.length; i++) {
             this.lineTo(this._path[i].x, this._path[i].y)
