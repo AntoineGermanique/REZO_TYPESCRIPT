@@ -50,7 +50,10 @@ class SceneDraw extends PIXI.Container {
         var drawStop = () => {
             this._drawDown = false;
             if (SceneDraw.isWriting) {
-                this._drawPause=true
+                if (this._draw){
+                    this._drawPause = true
+                    this._draw.drawLine();
+                }
                 //this._drawText = this._draw;
                 //Rezo.sceneDraw._draw = null;
             } else {
@@ -122,8 +125,9 @@ class SceneDraw extends PIXI.Container {
         this._drawDown = true;
     }
     drawWrite(data: Data) {
+
         this._draw.addPathPoint(data.data.global.x, data.data.global.y);
-        this._draw.lineStyle(2, 0x000000, 1);
+        this._draw.lineStyle(3, 0x000000, 1);
         this._draw.moveTo(this._draw.getPreviousPoint().x, this._draw.getPreviousPoint().y);
         this._draw.lineTo(this._draw.getLastPoint().x, this._draw.getLastPoint().y);
         this._draw.endFill();
@@ -140,6 +144,7 @@ class SceneDraw extends PIXI.Container {
             $("#drawing").addClass("drawingExpend");
             $("#circleBulle").removeClass("hiddenButton");
             $("#writeBulle").removeClass("hiddenButton");
+            $("#scriptToTypeBulle").removeClass("hiddenButton");
             SceneDraw.toggleDrawingWrite();
             setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
@@ -153,6 +158,7 @@ class SceneDraw extends PIXI.Container {
             $("#drawing").removeClass("drawingExpend");
             $("#circleBulle").addClass("hiddenButton");
             $("#writeBulle").addClass("hiddenButton");
+            $("#scriptToTypeBulle").addClass("hiddenButton");
             setBackground();
             Rezo.sceneDraw.interactive = false;
             Rezo.upperScene.interactive = true;
@@ -179,6 +185,14 @@ class SceneDraw extends PIXI.Container {
             $("#circleBulle").addClass("whiteBackground");
 
             Rezo.sceneDraw._drawText = Rezo.sceneDraw._draw;
+            if (Rezo.sceneDraw._drawText) {
+                Rezo.sceneDraw._draw.drawLine();
+                //var texture = Rezo.sceneDraw._drawText.generateTexture(Rezo.renderer); var shapeSprite = new PIXI.Sprite(texture);
+                //Rezo.scene.addChild(shapeSprite)
+                //Rezo.sceneDraw._drawText._bmp = shapeSprite;
+            //    var bezier = new Bezier();
+            //    bezier.drawQuadraticCurve(Rezo.sceneDraw._drawText.getPath(), Rezo.sceneDraw._drawText)
+            }
             Rezo.sceneDraw._draw = null;
             if (SceneDraw.isWriting) {
                 SceneDraw.toggleDrawingWrite();
@@ -196,6 +210,16 @@ class SceneDraw extends PIXI.Container {
         this._drawBulle = null;
         this._draw = null;
         this._drawDown = false;
+    }
+    static scriptToTypeBulle() {
+        if (Rezo.selectedBulle.text.textDraw) {
+            var textDraw = Rezo.selectedBulle.text.textDraw;
+            textDraw.setRecoPath(textDraw.getPath());
+            var textReco = new TextRecognition();
+            var data = textReco.createInput(textDraw.getRecoPath());
+            textReco.xhr("POST", Ressource.urlReco, data);
+
+        }
     }
     
 }

@@ -67,7 +67,12 @@ class Bulle extends PIXI.Graphics {
         if (this.text.textDraw.getBounds().x != 0 && this.text.textDraw.getBounds().y!=0)
             this.text.textDraw.setTransform(-posX, -posY);
         this.addChild(this.shape);
-        this.addChild(this.text.textDraw);
+        if (!this.text.textDraw._bmp) {
+            this.addChild(this.text.textDraw);
+        } else {
+            this.addChild(this.text.textDraw._bmp);
+
+        }
         this.dragBulle();
         array(this);
         var selectedBulle = Rezo.selectedBulle;
@@ -300,8 +305,8 @@ class Shape extends PIXI.Graphics {
     constructor(shape: ShapeEnum, size: number, color: number, path?: number[]) {
         super();
         this.kind = shape;
-        this.rezoColor = color
-        this.drawRezoShape(shape,size,path)
+        this.rezoColor = color;
+        this.drawRezoShape(shape, size, path);
     }
 
     drawRezoShape(shape: ShapeEnum, size: number, path?: number[]) {

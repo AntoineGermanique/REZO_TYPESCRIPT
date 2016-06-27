@@ -157,7 +157,10 @@ class Rezo {
         scaleBulle();
         selectIntercative();
         menu();
-        setSortingListener() 
+        setSortingListener();
+        var bezierTest = new Bezier();
+        //bezierTest.testBezier();
+
 
     }
     static newRezo = function () {
@@ -176,7 +179,9 @@ class Rezo {
 
         bulleX = Rezo.windowW / 2;
         bulleY = Rezo.windowH / 2;
+        var bulle=
         Rezo.sceneBulle.addChild(new Bulle(bulleX, bulleY, "rezo", bulleColor, defaultScale, ShapeEnum.circle));
+
         Rezo.scaleScene.scale.x = 1
         Rezo.scaleScene.scale.y = 1
         Rezo.scene.position.x = 0

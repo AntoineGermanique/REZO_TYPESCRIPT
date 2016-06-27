@@ -115,10 +115,12 @@ div#gradient {
 #writeBulle{
     background-image:url(../images/drawWrite.png);
 }
+#scriptToTypeBulle{
+    background-image:url(../images/scriptToType.png);
+}
 #editBulle{
     background-image:url(../images/EDIT.png);
 }
-
 #linkBulle{
     background-image:url(../images/LINK.png);
 }
@@ -206,8 +208,8 @@ div#drawing {
 }
 
 .drawingExpend {
-    margin-left: -6em;
-    width: 9em;
+    margin-left: -9em;
+    width: 12em;
 }
 
 .drawBTN {

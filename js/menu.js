@@ -271,6 +271,7 @@ function menu() {
     $("#drawBulle").click(SceneDraw.toggleDrawingMode);
     $("#writeBulle").click(SceneDraw.toggleDrawingWrite);
     $("#circleBulle").click(SceneDraw.toggleDrawingBulle);
+    $("#scriptToTypeBulle").click(SceneDraw.scriptToTypeBulle);
 }
 function linkButton() {
     Link.emptyLinkArray();

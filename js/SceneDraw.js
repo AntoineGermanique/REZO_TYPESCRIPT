@@ -44,7 +44,10 @@ var SceneDraw = (function (_super) {
         var drawStop = function () {
             _this._drawDown = false;
             if (SceneDraw.isWriting) {
-                _this._drawPause = true;
+                if (_this._draw) {
+                    _this._drawPause = true;
+                    _this._draw.drawLine();
+                }
             }
             else {
                 _this._drawBulle = _this._draw;
@@ -111,7 +114,7 @@ var SceneDraw = (function (_super) {
     };
     SceneDraw.prototype.drawWrite = function (data) {
         this._draw.addPathPoint(data.data.global.x, data.data.global.y);
-        this._draw.lineStyle(2, 0x000000, 1);
+        this._draw.lineStyle(3, 0x000000, 1);
         this._draw.moveTo(this._draw.getPreviousPoint().x, this._draw.getPreviousPoint().y);
         this._draw.lineTo(this._draw.getLastPoint().x, this._draw.getLastPoint().y);
         this._draw.endFill();
@@ -128,6 +131,7 @@ var SceneDraw = (function (_super) {
             $("#drawing").addClass("drawingExpend");
             $("#circleBulle").removeClass("hiddenButton");
             $("#writeBulle").removeClass("hiddenButton");
+            $("#scriptToTypeBulle").removeClass("hiddenButton");
             SceneDraw.toggleDrawingWrite();
             setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
@@ -142,6 +146,7 @@ var SceneDraw = (function (_super) {
             $("#drawing").removeClass("drawingExpend");
             $("#circleBulle").addClass("hiddenButton");
             $("#writeBulle").addClass("hiddenButton");
+            $("#scriptToTypeBulle").addClass("hiddenButton");
             setBackground();
             Rezo.sceneDraw.interactive = false;
             Rezo.upperScene.interactive = true;
@@ -167,6 +172,9 @@ var SceneDraw = (function (_super) {
             SceneDraw.isBulling = true;
             $("#circleBulle").addClass("whiteBackground");
             Rezo.sceneDraw._drawText = Rezo.sceneDraw._draw;
+            if (Rezo.sceneDraw._drawText) {
+                Rezo.sceneDraw._draw.drawLine();
+            }
             Rezo.sceneDraw._draw = null;
             if (SceneDraw.isWriting) {
                 SceneDraw.toggleDrawingWrite();
@@ -184,6 +192,15 @@ var SceneDraw = (function (_super) {
         this._drawBulle = null;
         this._draw = null;
         this._drawDown = false;
+    };
+    SceneDraw.scriptToTypeBulle = function () {
+        if (Rezo.selectedBulle.text.textDraw) {
+            var textDraw = Rezo.selectedBulle.text.textDraw;
+            textDraw.setRecoPath(textDraw.getPath());
+            var textReco = new TextRecognition();
+            var data = textReco.createInput(textDraw.getRecoPath());
+            textReco.xhr("POST", Ressource.urlReco, data);
+        }
     };
     SceneDraw.isWriting = false;
     SceneDraw.isBulling = false;

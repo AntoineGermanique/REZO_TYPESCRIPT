@@ -115,6 +115,8 @@ var Rezo = (function () {
         selectIntercative();
         menu();
         setSortingListener();
+        var bezierTest = new Bezier();
+        //bezierTest.testBezier();
     }
     ;
     Rezo.load = document.getElementById("loading");
@@ -138,7 +140,7 @@ var Rezo = (function () {
         Rezo.sceneLink.removeChildren();
         bulleX = Rezo.windowW / 2;
         bulleY = Rezo.windowH / 2;
-        Rezo.sceneBulle.addChild(new Bulle(bulleX, bulleY, "rezo", bulleColor, defaultScale, ShapeEnum.circle));
+        var bulle = Rezo.sceneBulle.addChild(new Bulle(bulleX, bulleY, "rezo", bulleColor, defaultScale, ShapeEnum.circle));
         Rezo.scaleScene.scale.x = 1;
         Rezo.scaleScene.scale.y = 1;
         Rezo.scene.position.x = 0;

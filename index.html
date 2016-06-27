@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    
+    <!--<link rel="import" href="bower_components/myscript-text-web.html">-->
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
@@ -17,6 +17,7 @@
                 <div id="drawBulle" class="bigBTN drawBTN"></div>
                 <div id="circleBulle" class="bigBTN drawBTN hiddenButton"></div>
                 <div id="writeBulle" class="bigBTN drawBTN hiddenButton"></div>
+                <div id="scriptToTypeBulle" class="bigBTN drawBTN hiddenButton"></div>
             </div>
             <div id="editBackground">
                 <div id="editBulle" class="bigBTN"></div>
@@ -40,7 +41,7 @@
             </div>
             <div id='navBackground'>
                 <div id="naviBulle" class="bigBTN"></div>
-                <div  id="zoomPBulle"class="bigBTN hiddenButton"></div>
+                <div id="zoomPBulle" class="bigBTN hiddenButton"></div>
                 <div id="zoomMBulle" class="bigBTN hiddenButton"></div>
                 <div id="zoomPText" class="bigBTN hiddenButton"></div>
                 <div id="zoomMText" class="bigBTN hiddenButton"></div>
@@ -87,7 +88,9 @@
     <div id="canvasContainer">
 
     </div>
+
     <script src="js/Ressource.js"></script>
+    <script src="js/BezierCurve.js"></script>
     <script src="js/DriveAPI.js"></script>
     <script src="lib/pixi.js"></script>
     <script src="lib/jquery-2.1.1.min.js"></script>
@@ -131,7 +134,16 @@
     <script src="js/Draw.js"></script>
     <script src="js/SceneDraw.js"></script>
     <script src="js/Utilitary.js"></script>
+    <script src="js/sceneBulle.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+    <!--<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha512-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/hmac-min.js"></script>
+
+
+
     <script>
         window.addEventListener('load', init, false);
 

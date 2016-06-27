@@ -20,7 +20,8 @@ function load2(rezoSave, title, timeStamp) {
             drawText.setPath(bulleInfo.polyTextPath);
             var drawBulle = new Draw({ x: bulleInfo.polyPath[0], y: bulleInfo.polyPath[0] }, true);
             drawBulle.setPathNumber(bulleInfo.polyPath);
-            Rezo.sceneBulle.addChild(new Bulle(bulleInfo.loc.x, bulleInfo.loc.y, bulleInfo.text, parseInt(bulleInfo.color.replace(/^#/, ''), 16), bulleInfo.scale.x, bulleInfo.shape, drawBulle, drawText));
+            var bulle = new Bulle(bulleInfo.loc.x, bulleInfo.loc.y, bulleInfo.text, parseInt(bulleInfo.color.replace(/^#/, ''), 16), bulleInfo.scale.x, bulleInfo.shape, drawBulle, drawText);
+            Rezo.sceneBulle.addChild(bulle);
             drawText.drawLine();
         }
     }
@@ -41,6 +42,7 @@ function load2(rezoSave, title, timeStamp) {
     Rezo.scaleScene.scale.x = rezoSave.scale.x;
     Rezo.scaleScene.scale.y = rezoSave.scale.y;
     $('#loading').css("display", "none");
+    //setTimeout(SceneBulle.bitmapDraw(),1000);
 }
 function load(bubble, linkLoad, title, scenePo, scalePo) {
     while (bubbleArray.length > 0) {

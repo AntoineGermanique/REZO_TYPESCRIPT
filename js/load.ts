@@ -23,7 +23,7 @@ function load2(rezoSave: RezoSave, title: string, timeStamp?:number) {
             drawText.setPath(bulleInfo.polyTextPath);
             var drawBulle = new Draw({ x: bulleInfo.polyPath[0], y: bulleInfo.polyPath[0] }, true);
             drawBulle.setPathNumber(bulleInfo.polyPath);
-            Rezo.sceneBulle.addChild(new Bulle(
+            var bulle = new Bulle(
                 bulleInfo.loc.x,
                 bulleInfo.loc.y,
                 bulleInfo.text,
@@ -31,8 +31,8 @@ function load2(rezoSave: RezoSave, title: string, timeStamp?:number) {
                 bulleInfo.scale.x, bulleInfo.shape,
                 drawBulle,
                 drawText
-                )
             )
+            Rezo.sceneBulle.addChild(bulle);
             drawText.drawLine();
             //drawText.setTransform(0, 0);
 
@@ -58,7 +58,7 @@ function load2(rezoSave: RezoSave, title: string, timeStamp?:number) {
     Rezo.scaleScene.scale.y = rezoSave.scale.y;
 
     $('#loading').css("display", "none");
-
+    //setTimeout(SceneBulle.bitmapDraw(),1000);
 
 }
 

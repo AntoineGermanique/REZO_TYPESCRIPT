@@ -58,7 +58,12 @@ var Bulle = (function (_super) {
         if (this.text.textDraw.getBounds().x != 0 && this.text.textDraw.getBounds().y != 0)
             this.text.textDraw.setTransform(-posX, -posY);
         this.addChild(this.shape);
-        this.addChild(this.text.textDraw);
+        if (!this.text.textDraw._bmp) {
+            this.addChild(this.text.textDraw);
+        }
+        else {
+            this.addChild(this.text.textDraw._bmp);
+        }
         this.dragBulle();
         array(this);
         var selectedBulle = Rezo.selectedBulle;

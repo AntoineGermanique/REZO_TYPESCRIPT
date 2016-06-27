@@ -13,6 +13,11 @@ var Ressource = (function () {
     Ressource.pathImgPen = Ressource.pathImg + "pen_back.png";
     Ressource.confirmLocalOverwriting = "Ce nom de rezo existe déjà, je l'écrase ?";
     Ressource.confirmSupprRezo = 'voulez vous vraiment supprimer ce Rezo?';
+    Ressource.urlReco = "https://cloud.myscript.com/api/v3.0/recognition/rest/text/doSimpleRecognition.json";
+    Ressource.RecoAppliKey = "c5129adc-46ae-40d5-8a82-c7672ea53f17";
+    Ressource.HmacKey = "e039f737-1836-421d-97b9-5fc833a65a56";
+    Ressource.langage = "fr_FR";
+    Ressource.textInputNode = "CURSIVE";
     return Ressource;
 }());
 //# sourceMappingURL=Ressource.js.map
