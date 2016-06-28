@@ -111,6 +111,7 @@ function createJsonRezo(): RezoSave {
         }
         for (var i = 0; i < bubbleArray.length; i++) {
             var bulleInfo: BulleArray = bubbleArray[i];
+            var timeStamps = (bulleInfo.bulle.text.textDraw) ? bulleInfo.bulle.text.textDraw.getTimeStamps() : null;
             bulleArraySave.push({
                 loc: {
                     x: bulleInfo.bulle.x,
@@ -125,7 +126,7 @@ function createJsonRezo(): RezoSave {
                 shape: bulleInfo.bulle.shape.kind,
                 polyPath: bulleInfo.bulle.shape.polyPathNumber,
                 polyTextPath: bulleInfo.bulle.text.polyPathNumber,
-                timeStamps: bulleInfo.bulle.text.textDraw.getTimeStamps()
+                timeStamps: timeStamps
             })
         }
         var rezoSave: RezoSave;

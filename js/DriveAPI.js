@@ -18,11 +18,18 @@ var DriveAPI = (function () {
     DriveAPI.prototype.updateConnection = function () {
         var _this = this;
         $('#loading').css("display", "block");
-        gapi.auth.authorize({
-            'client_id': this.CLIENT_ID,
-            'scope': this.SCOPES.join(' '),
-            'immediate': true
-        }, function (authResult) { _this.handleAuthResult(authResult); });
+        if (Rezo.isDriveConnected) {
+            this.loadDriveApi();
+        }
+        else {
+            gapi.auth.authorize({
+                'client_id': this.CLIENT_ID,
+                'scope': this.SCOPES.join(' '),
+                'immediate': false
+            }, function (authResult) {
+                _this.handleAuthResult(authResult);
+            });
+        }
     };
     /**
      * Handle response from authorization server.
@@ -59,7 +66,9 @@ var DriveAPI = (function () {
     DriveAPI.prototype.handleAuthClick = function (event) {
         var _this = this;
         if (gapi) {
-            gapi.auth.authorize({ client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false }, function (authResult) { _this.handleAuthResult(authResult); });
+            gapi.auth.authorize({ client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false }, function (authResult) {
+                _this.handleAuthResult(authResult);
+            });
             return false;
         }
         else {
@@ -91,18 +100,20 @@ var DriveAPI = (function () {
             document.dispatchEvent(event);
             var files = resp.items;
             if (files && files.length > 0) {
+                var innerHTML = "";
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if (file.fileExtension == "rezo") {
-                        _this.appendPre(file.title, file.id, file.modifiedDate);
+                        innerHTML = _this.appendPre(file.title, file.id, file.modifiedDate, innerHTML);
                     }
                 }
-                openLoad(_this.innerHTML);
+                openLoad(innerHTML = (_this.innerHTML) ? _this.innerHTML : innerHTML);
                 _this.innerHTML = "";
+                innerHTML = "";
                 $('#loading').css("display", "none");
             }
             else {
-                _this.appendPre("", null, null);
+                _this.appendPre("", null, null, null);
             }
         });
     };
@@ -121,13 +132,15 @@ var DriveAPI = (function () {
      *
      * @param {string} message Text to be placed in pre element.
      */
-    DriveAPI.prototype.appendPre = function (name, id, timeStamp) {
+    DriveAPI.prototype.appendPre = function (name, id, timeStamp, innerHTMLRef) {
         //var option = document.createElement("option");
         var titre = name.replace(/.rezo$/, '');
         var timeStampNumber = Date.parse(timeStamp);
         var innerHTML = "<div class='open' id='" + id + "' attr='" + timeStampNumber + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' id='" + titre + "' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
         //document.getElementById('open').innerHTML += innerHTML;
         this.innerHTML += innerHTML;
+        innerHTMLRef += innerHTML;
+        return innerHTMLRef;
         //var event = new CustomEvent("fillselect", { 'detail': option })
         //document.dispatchEvent(event);
     };
@@ -140,7 +153,9 @@ var DriveAPI = (function () {
     DriveAPI.prototype.downloadFile = function (file, callback) {
         if (file.downloadUrl) {
             var accessToken = gapi.auth.getToken().access_token;
+            $.support.cors;
             var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
             xhr.open('GET', file.downloadUrl);
             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
             xhr.onload = function () {

@@ -46,13 +46,20 @@ class DriveAPI {
 
     updateConnection() {
         $('#loading').css("display", "block");
-        
-        gapi.auth.authorize(
-            {
-                'client_id': this.CLIENT_ID,
-                'scope': this.SCOPES.join(' '),
-                'immediate': true
-            }, (authResult) => { this.handleAuthResult(authResult) });
+        if (Rezo.isDriveConnected) {
+            this.loadDriveApi();
+        } else {
+            gapi.auth.authorize(
+                {
+                    'client_id': this.CLIENT_ID,
+                    'scope': this.SCOPES.join(' '),
+                    'immediate': false
+                },
+                (authResult) => {
+                    this.handleAuthResult(authResult)
+                }
+            );
+        }
     }
 
     /**
@@ -93,7 +100,9 @@ class DriveAPI {
         if (gapi) {
             gapi.auth.authorize(
                 { client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false },
-                (authResult) => { this.handleAuthResult(authResult) });
+                (authResult) => {
+                    this.handleAuthResult(authResult)
+                });
             return false;
         } else {
             alert("connexion au drive impossible, vérifiez votre connexion  internet")
@@ -127,19 +136,22 @@ class DriveAPI {
             document.dispatchEvent(event);
             var files = resp.items;
             if (files && files.length > 0) {
+                var innerHTML="";
                 for (var i = 0; i < files.length; i++) {
                     var file: DriveFile = files[i];
                     if (file.fileExtension == "rezo") {
-                        this.appendPre(file.title, file.id, file.modifiedDate);
+                        innerHTML=this.appendPre(file.title, file.id, file.modifiedDate, innerHTML);
 
                     }
                 }
-                openLoad(this.innerHTML);
+
+                openLoad(innerHTML = (this.innerHTML) ? this.innerHTML : innerHTML);
                 this.innerHTML = "";
+                innerHTML = "";
                 $('#loading').css("display", "none");
 
             } else {
-                this.appendPre("", null,null);
+                this.appendPre("", null, null, null);
             }
         });
     }
@@ -164,14 +176,15 @@ class DriveAPI {
      *
      * @param {string} message Text to be placed in pre element.
      */
-    appendPre(name: string, id: string, timeStamp: string) {
+    appendPre(name: string, id: string, timeStamp: string, innerHTMLRef: string):string {
         //var option = document.createElement("option");
         var titre = name.replace(/.rezo$/, '');
         var timeStampNumber = Date.parse(timeStamp);
         var innerHTML = "<div class='open' id='" + id + "' attr='" + timeStampNumber + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' id='" + titre + "' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
         //document.getElementById('open').innerHTML += innerHTML;
         this.innerHTML += innerHTML;
-
+        innerHTMLRef += innerHTML;
+        return innerHTMLRef;
         //var event = new CustomEvent("fillselect", { 'detail': option })
         //document.dispatchEvent(event);
 
@@ -185,7 +198,9 @@ class DriveAPI {
     downloadFile(file: DriveFile, callback: (rezoSave: RezoSave, title: string, timeStamp: number) => void) {
         if (file.downloadUrl) {
             var accessToken = gapi.auth.getToken().access_token;
+            $.support.cors;
             var xhr = new XMLHttpRequest();
+            //xhr.withCredentials = true;
             xhr.open('GET', file.downloadUrl);
             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
             xhr.onload = function () {
@@ -200,7 +215,7 @@ class DriveAPI {
             };
             xhr.send();
         } else {
-            callback(null,null,null);
+            callback(null, null, null);
         }
     }
     /**
