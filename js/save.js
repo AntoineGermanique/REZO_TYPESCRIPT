@@ -81,7 +81,8 @@ function createJsonRezo() {
                 height: bulleInfo.bulle.height,
                 shape: bulleInfo.bulle.shape.kind,
                 polyPath: bulleInfo.bulle.shape.polyPathNumber,
-                polyTextPath: bulleInfo.bulle.text.polyPathNumber
+                polyTextPath: bulleInfo.bulle.text.polyPathNumber,
+                timeStamps: bulleInfo.bulle.text.textDraw.getTimeStamps()
             });
         }
         var rezoSave;

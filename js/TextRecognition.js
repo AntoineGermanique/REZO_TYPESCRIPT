@@ -1,21 +1,30 @@
 var TextRecognition = (function () {
     function TextRecognition() {
     }
-    TextRecognition.prototype.xhr = function (type, url, data) {
+    TextRecognition.prototype.xhr = function (type, url, data, text) {
         function onLoad() {
             if (request.status >= 200 && request.status < 300) {
-                console.log(request);
+                var textResult = JSON.parse(request.response).result.textSegmentResult.candidates[0].label;
+                console.log(textResult);
+                var textRecognize = prompt("is it Okay?", textResult);
+                if (textRecognize && textRecognize != "") {
+                    text.text = textRecognize;
+                } //deferred.resolve(NetworkInterface.parse(request));
             }
+        }
+        function onError() {
+        }
+        function onStateChange() {
         }
         var request = new XMLHttpRequest();
         request.open(type, url, true);
         request.withCredentials = true;
         request.setRequestHeader('Accept', 'application/json');
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        //request.onload = onLoad;
-        //request.onerror = onError;
+        request.onload = onLoad;
+        request.onerror = onError;
         //request.onprogress = onProgress;
-        //request.onreadystatechange = onStateChange;
+        request.onreadystatechange = onStateChange;
         request.send(this.transformRequest(data));
     };
     TextRecognition.prototype.transformRequest = function (data) {
@@ -39,29 +48,33 @@ var TextRecognition = (function () {
             strokeComponent = {
                 x: path[i].x,
                 y: path[i].y,
+                t: path[i].t,
                 type: "stroke"
             };
             textInputUnits.components.push(strokeComponent);
         }
         return textInputUnits;
     };
-    TextRecognition.prototype.setRequestInputParams = function (inputUnits) {
+    TextRecognition.prototype.createRequestInputParams = function (inputUnits) {
         var textRecoInputs = {
-            inputUnits: [],
             textParameter: {
-                langague: Ressource.langage,
+                language: Ressource.langage,
                 textInputMode: Ressource.textInputNode,
-            }
+            },
+            inputUnits: []
         };
         textRecoInputs.inputUnits.push(inputUnits);
         this.input = textRecoInputs;
+        return textRecoInputs;
     };
-    TextRecognition.prototype.setDataRequest = function () {
+    TextRecognition.prototype.createDataRequest = function (input) {
         this.data = {
             applicationKey: Ressource.RecoAppliKey,
-            hmac: Ressource.HmacKey,
-            textInput: this.computeHmac(Ressource.RecoAppliKey, this.input, Ressource.HmacKey)
+            hmac: this.computeHmac(Ressource.RecoAppliKey, input, Ressource.HmacKey),
+            textInput: JSON.stringify(input),
+            instanceId: undefined
         };
+        return this.data;
     };
     TextRecognition.prototype.computeHmac = function (applicationKey, data, hmacKey) {
         var jsonInput = (typeof data === 'object') ? JSON.stringify(data) : data;

@@ -29,7 +29,7 @@ var SceneDraw = (function (_super) {
             if (_this._drawDown) {
                 if (SceneDraw.isWriting) {
                     if (_this._drawPause) {
-                        _this._draw.addPathPoint(data.data.global.x, data.data.global.y);
+                        _this._draw.addPathPoint(data.data.global.x, data.data.global.y, data.data.originalEvent.timeStamp);
                         _this._drawPause = false;
                     }
                     _this.drawWrite(data);
@@ -98,7 +98,7 @@ var SceneDraw = (function (_super) {
             y: data.data.global.y
         };
         if (!this._draw)
-            this._draw = new Draw(loc);
+            this._draw = new Draw(loc, 0);
         this.addChild(this._draw);
         this._drawDown = true;
     };
@@ -108,19 +108,19 @@ var SceneDraw = (function (_super) {
             y: data.data.global.y
         };
         if (!this._draw)
-            this._draw = new Draw(loc, true);
+            this._draw = new Draw(loc, data.data.originalEvent.timeStamp);
         this.addChild(this._draw);
         this._drawDown = true;
     };
     SceneDraw.prototype.drawWrite = function (data) {
-        this._draw.addPathPoint(data.data.global.x, data.data.global.y);
+        this._draw.addPathPoint(data.data.global.x, data.data.global.y, data.data.originalEvent.timeStamp);
         this._draw.lineStyle(3, 0x000000, 1);
         this._draw.moveTo(this._draw.getPreviousPoint().x, this._draw.getPreviousPoint().y);
         this._draw.lineTo(this._draw.getLastPoint().x, this._draw.getLastPoint().y);
         this._draw.endFill();
     };
     SceneDraw.prototype.drawBulle = function (data) {
-        this._draw.addPolyPathPoint(data.data.global.x, data.data.global.y);
+        this._draw.addPolyPathPoint(data.data.global.x, data.data.global.y, data.data.originalEvent.timeStamp);
         this._draw.drawPoly();
     };
     SceneDraw.toggleDrawingMode = function () {
@@ -196,10 +196,10 @@ var SceneDraw = (function (_super) {
     SceneDraw.scriptToTypeBulle = function () {
         if (Rezo.selectedBulle.text.textDraw) {
             var textDraw = Rezo.selectedBulle.text.textDraw;
-            textDraw.setRecoPath(textDraw.getPath());
+            textDraw.setRecoPath(textDraw.getPath(), textDraw.getTimeStamps());
             var textReco = new TextRecognition();
-            var data = textReco.createInput(textDraw.getRecoPath());
-            textReco.xhr("POST", Ressource.urlReco, data);
+            var data = textReco.createDataRequest(textReco.createRequestInputParams(textReco.createInput(textDraw.getRecoPath())));
+            textReco.xhr("POST", Ressource.urlReco, data, Rezo.selectedBulle.text);
         }
     };
     SceneDraw.isWriting = false;

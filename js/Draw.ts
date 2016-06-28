@@ -6,29 +6,41 @@ class Draw extends PIXI.Graphics {
     _path: Loc[] = [];
     _polyPath: number[] = [];
     _recoPath: Path[] = [];
+    _timeStamp: number[]=[];
     _bmp: PIXI.Sprite;
-    constructor(loc: Loc, isPolygon?: boolean) {
+    constructor(loc: Loc, timeStamp?: number, isPolygon?: boolean) {
         super();
         if (!isPolygon) {
             this._path.push(loc);
+            //this._timeStamp.push(timeStamp)
         } else {
             this._polyPath.push(loc.x);
             this._polyPath.push(loc.y);
+            this._timeStamp.push(timeStamp)
         }
     }
-    addPolyPathPoint(x: number, y: number) {
+    addPolyPathPoint(x: number, y: number, timeStamp: number) {
         this._polyPath.push(x);
         this._polyPath.push(y);
+        this._timeStamp.push(timeStamp)
+
     }
-    addPathPointLoc(loc: Loc): void {
+    addPathPointLoc(loc: Loc, timeStamp: number): void {
         this._path.push(loc);
+        this._timeStamp.push(timeStamp)
+
     }
-    addPathPoint(x: number, y: number) {
+    addPathPoint(x: number, y: number, timeStamp: number) {
         var loc: Loc = {
             x: x,
             y: y
         };
         this._path.push(loc);
+        this._timeStamp.push(timeStamp)
+
+    }
+    getTimeStamps(): number[] {
+        return this._timeStamp;
     }
     getPath(): Loc[] {
         return this._path;
@@ -71,8 +83,11 @@ class Draw extends PIXI.Graphics {
         this.endFill();
 
     }
-    setRecoPath(path: Loc[]): void {
+    setRecoPath(path: Loc[], timeStamp: number[]): void {
+        path = this.makePathUint(path);
         var pathPath: Array<Loc[]> = [];
+        var sliceTimeStamp:Array<number[]>=[]
+        var counter = 0;
         for (var i = 1; i < path.length; i++) {
             var pathX;
             var pathY;
@@ -80,22 +95,44 @@ class Draw extends PIXI.Graphics {
             var loc2 = path[i];
             if (loc1.x == loc2.x && loc1.y == loc2.y) {
                 var tempPath = path.slice(counter, i);
+                var tempTimeStamp = timeStamp.slice(counter, i);
+                sliceTimeStamp.push(tempTimeStamp);
                 pathPath.push(tempPath);
+                counter = i;
             }
         }
+        sliceTimeStamp.push(tempTimeStamp);
+        pathPath.push(path.slice(counter, i));
         for (var i = 0; i < pathPath.length; i++){
             var slicedPath = pathPath[i];
             var slicedPathX = [];
             var slicedPathY = [];
-            var slicedPathXY: Path;
+            var slicedPathT = [];
+            var slicedPathXYT: Path = { x: null, y: null, t: null };
             for (var j = 0; j < slicedPath.length; j++) {
                 slicedPathX.push(slicedPath[j].x);
                 slicedPathY.push(slicedPath[j].y);
-                slicedPathXY.x = slicedPathX;
-                slicedPathXY.y = slicedPathY;
             }
-            this._recoPath.push(slicedPathXY);
+            slicedPathXYT.x = slicedPathX;
+            slicedPathXYT.y = slicedPathY;
+            slicedPathXYT.t = sliceTimeStamp[i];
+            this._recoPath.push(slicedPathXYT);
         }
+    }
+    makePathUint(path: Loc[]): Loc[]{
+        var minX = 0;
+        var minY = 0;
+        for (var i = 0; i < path.length; i++) {
+            minX = (minX > path[i].x) ? path[i].x : minX;
+            minY = (minY > path[i].y) ? path[i].y : minY;
+        }
+        minX = minX * (-1);
+        minY = minY * (-1);
+        for (var i = 0; i < path.length; i++) {
+            path[i].x = path[i].x + minX;
+            path[i].y = path[i].y + minY;
+        }
+        return path;
     }
     getRecoPath(): Path[] {
         return this._recoPath;

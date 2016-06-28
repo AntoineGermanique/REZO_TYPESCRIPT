@@ -1,7 +1,7 @@
 ﻿declare var CryptoJS;
 
 interface TextRecognitionInputs {
-    textParameter: { langague: string, textInputMode: string },
+    textParameter: { language: string, textInputMode: string },
     inputUnits: TextInputUnits[];
 }
 
@@ -9,6 +9,7 @@ interface TextRecognitionData {
     applicationKey: string;
     hmac: string;
     textInput: string;
+    instanceId: string;
 }
 
 interface TextInputUnits {
@@ -19,33 +20,43 @@ interface TextInputUnits {
 interface StrokeComponent {
     x: number[];
     y: number[];
+    t: number[];
     type: string;
 }
 interface Path {
     x: number[];
     y: number[];
+    t: number[];
 }
 class TextRecognition {
     input: TextRecognitionInputs;
     data: TextRecognitionData;
-    xhr(type: string, url: string, data: TextInputUnits) {
+    xhr(type: string, url: string, data: TextRecognitionData, text: TextRezo) {
 
         function onLoad() {
             if (request.status >= 200 && request.status < 300) {
-                console.log(request);
-                //deferred.resolve(NetworkInterface.parse(request));
+                var textResult = JSON.parse(request.response).result.textSegmentResult.candidates[0].label;
+                console.log(textResult);
+                var textRecognize = prompt("is it Okay?", textResult)
+                if (textRecognize&&textRecognize != "") {
+                    text.text = textRecognize;
+                }//deferred.resolve(NetworkInterface.parse(request));
             } 
         }
+        function onError() {
+        }
 
+        function onStateChange() {
+        }
         var request = new XMLHttpRequest();
         request.open(type, url, true);
         request.withCredentials = true;
         request.setRequestHeader('Accept', 'application/json');
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        //request.onload = onLoad;
-        //request.onerror = onError;
+        request.onload = onLoad;
+        request.onerror = onError;
         //request.onprogress = onProgress;
-        //request.onreadystatechange = onStateChange;
+        request.onreadystatechange = onStateChange;
         request.send(this.transformRequest(data));
     }
     transformRequest(data) :string {
@@ -69,29 +80,34 @@ class TextRecognition {
             strokeComponent = {
                 x: path[i].x,
                 y: path[i].y,
+                t: path[i].t,
                 type: "stroke"
             }
             textInputUnits.components.push(strokeComponent);
         }
         return textInputUnits;
     }
-    setRequestInputParams(inputUnits: TextInputUnits) {
-        var textRecoInputs: TextRecognitionInputs={
-            inputUnits: [],
+    createRequestInputParams(inputUnits: TextInputUnits): TextRecognitionInputs {
+        var textRecoInputs: TextRecognitionInputs = {
             textParameter: {
-                langague: Ressource.langage,
+                language: Ressource.langage,
                 textInputMode: Ressource.textInputNode,
-            }
+            },
+            inputUnits: []
         }
         textRecoInputs.inputUnits.push(inputUnits);
         this.input = textRecoInputs;
+        return textRecoInputs
     }
-    setDataRequest() {
+    createDataRequest(input: TextRecognitionInputs): TextRecognitionData {
         this.data = {
             applicationKey: Ressource.RecoAppliKey,
-            hmac: Ressource.HmacKey,
-            textInput: this.computeHmac(Ressource.RecoAppliKey, this.input, Ressource.HmacKey)
+            hmac:this.computeHmac(Ressource.RecoAppliKey, input, Ressource.HmacKey),
+            textInput: JSON.stringify(input),
+            instanceId: undefined
+
         };
+        return this.data;
 
     }
     computeHmac(applicationKey: string, data: TextRecognitionInputs, hmacKey: string) {

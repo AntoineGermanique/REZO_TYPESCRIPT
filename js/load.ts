@@ -19,9 +19,9 @@ function load2(rezoSave: RezoSave, title: string, timeStamp?:number) {
         if (bulleInfo.shape == ShapeEnum.circle) {
             Rezo.sceneBulle.addChild(new Bulle(bulleInfo.loc.x, bulleInfo.loc.y, bulleInfo.text, parseInt(bulleInfo.color.replace(/^#/, ''), 16), bulleInfo.scale.x, bulleInfo.shape));
         } else if (bulleInfo.shape == ShapeEnum.poly) {
-            var drawText = new Draw(bulleInfo.polyTextPath[0]);
+            var drawText = new Draw(bulleInfo.polyTextPath[0], bulleInfo.timeStamps[0]);
             drawText.setPath(bulleInfo.polyTextPath);
-            var drawBulle = new Draw({ x: bulleInfo.polyPath[0], y: bulleInfo.polyPath[0] }, true);
+            var drawBulle = new Draw({ x: bulleInfo.polyPath[0], y: bulleInfo.polyPath[0] },null, true);
             drawBulle.setPathNumber(bulleInfo.polyPath);
             var bulle = new Bulle(
                 bulleInfo.loc.x,

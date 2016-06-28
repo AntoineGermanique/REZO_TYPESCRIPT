@@ -7,32 +7,40 @@ var __extends = (this && this.__extends) || function (d, b) {
 var sceneDraw;
 var Draw = (function (_super) {
     __extends(Draw, _super);
-    function Draw(loc, isPolygon) {
+    function Draw(loc, timeStamp, isPolygon) {
         _super.call(this);
         this._path = [];
         this._polyPath = [];
         this._recoPath = [];
+        this._timeStamp = [];
         if (!isPolygon) {
             this._path.push(loc);
         }
         else {
             this._polyPath.push(loc.x);
             this._polyPath.push(loc.y);
+            this._timeStamp.push(timeStamp);
         }
     }
-    Draw.prototype.addPolyPathPoint = function (x, y) {
+    Draw.prototype.addPolyPathPoint = function (x, y, timeStamp) {
         this._polyPath.push(x);
         this._polyPath.push(y);
+        this._timeStamp.push(timeStamp);
     };
-    Draw.prototype.addPathPointLoc = function (loc) {
+    Draw.prototype.addPathPointLoc = function (loc, timeStamp) {
         this._path.push(loc);
+        this._timeStamp.push(timeStamp);
     };
-    Draw.prototype.addPathPoint = function (x, y) {
+    Draw.prototype.addPathPoint = function (x, y, timeStamp) {
         var loc = {
             x: x,
             y: y
         };
         this._path.push(loc);
+        this._timeStamp.push(timeStamp);
+    };
+    Draw.prototype.getTimeStamps = function () {
+        return this._timeStamp;
     };
     Draw.prototype.getPath = function () {
         return this._path;
@@ -73,8 +81,11 @@ var Draw = (function (_super) {
         this.drawPolygon(this._polyPath);
         this.endFill();
     };
-    Draw.prototype.setRecoPath = function (path) {
+    Draw.prototype.setRecoPath = function (path, timeStamp) {
+        path = this.makePathUint(path);
         var pathPath = [];
+        var sliceTimeStamp = [];
+        var counter = 0;
         for (var i = 1; i < path.length; i++) {
             var pathX;
             var pathY;
@@ -82,22 +93,44 @@ var Draw = (function (_super) {
             var loc2 = path[i];
             if (loc1.x == loc2.x && loc1.y == loc2.y) {
                 var tempPath = path.slice(counter, i);
+                var tempTimeStamp = timeStamp.slice(counter, i);
+                sliceTimeStamp.push(tempTimeStamp);
                 pathPath.push(tempPath);
+                counter = i;
             }
         }
+        sliceTimeStamp.push(tempTimeStamp);
+        pathPath.push(path.slice(counter, i));
         for (var i = 0; i < pathPath.length; i++) {
             var slicedPath = pathPath[i];
             var slicedPathX = [];
             var slicedPathY = [];
-            var slicedPathXY;
+            var slicedPathT = [];
+            var slicedPathXYT = { x: null, y: null, t: null };
             for (var j = 0; j < slicedPath.length; j++) {
                 slicedPathX.push(slicedPath[j].x);
                 slicedPathY.push(slicedPath[j].y);
-                slicedPathXY.x = slicedPathX;
-                slicedPathXY.y = slicedPathY;
             }
-            this._recoPath.push(slicedPathXY);
+            slicedPathXYT.x = slicedPathX;
+            slicedPathXYT.y = slicedPathY;
+            slicedPathXYT.t = sliceTimeStamp[i];
+            this._recoPath.push(slicedPathXYT);
         }
+    };
+    Draw.prototype.makePathUint = function (path) {
+        var minX = 0;
+        var minY = 0;
+        for (var i = 0; i < path.length; i++) {
+            minX = (minX > path[i].x) ? path[i].x : minX;
+            minY = (minY > path[i].y) ? path[i].y : minY;
+        }
+        minX = minX * (-1);
+        minY = minY * (-1);
+        for (var i = 0; i < path.length; i++) {
+            path[i].x = path[i].x + minX;
+            path[i].y = path[i].y + minY;
+        }
+        return path;
     };
     Draw.prototype.getRecoPath = function () {
         return this._recoPath;
