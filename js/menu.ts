@@ -66,6 +66,7 @@ function menu() {
         $('#loading').css("display", "block");
         drive.handleAuthClick(event)
     });
+
     $("#saveBulle").click(saveDrive);
     $("#localSaveBulle").click(function () {
         saveLocal();
@@ -274,8 +275,12 @@ function menu() {
     $("#writeBulle").click(SceneDraw.toggleDrawingWrite);
     $("#circleBulle").click(SceneDraw.toggleDrawingBulle);
     $("#scriptToTypeBulle").click(SceneDraw.scriptToTypeBulle);
-	
+    $("#realtimeBulle").click(()=> {
+        var realtime = new Realtime();
+        realtime.init();
+    });
 }
+
 
 function linkButton () {
 

@@ -47,8 +47,10 @@ function saveDrive() {
                 drive.createFile(Rezo.rezoName, drive.updateFile);
             }
         }
+        return Rezo.rezoId;
     }
     else {
+        return null;
     }
 }
 function createJsonRezo() {

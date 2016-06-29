@@ -272,6 +272,10 @@ function menu() {
     $("#writeBulle").click(SceneDraw.toggleDrawingWrite);
     $("#circleBulle").click(SceneDraw.toggleDrawingBulle);
     $("#scriptToTypeBulle").click(SceneDraw.scriptToTypeBulle);
+    $("#realtimeBulle").click(function () {
+        var realtime = new Realtime();
+        realtime.init();
+    });
 }
 function linkButton() {
     Link.emptyLinkArray();

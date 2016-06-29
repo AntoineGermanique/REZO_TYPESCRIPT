@@ -43,6 +43,7 @@ var DriveAPI = (function () {
             $("#saveBulle").css("display", "block");
             $("#homeBulle").css("display", "block");
             $("#driveBulle").css("display", "none");
+            $("#realtimeBulle").css("display", "block");
             document.dispatchEvent(event);
             Rezo.isDriveConnected = true;
             this.loadDriveApi();
@@ -288,6 +289,7 @@ var DriveAPI = (function () {
     DriveAPI.prototype.logOut = function () {
         $("#saveBulle").css("display", "none");
         $("#homeBulle").css("display", "none");
+        $("#realtimeBulle").css("display", "none");
         $("#driveBulle").css("display", "block");
         $(".open").remove();
         window.open("https://accounts.google.com/logout", "newwindow", "width=500,height=700");

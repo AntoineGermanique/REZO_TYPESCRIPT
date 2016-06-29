@@ -159,6 +159,7 @@ class Rezo {
         menu();
         setSortingListener();
         var bezierTest = new Bezier();
+
         //bezierTest.testBezier();
 
 

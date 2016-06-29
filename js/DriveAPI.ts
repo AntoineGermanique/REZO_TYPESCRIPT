@@ -4,7 +4,9 @@
 
 
 //object of the js drive api didn't found tpescript def, but should exist
-declare var gapi
+declare namespace gapi.client {
+    export var drive
+}
 
 interface DriveFile {
     id: string
@@ -76,6 +78,7 @@ class DriveAPI {
             $("#saveBulle").css("display", "block");
             $("#homeBulle").css("display", "block");
             $("#driveBulle").css("display", "none");
+            $("#realtimeBulle").css("display", "block");
             document.dispatchEvent(event);
             Rezo.isDriveConnected = true;
             this.loadDriveApi();
@@ -341,6 +344,7 @@ class DriveAPI {
 
         $("#saveBulle").css("display", "none");
         $("#homeBulle").css("display", "none");
+        $("#realtimeBulle").css("display", "none");
         $("#driveBulle").css("display", "block");
         $(".open").remove();
         window.open("https://accounts.google.com/logout", "newwindow", "width=500,height=700")

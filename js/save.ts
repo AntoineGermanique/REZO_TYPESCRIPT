@@ -69,7 +69,7 @@ function saveLocal(rezoSave?: RezoSave, rezoName?: string): boolean {
     return false
 }
 
-function saveDrive() {
+function saveDrive():string {
     if (Rezo.isDriveConnected) {
         var previousName = Rezo.rezoName;
         var rezoSave = createJsonRezo();
@@ -89,8 +89,9 @@ function saveDrive() {
                 drive.createFile(Rezo.rezoName, drive.updateFile);
             }
         }
+        return Rezo.rezoId;
     } else {
-
+        return null;
     }
 }
 

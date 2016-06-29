@@ -195,7 +195,9 @@ div#gradient {
 #localHome {
     background-image:url(../images/LOCALHOME.png);
 }
-
+#realtimeBulle {
+    background-image:url(../images/realtime.png)
+}
 div#drawing {
     height: 3em;
 }
