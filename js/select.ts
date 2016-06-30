@@ -121,7 +121,10 @@ var smallestX
 var yOfSmallestX
 var smallestXIndex
 var arrayDetect=[]
-var isDetect=false
+var isDetect = false
+var pathX;
+var pathY;
+var z;
 function polygonCollisionTest(rectTestArray,currentPath){
 	/* a = $('#canvasId')[0];
 	b = document.getElementById("b");
@@ -156,9 +159,9 @@ function polygonCollisionTest(rectTestArray,currentPath){
 		}	
 	}
 	var endCurrentPathX=currentPathX.splice(0,smallestXIndex)
-	var pathX=$.merge(currentPathX,endCurrentPathX);
+    pathX=$.merge(currentPathX,endCurrentPathX);
 	var endCurrentPathY=currentPathY.splice(0,smallestXIndex)
-	var pathY=$.merge(currentPathY,endCurrentPathY);
+	pathY=$.merge(currentPathY,endCurrentPathY);
 	if(pathY[0]<pathY[1]&&pathY[0]<pathY[10]){////////////////clockwise or counterClockwise
 		clockwiseSelect=false
 		counterClockwiseSelect=true
@@ -222,32 +225,9 @@ function polygonCollisionTest(rectTestArray,currentPath){
 			}
 		}
 		
-		var z=0;
-		function funDelay(){
-			
-			if(z<pathX.length){
-				path.push(pathX[z])
-				path.push(pathY[z])
-				//console.log(pathY[z])
-				detectPathGraphics.clear();
-				detectPathGraphics.lineStyle(5,0x000000,1)
-				detectPathGraphics.beginFill(color);
-				detectPathGraphics.drawPolygon(path)
-				detectPathGraphics.endFill();
-				
-				z+=5
-				window.setTimeout(funDelay, 2);
-			}else{
-				path=[]
-				while(pathX.length>0){
-					pathX.pop()
-				}
-				while(pathY.length>0){
-					pathY.pop()
-				}
-			}
-		} 
-		funDelay()
+		z=0;
+		
+        funDelay()
 		//drawnGraphics.clear();
 		console.log(arrayDetect[0])
 		if(arrayDetect.length==1){//si une detection
@@ -311,4 +291,27 @@ function polygonCollisionTest(rectTestArray,currentPath){
 		rectTestArray.pop()
 	}
 }
+function funDelay() {
 
+    if (z < pathX.length) {
+        path.push(pathX[z])
+        path.push(pathY[z])
+        //console.log(pathY[z])
+        detectPathGraphics.clear();
+        detectPathGraphics.lineStyle(5, 0x000000, 1)
+        detectPathGraphics.beginFill(color);
+        detectPathGraphics.drawPolygon(path)
+        detectPathGraphics.endFill();
+
+        z += 5
+        window.setTimeout(funDelay , 2);
+    } else {
+        path = []
+        while (pathX.length > 0) {
+            pathX.pop()
+        }
+        while (pathY.length > 0) {
+            pathY.pop()
+        }
+    }
+} 

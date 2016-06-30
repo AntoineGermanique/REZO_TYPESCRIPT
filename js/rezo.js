@@ -115,10 +115,65 @@ var Rezo = (function () {
         selectIntercative();
         menu();
         setSortingListener();
-        var bezierTest = new Bezier();
-        //bezierTest.testBezier();
+        $("#loading").hide();
+        Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
+        $(window).on('beforeunload', function () {
+            return 'Are you sure you want to leave?';
+        });
+        if (document.cookie.indexOf("hasRecoveryAvailable=false") == -1) {
+            if (document.cookie.indexOf("hasRecoveryAvailable=true") != -1) {
+                Rezo.hasRecoveryAvailable = true;
+            }
+            else {
+                Rezo.hasRecoveryAvailable = false;
+                document.cookie = "hasRecoveryAvailable=false";
+            }
+        }
+        else {
+            Rezo.hasRecoveryAvailable = false;
+        }
+        if (Rezo.hasRecoveryAvailable) {
+            this.suggestRecovery();
+        }
+        else {
+            saveLocal("AutoSave");
+        }
+        window.setInterval(this.checkAutoSave(), 30000);
     }
     ;
+    Rezo.checkSaveStatus = function () {
+        var rezoSaveToCompare = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
+        if (Rezo.isSaved(rezoSaveToCompare)) {
+        }
+        else {
+            if (confirm("le rezo n'est apparement pas sauver, faut-il le faire?")) {
+                if (Rezo.isDriveConnected) {
+                    saveDrive();
+                }
+                else {
+                    saveLocal();
+                }
+            }
+        }
+    };
+    Rezo.isSaved = function (rezoSaveToCompare) {
+        if (rezoSaveToCompare == Rezo.initialRezo) {
+            return true;
+        }
+        return false;
+    };
+    Rezo.prototype.checkAutoSave = function () {
+        if (!Rezo.hasRecoveryAvailable) {
+            saveLocal("AutoSave");
+        }
+    };
+    Rezo.prototype.suggestRecovery = function () {
+        if (confirm("un rezo non sauver est r�cup�rable, le restaurer ?")) {
+            localLoad("AutoSave");
+        }
+        else {
+        }
+    };
     Rezo.load = document.getElementById("loading");
     Rezo.isDriveConnected = false;
     Rezo.rezoName = "Nouveau Rezo";

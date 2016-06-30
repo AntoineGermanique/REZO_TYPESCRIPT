@@ -13,11 +13,13 @@ function localOpen() {
     $(".open").remove();
     for (var i = 0, len = localStorage.length; i < len; i++) {
         var titre = localStorage.key(i);
-        var timeStamp = getLocalTimeStamp(titre);
-        if (!timeStamp)
-            timeStamp = Date.parse("01/01/1900");
-        document.getElementById('open').innerHTML += "<div class='open' attr='" + timeStamp + "' id='" + titre + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
-        addListenersLocal();
+        if (titre != "AutoSave") {
+            var timeStamp = getLocalTimeStamp(titre);
+            if (!timeStamp)
+                timeStamp = Date.parse("01/01/1900");
+            document.getElementById('open').innerHTML += "<div class='open' attr='" + timeStamp + "' id='" + titre + "'><span class='openSpan' id='" + titre + "'>" + titre + "</span><img class='openImgModif' src='images/pen.png'/><img class='openImgSuppr' src='images/SUPPR.png'></div>";
+            addListenersLocal();
+        }
     }
 }
 function addListenersLocal() {
@@ -48,7 +50,7 @@ function addListenersLocal() {
             var rezoSaveString = localStorage.getItem(key);
             var rezoSaveObj = JSON.parse(rezoSaveString);
             rezoSaveObj.title = newKey;
-            if (saveLocal(rezoSaveObj, newKey)) {
+            if (saveLocal(newKey, rezoSaveObj)) {
                 localStorage.removeItem(key);
                 localOpen();
             }

@@ -58,7 +58,7 @@ class SceneDraw extends PIXI.Container {
                 //Rezo.sceneDraw._draw = null;
             } else {
                 this._drawBulle = this._draw;
-                if (this._drawText) {
+                if (this._drawText && this._draw) {
                     this.createDrawBulle();
                 }
                 this.cleanSceneDraw();
@@ -145,7 +145,8 @@ class SceneDraw extends PIXI.Container {
             $("#circleBulle").removeClass("hiddenButton");
             $("#writeBulle").removeClass("hiddenButton");
             $("#scriptToTypeBulle").removeClass("hiddenButton");
-            SceneDraw.toggleDrawingWrite();
+            $("#supprDrawBulle").removeClass("hiddenButton");
+            if (!SceneDraw.isWriting) { SceneDraw.toggleDrawingWrite() };
             setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
             Rezo.upperScene.interactive = false;
@@ -159,6 +160,10 @@ class SceneDraw extends PIXI.Container {
             $("#circleBulle").addClass("hiddenButton");
             $("#writeBulle").addClass("hiddenButton");
             $("#scriptToTypeBulle").addClass("hiddenButton");
+            $("#supprDrawBulle").addClass("hiddenButton");
+            if (SceneDraw.isWriting) { SceneDraw.toggleDrawingWrite() };
+            if (SceneDraw.isBulling) { SceneDraw.toggleDrawingBulle() };
+
             setBackground();
             Rezo.sceneDraw.interactive = false;
             Rezo.upperScene.interactive = true;
@@ -221,5 +226,14 @@ class SceneDraw extends PIXI.Container {
 
         }
     }
-    
+    static supprDraw() {
+        if (Rezo.sceneDraw._draw) {
+            Rezo.sceneDraw.removeChild(Rezo.sceneDraw._draw);
+            Rezo.sceneDraw._draw = null;
+        }
+        if (Rezo.sceneDraw._drawText) {
+            Rezo.sceneDraw.removeChild(Rezo.sceneDraw._draw);
+            Rezo.sceneDraw._draw = null;
+        }
+    }
 }

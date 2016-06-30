@@ -10,6 +10,7 @@ function load2(rezoSave, title, timeStamp) {
     }
     Rezo.rezoName = title;
     Rezo.rezoNameDiv.html(title);
+    Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
     for (var i = 0; i < rezoSave.bullesArray.length; i++) {
         var bulleInfo = rezoSave.bullesArray[i];
         if (bulleInfo.shape == ShapeEnum.circle) {

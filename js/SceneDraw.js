@@ -51,7 +51,7 @@ var SceneDraw = (function (_super) {
             }
             else {
                 _this._drawBulle = _this._draw;
-                if (_this._drawText) {
+                if (_this._drawText && _this._draw) {
                     _this.createDrawBulle();
                 }
                 _this.cleanSceneDraw();
@@ -132,7 +132,11 @@ var SceneDraw = (function (_super) {
             $("#circleBulle").removeClass("hiddenButton");
             $("#writeBulle").removeClass("hiddenButton");
             $("#scriptToTypeBulle").removeClass("hiddenButton");
-            SceneDraw.toggleDrawingWrite();
+            $("#supprDrawBulle").removeClass("hiddenButton");
+            if (!SceneDraw.isWriting) {
+                SceneDraw.toggleDrawingWrite();
+            }
+            ;
             setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
             Rezo.upperScene.interactive = false;
@@ -147,6 +151,15 @@ var SceneDraw = (function (_super) {
             $("#circleBulle").addClass("hiddenButton");
             $("#writeBulle").addClass("hiddenButton");
             $("#scriptToTypeBulle").addClass("hiddenButton");
+            $("#supprDrawBulle").addClass("hiddenButton");
+            if (SceneDraw.isWriting) {
+                SceneDraw.toggleDrawingWrite();
+            }
+            ;
+            if (SceneDraw.isBulling) {
+                SceneDraw.toggleDrawingBulle();
+            }
+            ;
             setBackground();
             Rezo.sceneDraw.interactive = false;
             Rezo.upperScene.interactive = true;
@@ -200,6 +213,16 @@ var SceneDraw = (function (_super) {
             var textReco = new TextRecognition();
             var data = textReco.createDataRequest(textReco.createRequestInputParams(textReco.createInput(textDraw.getRecoPath())));
             textReco.xhr("POST", Ressource.urlReco, data, Rezo.selectedBulle.text);
+        }
+    };
+    SceneDraw.supprDraw = function () {
+        if (Rezo.sceneDraw._draw) {
+            Rezo.sceneDraw.removeChild(Rezo.sceneDraw._draw);
+            Rezo.sceneDraw._draw = null;
+        }
+        if (Rezo.sceneDraw._drawText) {
+            Rezo.sceneDraw.removeChild(Rezo.sceneDraw._draw);
+            Rezo.sceneDraw._draw = null;
         }
     };
     SceneDraw.isWriting = false;

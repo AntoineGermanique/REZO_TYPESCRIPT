@@ -5,14 +5,14 @@ var sceneBullePo = [];
 var sceneLinkPo = [];
 var scenePo = [];
 var scalePo = [];
-function saveLocal(rezoSave, rezoName) {
+function saveLocal(rezoName, rezoSave) {
     if (!rezoSave)
         rezoSave = createJsonRezo();
     if (!rezoName)
         rezoName = Rezo.rezoName;
     if (rezoSave) {
         for (var i = 0; i < localStorage.length; i++) {
-            if (rezoName == localStorage.key(i)) {
+            if (rezoName == localStorage.key(i) && rezoName != "AutoSave") {
                 if (confirm(Ressource.confirmLocalOverwriting)) {
                     localSave(rezoSave, rezoName);
                     return true;
@@ -23,6 +23,13 @@ function saveLocal(rezoSave, rezoName) {
             }
         }
         localSave(rezoSave, rezoName);
+        if (rezoName == "AutoSave") {
+            Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+        }
+        else {
+            Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+            Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+        }
         return true;
     }
     return false;
@@ -47,14 +54,17 @@ function saveDrive() {
                 drive.createFile(Rezo.rezoName, drive.updateFile);
             }
         }
+        Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
         return Rezo.rezoId;
     }
     else {
         return null;
     }
 }
-function createJsonRezo() {
-    var title = promptTitle();
+function createJsonRezo(title) {
+    if (!title) {
+        title = promptTitle();
+    }
     if (title) {
         Rezo.rezoName = title;
         Rezo.rezoNameDiv.html(title);
@@ -137,6 +147,12 @@ function isNameValid(newName) {
     }
     else {
         return false;
+    }
+}
+function nullifyTimeStamp(rezoSaveObj) {
+    if (rezoSaveObj) {
+        rezoSaveObj.timeStamp = null;
+        return rezoSaveObj;
     }
 }
 //# sourceMappingURL=save.js.map

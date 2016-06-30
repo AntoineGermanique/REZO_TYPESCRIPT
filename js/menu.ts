@@ -36,12 +36,14 @@ function menu() {
             $("#menuBtn").removeClass("menuBtn").addClass("menuBtn_replie");
             if (naviBool) { $("#naviBulle").trigger("click") }
             if (editBool) { $("#editBulle").trigger("click") }
+            if (drawBool) { $("#drawBulle").trigger("click") }
         } else {
             menuActif = false;
             $("#menuBtn").removeClass("menuBtn_replie").addClass("menuBtn");
             $("#menuContainer").css("display", "none")
 	        if (naviBool) { $("#naviBulle").trigger("click") }
             if (editBool) { $("#editBulle").trigger("click") }
+            if (drawBool) { $("#drawBulle").trigger("click") }
         }
 	})	
 	
@@ -103,6 +105,7 @@ function menu() {
 
 	$("#homeBulle").click(function(){
         if (openActif == false) {
+            Rezo.checkSaveStatus();
             isDriveHome = true;
             $(".open").remove();
 
@@ -123,8 +126,9 @@ function menu() {
             isDriveHome = false;
 		}
 	})
-	$("#localHome").click(function(){
+    $("#localHome").click(function () {
         if (openActif == false) {
+            Rezo.checkSaveStatus();
             isLocalHome = true;
 			var arrayLocal=localOpen();
 			$("#open").css("display","block")
@@ -243,14 +247,16 @@ function menu() {
             selectBool=false
 			select();
 			detectPathGraphics.clear()
-            $("#selectBulle").css({"background": "none","border-radius": "100px","box-shadow": "none"})
+            $("#selectBulle").css({ "box-shadow": "none" })
+            $("#selectBulle").addClass("noRound")
 			
         } else {
             setBackground(Ressource.pathImgSelect);
 			if(scalBool){$("#scalBulle").trigger("click")}
             selectBool=true
             select();
-            $("#selectBulle").css({"background": "rgba(255, 255, 0, 0.44)","border-radius": "100px","box-shadow": "0PX 0PX 5PX 5px orangered"})
+            $("#selectBulle").css({ "box-shadow": "0PX 0PX 5PX 5px orangered" })
+            $("#selectBulle").removeClass("noRound")
 			
 		}
 	})
@@ -275,6 +281,7 @@ function menu() {
     $("#writeBulle").click(SceneDraw.toggleDrawingWrite);
     $("#circleBulle").click(SceneDraw.toggleDrawingBulle);
     $("#scriptToTypeBulle").click(SceneDraw.scriptToTypeBulle);
+    $("#supprDrawBulle").click(SceneDraw.supprDraw);
     $("#realtimeBulle").click(()=> {
         var realtime = new Realtime();
         realtime.init();

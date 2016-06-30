@@ -27,6 +27,9 @@ class Rezo {
     static sensorZoomScene2: SensorZoomScene;
     static sensorScaleBulleScene: PIXI.Graphics;
     static sceneDraw: SceneDraw;
+    static initialRezo: string;
+    static autoSaveRezo: string;
+    static hasRecoveryAvailable: boolean
     constructor() {
         Rezo.rezoNameDiv.html(Rezo.rezoName);
         if (Rezo.windowH > screen.height) {
@@ -158,10 +161,29 @@ class Rezo {
         selectIntercative();
         menu();
         setSortingListener();
-        var bezierTest = new Bezier();
+        $("#loading").hide();
+        Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
+        $(window).on('beforeunload', function () {
+            return 'Are you sure you want to leave?';
+        });
+        if (document.cookie.indexOf("hasRecoveryAvailable=false") == -1) {
+            if (document.cookie.indexOf("hasRecoveryAvailable=true") != -1) {
+                Rezo.hasRecoveryAvailable = true;
+            } else {
+                Rezo.hasRecoveryAvailable = false;
+                document.cookie = "hasRecoveryAvailable=false";
+            }
+        } else {
+            Rezo.hasRecoveryAvailable = false;
+        }
+        
 
-        //bezierTest.testBezier();
-
+        if (Rezo.hasRecoveryAvailable) {
+            this.suggestRecovery();
+        }else{
+            saveLocal("AutoSave");
+        }
+        window.setInterval(this.checkAutoSave(), 30000);
 
     }
     static newRezo = function () {
@@ -189,6 +211,41 @@ class Rezo {
         Rezo.scene.position.y = 0
         $("img#closeOpen").trigger("click");
 
+    }
+
+    static checkSaveStatus() {
+        var rezoSaveToCompare = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
+        if (Rezo.isSaved(rezoSaveToCompare)){
+
+        } else {
+            if (confirm("le rezo n'est apparement pas sauver, faut-il le faire?")) {
+                if (Rezo.isDriveConnected) {
+                    saveDrive();
+                } else {
+                    saveLocal();
+                }
+            }
+        }
+    }
+    static isSaved(rezoSaveToCompare: string): boolean{
+        if (rezoSaveToCompare == Rezo.initialRezo) {
+            return true;
+        }
+        return false
+    }
+    checkAutoSave() {
+        if (!Rezo.hasRecoveryAvailable) {
+
+                saveLocal("AutoSave");
+            
+        }
+    }
+    suggestRecovery() {
+        if (confirm("un rezo non sauver est récupérable, le restaurer ?")) {
+            localLoad("AutoSave")
+        } else {
+
+        }
     }
 }
 
