@@ -283,6 +283,7 @@ function menu() {
     $("#circleBulle").click(SceneDraw.toggleDrawingBulle);
     $("#scriptToTypeBulle").click(SceneDraw.scriptToTypeBulle);
     $("#supprDrawBulle").click(SceneDraw.supprDraw);
+    $("#undoDrawBulle").click(SceneDraw.undoDraw);
     $("#realtimeBulle").click(function () {
         var realtime = new Realtime();
         realtime.init();

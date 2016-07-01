@@ -121,6 +121,9 @@ div#gradient {
 #supprDrawBulle{
     background-image:url(../images/supprDraw.png);
 }
+#undoDrawBulle{
+    background-image:url(../images/undoDraw.png);
+}
 #editBulle{
     background-image:url(../images/EDIT.png);
 }
@@ -213,8 +216,8 @@ div#drawing {
 }
 
 .drawingExpend {
-    margin-left: -12em;
-    width: 15em;
+    margin-left: -15em;
+    width: 18em;
 }
 
 .drawBTN {
@@ -376,8 +379,8 @@ margin-top: 30%;
         height:2em!important;
     }
     .drawingExpend {
-        width: 10em;
-        margin-left: -8em;
+        width: 12em;
+        margin-left: -10em;
     }
   html {
     max-width:400px

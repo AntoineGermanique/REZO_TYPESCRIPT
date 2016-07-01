@@ -13,7 +13,7 @@ function load2(rezoSave: RezoSave, title: string, timeStamp?:number) {
     }
     Rezo.rezoName = title;
     Rezo.rezoNameDiv.html(title);
-    Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+    ResetAutoSaveCookie(rezoSave)
     for (var i = 0; i < rezoSave.bullesArray.length; i++) {
         var bulleInfo: BulleSave = rezoSave.bullesArray[i];
         if (bulleInfo.shape == ShapeEnum.circle) {
@@ -88,7 +88,7 @@ function load(bubble,linkLoad,title,scenePo,scalePo){
         lastBulleSelected = <Bulle>scaleScene.scene.sceneBulle.getChildAt(lastBulleSelectedIndex);
 		var selectedBulleIndex=linkLoad[z][1];
         Rezo.selectedBulle = <Bulle>scaleScene.scene.sceneBulle.getChildAt(selectedBulleIndex) ;
-		Link.bubbleLinked.push(lastBulleSelected)
+        Link.bubbleLinked.push(lastBulleSelected);
         Link.linkBool=true
         Link.link2Bool=true
 		console.log("test")

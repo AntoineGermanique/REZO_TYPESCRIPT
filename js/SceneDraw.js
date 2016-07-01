@@ -133,6 +133,7 @@ var SceneDraw = (function (_super) {
             $("#writeBulle").removeClass("hiddenButton");
             $("#scriptToTypeBulle").removeClass("hiddenButton");
             $("#supprDrawBulle").removeClass("hiddenButton");
+            $("#undoDrawBulle").removeClass("hiddenButton");
             if (!SceneDraw.isWriting) {
                 SceneDraw.toggleDrawingWrite();
             }
@@ -152,6 +153,7 @@ var SceneDraw = (function (_super) {
             $("#writeBulle").addClass("hiddenButton");
             $("#scriptToTypeBulle").addClass("hiddenButton");
             $("#supprDrawBulle").addClass("hiddenButton");
+            $("#undoDrawBulle").addClass("hiddenButton");
             if (SceneDraw.isWriting) {
                 SceneDraw.toggleDrawingWrite();
             }
@@ -223,6 +225,19 @@ var SceneDraw = (function (_super) {
         if (Rezo.sceneDraw._drawText) {
             Rezo.sceneDraw.removeChild(Rezo.sceneDraw._draw);
             Rezo.sceneDraw._draw = null;
+        }
+    };
+    SceneDraw.undoDraw = function () {
+        if (SceneDraw.isWriting && Rezo.sceneDraw._draw) {
+            var bezier = new Bezier();
+            var pathPath = bezier.slicePath(Rezo.sceneDraw._draw.getPath());
+            pathPath.pop();
+            var newPath = [];
+            for (var i = 0; i < pathPath.length; i++) {
+                newPath = newPath.concat(pathPath[i]);
+            }
+            Rezo.sceneDraw._draw.setPath(newPath);
+            Rezo.sceneDraw._draw.drawLine();
         }
     };
     SceneDraw.isWriting = false;

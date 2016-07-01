@@ -183,7 +183,7 @@ class Rezo {
         }else{
             saveLocal("AutoSave");
         }
-        window.setInterval(this.checkAutoSave(), 30000);
+        window.setInterval(this.checkAutoSave, 30000);
 
     }
     static newRezo = function () {
@@ -243,6 +243,7 @@ class Rezo {
     suggestRecovery() {
         if (confirm("un rezo non sauver est récupérable, le restaurer ?")) {
             localLoad("AutoSave")
+            Rezo.hasRecoveryAvailable = false;
         } else {
 
         }

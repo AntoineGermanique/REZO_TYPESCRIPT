@@ -2,7 +2,9 @@ function localSave(array, name) {
     if (typeof sessionStorage != 'undefined') {
         var arrayStringify = JSON.stringify(array);
         localStorage.setItem(name, arrayStringify);
-        afficheGoodNews();
+        if (name != "AutoSave") {
+            afficheGoodNews();
+        }
     }
     else {
         alert("sessionStorage n'est pas supporté");
@@ -29,17 +31,8 @@ function addListenersLocal() {
         $("#localHome").trigger("click");
     });
     $(".openSpan").click(function () {
-        arrayLocal = localLoad($(this).attr("id"));
         whipe();
-        if (!arrayLocal.bullesArray && !arrayLocal.arrayBubble) {
-            load(arrayLocal[0], arrayLocal[1], titre, arrayLocal[3], arrayLocal[4]);
-        }
-        else if (arrayLocal.arrayBubble) {
-            load(arrayLocal.arrayBubble, arrayLocal.arrayLink, titre, arrayLocal.scenePo, arrayLocal.scalePo);
-        }
-        else {
-            load2(arrayLocal, $(this).attr("id"));
-        }
+        localLoad($(this).attr("id"));
         $("#localHome").trigger("click");
     });
     $("img#plusOpen").click(Rezo.newRezo);
@@ -68,9 +61,17 @@ function localClose() {
     $("#driveOpen").show();
 }
 function localLoad(titre) {
-    var array = JSON.parse(localStorage.getItem(titre));
+    var arrayLocal = JSON.parse(localStorage.getItem(titre));
     Rezo.rezoId = "";
-    return array;
+    if (!arrayLocal.bullesArray && !arrayLocal.arrayBubble) {
+        load(arrayLocal[0], arrayLocal[1], titre, arrayLocal[3], arrayLocal[4]);
+    }
+    else if (arrayLocal.arrayBubble) {
+        load(arrayLocal.arrayBubble, arrayLocal.arrayLink, titre, arrayLocal.scenePo, arrayLocal.scalePo);
+    }
+    else {
+        load2(arrayLocal, titre);
+    }
 }
 function getLocalTimeStamp(key) {
     var rezoSaveString = localStorage.getItem(key);

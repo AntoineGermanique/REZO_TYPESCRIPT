@@ -146,6 +146,7 @@ class SceneDraw extends PIXI.Container {
             $("#writeBulle").removeClass("hiddenButton");
             $("#scriptToTypeBulle").removeClass("hiddenButton");
             $("#supprDrawBulle").removeClass("hiddenButton");
+            $("#undoDrawBulle").removeClass("hiddenButton");
             if (!SceneDraw.isWriting) { SceneDraw.toggleDrawingWrite() };
             setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
@@ -161,6 +162,7 @@ class SceneDraw extends PIXI.Container {
             $("#writeBulle").addClass("hiddenButton");
             $("#scriptToTypeBulle").addClass("hiddenButton");
             $("#supprDrawBulle").addClass("hiddenButton");
+            $("#undoDrawBulle").addClass("hiddenButton");
             if (SceneDraw.isWriting) { SceneDraw.toggleDrawingWrite() };
             if (SceneDraw.isBulling) { SceneDraw.toggleDrawingBulle() };
 
@@ -234,6 +236,19 @@ class SceneDraw extends PIXI.Container {
         if (Rezo.sceneDraw._drawText) {
             Rezo.sceneDraw.removeChild(Rezo.sceneDraw._draw);
             Rezo.sceneDraw._draw = null;
+        }
+    }
+    static undoDraw() {
+        if (SceneDraw.isWriting && Rezo.sceneDraw._draw) {
+            var bezier = new Bezier();
+            var pathPath = bezier.slicePath(Rezo.sceneDraw._draw.getPath());
+            pathPath.pop();
+            var newPath:Loc[] = [];
+            for (var i = 0; i < pathPath.length; i++) {
+                newPath=newPath.concat(pathPath[i]);
+            }
+            Rezo.sceneDraw._draw.setPath(newPath);
+            Rezo.sceneDraw._draw.drawLine();
         }
     }
 }

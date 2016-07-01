@@ -138,7 +138,7 @@ var Rezo = (function () {
         else {
             saveLocal("AutoSave");
         }
-        window.setInterval(this.checkAutoSave(), 30000);
+        window.setInterval(this.checkAutoSave, 30000);
     }
     ;
     Rezo.checkSaveStatus = function () {
@@ -170,6 +170,7 @@ var Rezo = (function () {
     Rezo.prototype.suggestRecovery = function () {
         if (confirm("un rezo non sauver est r�cup�rable, le restaurer ?")) {
             localLoad("AutoSave");
+            Rezo.hasRecoveryAvailable = false;
         }
         else {
         }

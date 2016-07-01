@@ -46,9 +46,12 @@ interface Loc {
     y: number;
 }
 
-function saveLocal(rezoName?: string,rezoSave?: RezoSave ): boolean {
-    if (!rezoSave)
+function saveLocal(rezoName?: string, rezoSave?: RezoSave): boolean {
+    if (!rezoSave && rezoName != "AutoSave") {
         rezoSave = createJsonRezo();
+    } else if (!rezoSave) {
+        rezoSave = createJsonRezo("AutoSave");
+    }
     if (!rezoName)
         rezoName = Rezo.rezoName;
     if (rezoSave) {
@@ -65,10 +68,10 @@ function saveLocal(rezoName?: string,rezoSave?: RezoSave ): boolean {
         }
         localSave(rezoSave, rezoName);
         if (rezoName == "AutoSave") {
-            Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+            AutoSaveCookie(rezoSave)
         } else {
-            Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
-            Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+            ResetAutoSaveCookie(rezoSave)
+
         }
         return true
     }
@@ -95,7 +98,7 @@ function saveDrive():string {
                 drive.createFile(Rezo.rezoName, drive.updateFile);
             }
         }
-        Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+        ResetAutoSaveCookie(rezoSave)
         return Rezo.rezoId;
     } else {
         return null;
@@ -107,8 +110,10 @@ function createJsonRezo(title?: string): RezoSave {
         title = promptTitle()
     }
     if (title) {
-        Rezo.rezoName = title;
-        Rezo.rezoNameDiv.html(title);
+        if (title != "AutoSave") {
+            Rezo.rezoName = title;
+            Rezo.rezoNameDiv.html(title);
+        }
         var linkArraySave: LinkSave[] = [];
         var bulleArraySave: BulleSave[] = [];
         for (var i = 0; i < Link.linkArray.length; i++) {
@@ -169,12 +174,12 @@ function promptTitle(value?: string): string  {
     var title = prompt("titre", value);
     if (title) {
         title = cleanName(title);
-        if (title != "" && isNameValid(title)) {
+        if (title != "" && isNameValid(title) && title!="AutoSave") {
             return title;
 
 
         } else {
-           return promptTitle();
+           return promptTitle("le nom choisie est invalide, merci de le modifier (caractères de a à z, nombres acceptés");
         }
     } else {
         return title;
@@ -193,4 +198,15 @@ function nullifyTimeStamp(rezoSaveObj: RezoSave): RezoSave {
         rezoSaveObj.timeStamp = null;
         return rezoSaveObj
     }
+}
+function AutoSaveCookie(rezoSave: RezoSave) {
+    console.log("auto save");
+    Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+    if (Rezo.autoSaveRezo != Rezo.initialRezo)
+        document.cookie = "hasRecoveryAvailable=true"
+}
+function ResetAutoSaveCookie(rezoSave: RezoSave) {
+    Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+    Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+    document.cookie = "hasRecoveryAvailable=false";
 }
