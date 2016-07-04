@@ -75,11 +75,17 @@ class SceneDraw extends PIXI.Container {
         console.log("createBulle");
         var x = this._drawBulle.getLocalBounds().x;
         var y = this._drawBulle.getLocalBounds().y;
+
         this._drawBulle.setPathNumber(this.correctDrawingPathNumber(this._drawBulle.getPathNumber(), x, y));
         this._drawBulle.setPath(this.correctDrawingPath(this._drawBulle.getPath(), x, y));
+        x = (x - Rezo.scene.x) // Rezo.scaleScene.scale.x;
+        y = (y - Rezo.scene.y) // Rezo.scaleScene.scale.x ;
         this._drawText.setPathNumber(this.correctDrawingPathNumber(this._drawText.getPathNumber(), x, y));
         this._drawText.setPath(this.correctDrawingPath(this._drawText.getPath(), x, y));
-        Rezo.sceneBulle.addChild(new Bulle(x, y, "", bulleColor, defaultScale, ShapeEnum.poly, this._drawBulle, this._drawText))
+        this._drawText.drawLine();
+        var bulleScale = defaultScale / Rezo.scaleScene.scale.x;
+
+        Rezo.sceneBulle.addChild(new Bulle(x, y, "", bulleColor, bulleScale, ShapeEnum.poly, this._drawBulle, this._drawText))
         SceneDraw.toggleDrawingWrite();
     }
 

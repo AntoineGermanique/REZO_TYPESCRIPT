@@ -163,9 +163,9 @@ class Rezo {
         setSortingListener();
         $("#loading").hide();
         Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
-        $(window).on('beforeunload', function () {
-            return 'Are you sure you want to leave?';
-        });
+        //$(window).on('beforeunload', function () {
+        //    return 'Are you sure you want to leave?';
+        //});
         if (document.cookie.indexOf("hasRecoveryAvailable=false") == -1) {
             if (document.cookie.indexOf("hasRecoveryAvailable=true") != -1) {
                 Rezo.hasRecoveryAvailable = true;
@@ -179,7 +179,7 @@ class Rezo {
         
 
         if (Rezo.hasRecoveryAvailable) {
-            this.suggestRecovery();
+            //this.suggestRecovery();
         }else{
             saveLocal("AutoSave");
         }

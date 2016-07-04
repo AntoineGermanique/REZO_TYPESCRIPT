@@ -64,8 +64,8 @@ class Bulle extends PIXI.Graphics {
         text.setTextDraw(textDraw);
         this.shape = shape;
         this.text = text;
-        if (this.text.textDraw.getBounds().x != 0 && this.text.textDraw.getBounds().y!=0)
-            this.text.textDraw.setTransform(-posX, -posY);
+        if (this.text.textDraw.getBounds().x != 0 && this.text.textDraw.getBounds().y != 0)
+            this.text.textDraw.setTransform(-Rezo.scene.x,  -Rezo.scene.y);
         this.addChild(this.shape);
         if (!this.text.textDraw._bmp) {
             this.addChild(this.text.textDraw);

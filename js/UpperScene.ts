@@ -6,6 +6,7 @@ class UpperScene extends PIXI.Graphics {
         var scene = this.scaleScene.scene
         var scaleScene = this.scaleScene;
         var startDrag = function (data: Data) {
+            console.log(data.data.global.x)
             // stop the default event...
             data.data.originalEvent.preventDefault();
             // store a reference to the data
