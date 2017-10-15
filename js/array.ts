@@ -1,21 +1,22 @@
 ///////////////////////////////////////array.js
+import { Bulle, Link } from './'
 "use strict";
 
-interface BulleArray {
+export interface BulleArray {
     bulle: Bulle;
     links: Link[];
     linksIndex: number[];
 }
 
-var bubbleArray: Array<BulleArray>;
+export let bubbleArray: Array<BulleArray>;
 bubbleArray = [];
 
-function array(data:Bulle) {
-    var bulleArray: BulleArray = {
+export function array(data: Bulle) {
+    let bulleArray: BulleArray = {
         bulle: data,
         links: [],
-        linksIndex:[]
+        linksIndex: []
     }
     bubbleArray.push(bulleArray);
-	console.log(bubbleArray)
+    console.log(bubbleArray)
 }

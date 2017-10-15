@@ -1,11 +1,11 @@
 ////////////////////////suppr.js
 "use strict"
-
+import {Link, Rezo, bubbleArray} from './'
 
 
 var supprLinkArray: Link[] = [];
 var supprLinkRefArray=[];
-function supprFun() {
+export function supprFun() {
 
 
     if (Link.linkSelected) {

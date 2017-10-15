@@ -1,9 +1,9 @@
 /////////////bulle.js
 "use strict";
+import { Rezo, TextRezo, TextRezoType, array, Draw } from './'
 
-
-var bulleX=Rezo.windowW/2;
-var bulleY = Rezo.windowH/2;
+var bulleX = Rezo.windowW / 2;
+var bulleY = Rezo.windowH / 2;
 var bulleDefaultSize = 50
 var bulleColor: number = parseInt("#FF00CC".replace(/^#/, ''), 16);
 var defaultScale = 1
@@ -16,8 +16,7 @@ var stopDragBulle: (data?: any) => void;
 
 
 
-
-class Bulle extends PIXI.Graphics {
+export class Bulle extends PIXI.Graphics {
     data: any;
     lineAlpha: number;
     shape: Shape;
@@ -30,7 +29,7 @@ class Bulle extends PIXI.Graphics {
         super();
         //init and set Bulle params
         if (shapeEnum) {
-            if (shapeEnum == ShapeEnum.circle) {
+            if (shapeEnum === ShapeEnum.circle as ShapeEnum) {
                 this.createCircleBulle(X, Y, bulleText, color, scale, shapeEnum)
             } else if (shapeEnum == ShapeEnum.poly) {
                 this.createPolyBulle(X, Y, bulleText, color, scale, shapeEnum, bulleDraw, textDraw);
@@ -38,7 +37,7 @@ class Bulle extends PIXI.Graphics {
         } else {
             this.createCircleBulle(X, Y, bulleText, color, scale, shapeEnum)
         }
-       
+
     }
     private createPolyBulle(posX: number, posY: number, bulleText: string, color?: number, scale?: number, shapeEnum?: ShapeEnum, bulleDraw?: Draw, textDraw?: Draw) {
         color = color || bulleColor;
@@ -65,7 +64,7 @@ class Bulle extends PIXI.Graphics {
         this.shape = shape;
         this.text = text;
         if (this.text.textDraw.getBounds().x != 0 && this.text.textDraw.getBounds().y != 0)
-            this.text.textDraw.setTransform(-Rezo.scene.x,  -Rezo.scene.y);
+            this.text.textDraw.setTransform(-Rezo.scene.x, -Rezo.scene.y);
         this.addChild(this.shape);
         if (!this.text.textDraw._bmp) {
             this.addChild(this.text.textDraw);
@@ -89,10 +88,10 @@ class Bulle extends PIXI.Graphics {
 
     }
     private numberPathToPointPath(path: number[]): PIXI.Point[] {
-        var pathPoint: PIXI.Point[]=[]
+        var pathPoint: PIXI.Point[] = []
         for (var i = 0; i < path.length; i++) {
             if (i % 2 == 0) {
-                pathPoint.push( new PIXI.Point(path[i], path[i + 1]));
+                pathPoint.push(new PIXI.Point(path[i], path[i + 1]));
 
             }
         }
@@ -148,7 +147,7 @@ class Bulle extends PIXI.Graphics {
     }
 
 
-    dragBulle():void {
+    dragBulle(): void {
         startDragBulle = (data) => {
             var bulle
             if (multBool) {
@@ -183,7 +182,7 @@ class Bulle extends PIXI.Graphics {
         this.on("touchstart", startDragBulle);
 
         // set the events for when the mouse is released or a touch is released
-        stopDragBulle =(data)=> {
+        stopDragBulle = (data) => {
             if (multBool) {
             } else {
                 if (!data) {
@@ -191,7 +190,7 @@ class Bulle extends PIXI.Graphics {
                 }
                 var bulle = <Bulle>data.data.target;
                 if (bulle == null) bulle = <Bulle>data.target;
-               this.releaseBulle(bulle)
+                this.releaseBulle(bulle)
             }
         };
         this.on("mouseup", stopDragBulle);
@@ -200,7 +199,7 @@ class Bulle extends PIXI.Graphics {
         this.on("touchendoutside", stopDragBulle);
 
         // set the callbacks for when the mouse or a touch moves
-        var drag = (data)=> {
+        var drag = (data) => {
             if (multBool) {
 
             } else if (this.dragging) {
@@ -294,13 +293,13 @@ class Bulle extends PIXI.Graphics {
     }
 }
 
-enum ShapeEnum {
-    circle,square,roundedSquare,poly,draw
+export enum ShapeEnum {
+    circle, square, roundedSquare, poly, draw
 }
-class Shape extends PIXI.Graphics {
+export class Shape extends PIXI.Graphics {
     rezoColor: number;
     kind: ShapeEnum;
-    polyPathNumber: number[]=[];
+    polyPathNumber: number[] = [];
 
     constructor(shape: ShapeEnum, size: number, color: number, path?: number[]) {
         super();
@@ -326,6 +325,6 @@ class Shape extends PIXI.Graphics {
                 break;
         }
     }
-    
+
 
 }

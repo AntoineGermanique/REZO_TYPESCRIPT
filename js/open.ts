@@ -4,7 +4,7 @@
 var bubbleTemp
 var isTitreInvalid
 var titre;
-var drive: DriveAPI = new DriveAPI();
+export var drive: DriveAPI = new DriveAPI();
 var counter :number=0;
 
 
@@ -35,7 +35,7 @@ function addListenersDrive() {
             isTitreInvalid = titreIsValid(newTitle)
             console.log(isTitreInvalid)
             if (isTitreInvalid == true) {
-                alert("le titre du rezo contient des caractères interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
+                alert("le titre du rezo contient des caractï¿½res interdits/n ~`!#$%^&*+=-[]\\\';,/{}|\":<>? \nveuillez recommencer\n");
                 $(this).trigger("click");
             } else {
                 Utilitary.startLoad();

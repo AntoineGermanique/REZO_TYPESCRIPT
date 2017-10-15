@@ -1,12 +1,13 @@
 ﻿// class to handel Drive Api request//
 // using the v2 version
-
+import { Rezo } from './';
+import gapi from 'gapi-client'
 
 
 //object of the js drive api didn't found tpescript def, but should exist
-declare namespace gapi.client {
-    export var drive
-}
+// declare namespace gapi.client {
+//     export var drive
+// }
 
 interface DriveFile {
     id: string
@@ -19,7 +20,7 @@ interface DriveFile {
 
 }
 
-class DriveAPI {
+export class DriveAPI {
 
     CLIENT_ID: string = '274114145570-ohvfonvi299jafoco3s9jld3omfhk3in.apps.googleusercontent.com';
 
@@ -139,11 +140,11 @@ class DriveAPI {
             document.dispatchEvent(event);
             var files = resp.items;
             if (files && files.length > 0) {
-                var innerHTML="";
+                var innerHTML = "";
                 for (var i = 0; i < files.length; i++) {
                     var file: DriveFile = files[i];
                     if (file.fileExtension == "rezo") {
-                        innerHTML=this.appendPre(file.title, file.id, file.modifiedDate, innerHTML);
+                        innerHTML = this.appendPre(file.title, file.id, file.modifiedDate, innerHTML);
 
                     }
                 }
@@ -179,7 +180,7 @@ class DriveAPI {
      *
      * @param {string} message Text to be placed in pre element.
      */
-    appendPre(name: string, id: string, timeStamp: string, innerHTMLRef: string):string {
+    appendPre(name: string, id: string, timeStamp: string, innerHTMLRef: string): string {
         //var option = document.createElement("option");
         var titre = name.replace(/.rezo$/, '');
         var timeStampNumber = Date.parse(timeStamp);
@@ -214,7 +215,7 @@ class DriveAPI {
                 callback(obj, title, timeStamp);
             };
             xhr.onerror = function () {
-                callback(null,null,null);
+                callback(null, null, null);
             };
             xhr.send();
         } else {
@@ -313,7 +314,7 @@ class DriveAPI {
             request.execute(callback);
         }
     }
-    updateName(newname:string,id:string) {
+    updateName(newname: string, id: string) {
         var request = gapi.client.drive.files.update({
             'fileId': id,
             'resource': {
@@ -331,11 +332,11 @@ class DriveAPI {
         var request = gapi.client.drive.files.trash({
             'fileId': fileId
         });
-        request.execute(function (resp) {
+        request.execute((resp) => {
             console.log(DriveAPI.counter++)
             $(".open").remove();
             $('#loading').css("display", "block");
-            drive.updateConnection();
+            this.updateConnection();
             var event = new CustomEvent("updatecloudselect");
             document.dispatchEvent(event)
         });

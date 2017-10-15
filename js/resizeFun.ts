@@ -1,5 +1,6 @@
 //////////resizeFun.js
-function resizeFun(){
+import {Rezo} from './'
+export function resizeFun(){
 	$( window ).resize(function() {
         updateWindowSize();
         var renderer = Rezo.renderer
@@ -34,7 +35,7 @@ function resizeFun(){
 	});
 }
 
-function updateWindowSize() {
+export function updateWindowSize() {
     
 	var windowH=window.innerHeight;
 	var windowW=window.innerWidth;

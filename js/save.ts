@@ -6,7 +6,7 @@ var sceneLinkPo=[]
 var scenePo=[]
 var scalePo=[]
 
-interface RezoSave {
+export interface RezoSave {
     bullesArray: BulleSave[];
     linkSave: LinkSave[];
     scale: Loc;
@@ -15,7 +15,7 @@ interface RezoSave {
     timeStamp: number;
 }
 
-interface BulleSave {
+export interface BulleSave {
     loc: Loc;
     linksIndex: number[];
     text: string;
@@ -29,19 +29,19 @@ interface BulleSave {
     timeStamps: number[];
 }
 
-interface LinkSave {
+export interface LinkSave {
     indexBulle1: number;
     indexBulle2: number;
     direction: Direction;
     linkPath: Loc[];
 }
 
-interface Direction {
+export interface Direction {
     first: number;
     last: number;
 }
 
-interface Loc {
+export class Loc {
     x: number;
     y: number;
 }

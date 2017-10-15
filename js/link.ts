@@ -1,7 +1,7 @@
 ////////////////////////////////link.js
+import { Bulle } from './'
 
-
-interface LinkArray {
+export interface LinkArray {
     link: Link;
     bulle1: Bulle;
     bulle2: Bulle;
@@ -9,7 +9,7 @@ interface LinkArray {
     indexBulle2: number;
 }
 
-class Link extends PIXI.Graphics {
+export class Link extends PIXI.Graphics {
     data: any;
     static linkBool = false;
     static link2Bool = false;
@@ -20,10 +20,10 @@ class Link extends PIXI.Graphics {
     static lineHitFact = 8
     static linkSelected = false;
     static linkOptimizedArray = []
-    static selectedLink : Link;
-    x0:number;
-    y0:number;
-    x1:number;
+    static selectedLink: Link;
+    x0: number;
+    y0: number;
+    x1: number;
     y1: number;
 
     saveBubbleLinked() {
@@ -44,7 +44,7 @@ class Link extends PIXI.Graphics {
         }
     }
 
-    static optimiseLink(sceneBulle: SceneBulle,sceneLink: PIXI.Container) {
+    static optimiseLink(sceneBulle: SceneBulle, sceneLink: PIXI.Container) {
         for (var i = 0; i < Link.linkArray.length; i++) {
             var indexI1 = sceneBulle.getChildIndex(Link.linkArray[i].bulle1)
             var indexI2 = sceneBulle.getChildIndex(Link.linkArray[i].bulle2)
@@ -150,7 +150,7 @@ class Link extends PIXI.Graphics {
         clicked.lineTo(bulleX1, bulleY1);
         clicked.endFill();
     }
-    
+
     static linkFun() {
         var selectedBulle = Rezo.selectedBulle;
         if (Link.linkBool == true) {

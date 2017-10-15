@@ -1,10 +1,11 @@
 ﻿//////////////////////////text.js
+import { Loc } from './'
 
-enum TextRezoType {
-    codex,type
+export enum TextRezoType {
+    codex, type
 }
 
-class TextRezo extends PIXI.Text {
+export class TextRezo extends PIXI.Text {
     textDraw: Draw;
     text: string;
     kind: TextRezoType;
@@ -75,7 +76,7 @@ class TextRezo extends PIXI.Text {
 }
 
 
- 
-function replacingText(){
-	
+
+function replacingText() {
+
 }

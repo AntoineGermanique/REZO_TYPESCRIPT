@@ -1,11 +1,11 @@
 ////////rezo.js
 "use strict";
-
+import {} from 'pixi.js'
 function init() {
     new Rezo();
 }
 
-class Rezo {
+export class Rezo {
     static load: HTMLElement = <HTMLElement>document.getElementById("loading");
     static rezoId: string;
     static isDriveConnected: boolean = false;
@@ -241,7 +241,7 @@ class Rezo {
         }
     }
     suggestRecovery() {
-        if (confirm("un rezo non sauver est récupérable, le restaurer ?")) {
+        if (confirm("un rezo non sauver est rï¿½cupï¿½rable, le restaurer ?")) {
             localLoad("AutoSave")
             Rezo.hasRecoveryAvailable = false;
         } else {

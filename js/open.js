@@ -3,7 +3,7 @@
 var bubbleTemp;
 var isTitreInvalid;
 var titre;
-var drive = new DriveAPI();
+export var drive = new DriveAPI();
 var counter = 0;
 function openLoad(data) {
     if (data) {

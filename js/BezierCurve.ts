@@ -1,4 +1,6 @@
-﻿class Bezier {
+﻿import { Rezo, Loc } from './'
+
+class Bezier {
     pathTest: Loc[] = [];
 
     testBezier() {
@@ -9,7 +11,7 @@
         var loc1: Loc = { x: 0, y: 0 };
         var loc2: Loc = { x: 50, y: 50 };
         var loc3: Loc = { x: 100, y: 0 };
-       // var loc4: Loc = { x: 150, y: 50 };
+        // var loc4: Loc = { x: 150, y: 50 };
         this.pathTest.push(loc1);
         this.pathTest.push(loc2);
         this.pathTest.push(loc3);
@@ -58,7 +60,7 @@
             }
         }
     }
-    drawStraightLines(path:Loc[]) {
+    drawStraightLines(path: Loc[]) {
         var straightCurve = new PIXI.Graphics();
         straightCurve.lineStyle(1, 0xFF0000);
         for (var i = 0; i < path.length; i++) {
@@ -78,7 +80,7 @@
         return { x: xp, y: yp };
     }
 
-    calculateControlePoint(loc: Loc): Loc{
+    calculateControlePoint(loc: Loc): Loc {
         return { x: loc.x * -1, y: loc.y * -1 };
     }
     relativeLoc(locP: Loc, loc2: Loc): Loc {
@@ -122,7 +124,7 @@
             bezierCurve.lineStyle(2.80, 0x000000, 1);
         } else if (i < 11 || i > path.length - 13) {
             bezierCurve.lineStyle(2.90, 0x000000, 1);
-        } else if (bezierCurve.lineWidth!=3) {
+        } else if (bezierCurve.lineWidth != 3) {
             bezierCurve.lineStyle(3, 0x000000, 1);
         }
         return bezierCurve;

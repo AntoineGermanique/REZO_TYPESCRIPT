@@ -1,4 +1,6 @@
 ﻿//UpperScene.js, contains scale Scene/ handle dragging
+// import { Graphics } from 'pixi.js'
+
 
 class UpperScene extends PIXI.Graphics {
     scaleScene: ScaleScene;

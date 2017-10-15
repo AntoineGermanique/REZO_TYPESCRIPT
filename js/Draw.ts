@@ -1,8 +1,10 @@
 ﻿//class draw, to draw stuff...
 
-var sceneDraw: SceneDraw;
 
-class Draw extends PIXI.Graphics {
+
+export let sceneDraw: SceneDraw;
+
+export class Draw extends PIXI.Graphics {
     _path: Loc[] = [];
     _polyPath: number[] = [];
     _recoPath: Path[] = [];
