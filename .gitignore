@@ -100,3 +100,4 @@ Temporary Items
 /obj/Debug/REZO_TYPESCRIPT.csprojResolveAssemblyReference.cache
 /obj/Debug/REZO_TYPESCRIPT.csproj.FileListAbsolute.txt
 /obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+node_modules/
