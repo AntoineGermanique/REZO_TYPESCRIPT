@@ -1,2 +1,0 @@
-/////////////////////autoSizeText.js
-'use strict';

@@ -1,3 +1,0 @@
-////////////////////border.js
-function border() {
-}
