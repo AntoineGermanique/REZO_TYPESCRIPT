@@ -1,5 +1,5 @@
 ﻿//////////////////////////text.js
-import { Loc } from './'
+import { Loc, Draw, Menu, Hyper, Rezo, wordwrap, bulleSize } from './'
 
 export enum TextRezoType {
     codex, type
@@ -22,13 +22,13 @@ export class TextRezo extends PIXI.Text {
     }
 
     replaceText() {
-        if (hyperBool && selectedHyper) {
+        if (Menu.hyperBool && Hyper.selectedHyper) {
 
         } else if (Rezo.selectedBulle && this.kind == TextRezoType.type) {
             var string = (this.text)//.replace(/[^a-zA-Z0-9 !,?.;:/]/g, '');
             var newText: string;
             if (newText = prompt("nouveau text", string)) {
-                this.text = wordwrap(newText, 10);
+                this.text = wordwrap(newText);
                 var rad = bulleSize(Rezo.selectedBulle)
                 this.autoSizeText(rad);
                 this.textDesign(this)
@@ -36,7 +36,7 @@ export class TextRezo extends PIXI.Text {
         }
     }
     textDesign(text: TextRezo) {
-        if (hyperBool) {
+        if (Menu.hyperBool) {
             text.x += text.parent.width / 2 - text.width / 2
             text.y += text.parent.height * 0.1
         } else {

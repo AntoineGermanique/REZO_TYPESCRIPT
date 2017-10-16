@@ -27,7 +27,7 @@ export class UpperScene extends PIXI.Graphics {
 
 
         // set the events for when the mouse is released or a touch is released
-        var stopDrag = function (data) {
+        var stopDrag = function () {
             this.dragging = false;
             // set the interaction data to null
             this.data = null;
@@ -40,7 +40,7 @@ export class UpperScene extends PIXI.Graphics {
         this.on("touchendoutside", stopDrag);
         // set the callbacks for when the mouse or a touch moves
 
-        var drag = function (data) {
+        var drag = function () {
             if (this.dragging) {
                 var newPosition = this.data.data.getLocalPosition(this.parent);
                 scene.position.x = (newPosition.x - dragScene.oldPosition.x + dragScene.oldX) / scaleScene.scale.x

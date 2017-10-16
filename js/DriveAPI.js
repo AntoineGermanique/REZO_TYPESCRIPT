@@ -1,7 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // class to handel Drive Api request//
 // using the v2 version
-var DriveAPI = (function () {
-    function DriveAPI() {
+const _1 = require("./");
+const gapi_client_1 = require("gapi-client");
+class DriveAPI {
+    constructor() {
         this.CLIENT_ID = '274114145570-ohvfonvi299jafoco3s9jld3omfhk3in.apps.googleusercontent.com';
         this.SCOPES = ['https://www.googleapis.com/auth/drive'];
         this.faustFolder = "FaustPlayground";
@@ -13,30 +17,29 @@ var DriveAPI = (function () {
      * Check if current user has authorized this application.
     * disable to deactivate pop up window when not connected
      */
-    DriveAPI.prototype.checkAuth = function () {
-    };
-    DriveAPI.prototype.updateConnection = function () {
-        var _this = this;
+    checkAuth() {
+    }
+    updateConnection() {
         $('#loading').css("display", "block");
-        if (Rezo.isDriveConnected) {
+        if (_1.Rezo.isDriveConnected) {
             this.loadDriveApi();
         }
         else {
-            gapi.auth.authorize({
+            gapi_client_1.default.auth.authorize({
                 'client_id': this.CLIENT_ID,
                 'scope': this.SCOPES.join(' '),
                 'immediate': false
-            }, function (authResult) {
-                _this.handleAuthResult(authResult);
+            }, (authResult) => {
+                this.handleAuthResult(authResult);
             });
         }
-    };
+    }
     /**
      * Handle response from authorization server.
      *
      * @param {Object} authResult Authorization result.
      */
-    DriveAPI.prototype.handleAuthResult = function (authResult, auto) {
+    handleAuthResult(authResult, auto) {
         if (authResult && !authResult.error) {
             // Hide auth UI, then load client library.
             var event = new CustomEvent("authon");
@@ -45,7 +48,7 @@ var DriveAPI = (function () {
             $("#driveBulle").css("display", "none");
             $("#realtimeBulle").css("display", "block");
             document.dispatchEvent(event);
-            Rezo.isDriveConnected = true;
+            _1.Rezo.isDriveConnected = true;
             this.loadDriveApi();
         }
         else {
@@ -58,44 +61,41 @@ var DriveAPI = (function () {
             var event = new CustomEvent("clouderror", { 'detail': authResult.error });
             document.dispatchEvent(event);
         }
-    };
+    }
     /**
      * Initiate auth flow in response to user clicking authorize button.
      *
      * @param {Event} event Button click event.
      */
-    DriveAPI.prototype.handleAuthClick = function (event) {
-        var _this = this;
-        if (gapi) {
-            gapi.auth.authorize({ client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false }, function (authResult) {
-                _this.handleAuthResult(authResult);
+    handleAuthClick(event) {
+        if (gapi_client_1.default) {
+            gapi_client_1.default.auth.authorize({ client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false }, (authResult) => {
+                this.handleAuthResult(authResult);
             });
             return false;
         }
         else {
             alert("connexion au drive impossible, vérifiez votre connexion  internet");
-            Utilitary.stopLoad();
+            _1.Utilitary.stopLoad();
         }
-    };
+    }
     /**
      * Load Drive API client library.
      */
-    DriveAPI.prototype.loadDriveApi = function () {
-        var _this = this;
+    loadDriveApi() {
         var event = new CustomEvent("startloaddrive");
         document.dispatchEvent(event);
-        gapi.client.load('drive', 'v2', function () { _this.listFolder(); });
-    };
+        gapi_client_1.default.client.load('drive', 'v2', () => { this.listFolder(); });
+    }
     /**
      * Print files.
      */
-    DriveAPI.prototype.listFolder = function () {
-        var _this = this;
-        var request = gapi.client.drive.files.list({
+    listFolder() {
+        var request = gapi_client_1.default.client.drive.files.list({
             'maxResults': 10000,
             'q': "title contains 'rezo' and trashed!=true "
         });
-        request.execute(function (resp) {
+        request.execute((resp) => {
             console.log(DriveAPI.counter++);
             var event = new CustomEvent("finishloaddrive");
             document.dispatchEvent(event);
@@ -105,19 +105,19 @@ var DriveAPI = (function () {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if (file.fileExtension == "rezo") {
-                        innerHTML = _this.appendPre(file.title, file.id, file.modifiedDate, innerHTML);
+                        innerHTML = this.appendPre(file.title, file.id, file.modifiedDate, innerHTML);
                     }
                 }
-                openLoad(innerHTML = (_this.innerHTML) ? _this.innerHTML : innerHTML);
-                _this.innerHTML = "";
+                _1.openLoad(innerHTML = (this.innerHTML) ? this.innerHTML : innerHTML);
+                this.innerHTML = "";
                 innerHTML = "";
                 $('#loading').css("display", "none");
             }
             else {
-                _this.appendPre("", null, null, null);
+                this.appendPre("", null, null, null);
             }
         });
-    };
+    }
     //getFileMetadata(fileId) {
     //    var request = gapi.client.drive.files.get({
     //        'fileId': fileId
@@ -133,7 +133,7 @@ var DriveAPI = (function () {
      *
      * @param {string} message Text to be placed in pre element.
      */
-    DriveAPI.prototype.appendPre = function (name, id, timeStamp, innerHTMLRef) {
+    appendPre(name, id, timeStamp, innerHTMLRef) {
         //var option = document.createElement("option");
         var titre = name.replace(/.rezo$/, '');
         var timeStampNumber = Date.parse(timeStamp);
@@ -144,16 +144,16 @@ var DriveAPI = (function () {
         return innerHTMLRef;
         //var event = new CustomEvent("fillselect", { 'detail': option })
         //document.dispatchEvent(event);
-    };
+    }
     /**
  * Download a file's content.
  *
  * @param {File} file Drive File instance.
  * @param {Function} callback Function to call when the request is complete.
  */
-    DriveAPI.prototype.downloadFile = function (file, callback) {
+    downloadFile(file, callback) {
         if (file.downloadUrl) {
-            var accessToken = gapi.auth.getToken().access_token;
+            var accessToken = gapi_client_1.default.auth.getToken().access_token;
             $.support.cors;
             var xhr = new XMLHttpRequest();
             //xhr.withCredentials = true;
@@ -161,7 +161,7 @@ var DriveAPI = (function () {
             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
             xhr.onload = function () {
                 var obj = JSON.parse(xhr.response);
-                Rezo.rezoId = file.id;
+                _1.Rezo.rezoId = file.id;
                 var title = file.title.replace(".rezo", "");
                 var timeStamp = Date.parse(file.modifiedDate);
                 callback(obj, title, timeStamp);
@@ -174,33 +174,31 @@ var DriveAPI = (function () {
         else {
             callback(null, null, null);
         }
-    };
+    }
     /**
  * Print a file's metadata.
  *
  * @param {String} fileId ID of the file to print metadata for.
  */
-    DriveAPI.prototype.getFile = function (fileId, callback) {
-        var _this = this;
-        var request = gapi.client.drive.files.get({
+    getFile(fileId, callback) {
+        var request = gapi_client_1.default.client.drive.files.get({
             'fileId': fileId
         });
         try {
-            request.execute(function (resp) {
+            request.execute((resp) => {
                 console.log(DriveAPI.counter++);
-                _this.lastSavedFileMetadata = resp;
+                this.lastSavedFileMetadata = resp;
                 callback(resp);
             });
         }
         catch (e) {
             'new Message("erreur")';
         }
-    };
-    DriveAPI.prototype.createFile = function (fileName, callback) {
-        var _this = this;
+    }
+    createFile(fileName, callback) {
         var event = new CustomEvent("startloaddrive");
         document.dispatchEvent(event);
-        var request = gapi.client.request({
+        var request = gapi_client_1.default.client.request({
             'path': '/drive/v2/files',
             'method': 'POST',
             'body': {
@@ -208,10 +206,10 @@ var DriveAPI = (function () {
                 "mimeType": "application/json",
             }
         });
-        request.execute(function (resp) {
-            _this.getFile(resp.id, function (fileMetada) { _this.updateFile(resp.id, fileMetada, _this.tempBlob, null); });
+        request.execute((resp) => {
+            this.getFile(resp.id, (fileMetada) => { this.updateFile(resp.id, fileMetada, this.tempBlob, null); });
         });
-    };
+    }
     /**
  * Update an existing file's metadata and content.
  *
@@ -220,12 +218,12 @@ var DriveAPI = (function () {
  * @param {File} fileData File object to read data from.
  * @param {Function} callback Callback function to call when the request is complete.
  */
-    DriveAPI.prototype.updateFile = function (fileId, fileMetadata, fileData, callback) {
+    updateFile(fileId, fileMetadata, fileData, callback) {
         var event = new CustomEvent("startloaddrive");
         document.dispatchEvent(event);
-        var boundary = '-------314159265358979323846';
-        var delimiter = "\r\n--" + boundary + "\r\n";
-        var close_delim = "\r\n--" + boundary + "--";
+        const boundary = '-------314159265358979323846';
+        const delimiter = "\r\n--" + boundary + "\r\n";
+        const close_delim = "\r\n--" + boundary + "--";
         var reader = new FileReader();
         reader.readAsBinaryString(fileData);
         reader.onload = function (e) {
@@ -241,7 +239,7 @@ var DriveAPI = (function () {
                 '\r\n' +
                 base64Data +
                 close_delim;
-            var request = gapi.client.request({
+            var request = gapi_client_1.default.client.request({
                 'path': '/upload/drive/v2/files/' + fileId,
                 'method': 'PUT',
                 'params': { 'uploadType': 'multipart', 'alt': 'json' },
@@ -251,50 +249,48 @@ var DriveAPI = (function () {
                 'body': multipartRequestBody
             });
             if (!callback) {
-                callback = function () {
-                    Rezo.load.style.display = "none";
+                callback = () => {
+                    _1.Rezo.load.style.display = "none";
                 };
             }
             request.execute(callback);
         };
-    };
-    DriveAPI.prototype.updateName = function (newname, id) {
-        var _this = this;
-        var request = gapi.client.drive.files.update({
+    }
+    updateName(newname, id) {
+        var request = gapi_client_1.default.client.drive.files.update({
             'fileId': id,
             'resource': {
                 'title': newname + '.rezo'
             }
         });
-        request.execute(function (resp) {
+        request.execute((resp) => {
             $(".open").remove();
-            _this.updateConnection();
+            this.updateConnection();
         });
-    };
-    DriveAPI.prototype.trashFile = function (fileId) {
+    }
+    trashFile(fileId) {
         var event = new CustomEvent("startloaddrive");
         document.dispatchEvent(event);
-        var request = gapi.client.drive.files.trash({
+        var request = gapi_client_1.default.client.drive.files.trash({
             'fileId': fileId
         });
-        request.execute(function (resp) {
+        request.execute((resp) => {
             console.log(DriveAPI.counter++);
             $(".open").remove();
             $('#loading').css("display", "block");
-            drive.updateConnection();
+            this.updateConnection();
             var event = new CustomEvent("updatecloudselect");
             document.dispatchEvent(event);
         });
-    };
-    DriveAPI.prototype.logOut = function () {
+    }
+    logOut() {
         $("#saveBulle").css("display", "none");
         $("#homeBulle").css("display", "none");
         $("#realtimeBulle").css("display", "none");
         $("#driveBulle").css("display", "block");
         $(".open").remove();
         window.open("https://accounts.google.com/logout", "newwindow", "width=500,height=700");
-    };
-    DriveAPI.counter = 0;
-    return DriveAPI;
-}());
-//# sourceMappingURL=DriveAPI.js.map
+    }
+}
+DriveAPI.counter = 0;
+exports.DriveAPI = DriveAPI;

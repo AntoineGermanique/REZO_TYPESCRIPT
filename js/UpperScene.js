@@ -1,15 +1,10 @@
+"use strict";
 //UpperScene.js, contains scale Scene/ handle dragging
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var UpperScene = (function (_super) {
-    __extends(UpperScene, _super);
-    function UpperScene() {
-        _super.apply(this, arguments);
-    }
-    UpperScene.prototype.dragScene = function () {
+// import { Graphics } from 'pixi.js'
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
+class UpperScene extends PIXI.Graphics {
+    dragScene() {
         var scene = this.scaleScene.scene;
         var scaleScene = this.scaleScene;
         var startDrag = function (data) {
@@ -21,9 +16,9 @@ var UpperScene = (function (_super) {
             // we want to track the movement of this particular touch
             this.data = data;
             this.dragging = true;
-            oldX = scene.position.x * scaleScene.scale.x;
-            oldY = scene.position.y * scaleScene.scale.x;
-            oldPosition = data.data.getLocalPosition(this.parent);
+            _1.dragScene.oldX = scene.position.x * scaleScene.scale.x;
+            _1.dragScene.oldY = scene.position.y * scaleScene.scale.x;
+            _1.dragScene.oldPosition = data.data.getLocalPosition(this.parent);
         };
         this.on("mousedown", startDrag);
         this.on("touchstart", startDrag);
@@ -43,13 +38,20 @@ var UpperScene = (function (_super) {
         var drag = function (data) {
             if (this.dragging) {
                 var newPosition = this.data.data.getLocalPosition(this.parent);
-                scene.position.x = (newPosition.x - oldPosition.x + oldX) / scaleScene.scale.x;
-                scene.position.y = (newPosition.y - oldPosition.y + oldY) / scaleScene.scale.x;
+                scene.position.x = (newPosition.x - _1.dragScene.oldPosition.x + _1.dragScene.oldX) / scaleScene.scale.x;
+                scene.position.y = (newPosition.y - _1.dragScene.oldPosition.y + _1.dragScene.oldY) / scaleScene.scale.x;
+                //Rezo.sceneDraw.position.x = Rezo.sceneDraw.position.x -scene.position.x;
+                //Rezo.sceneDraw.position.y = Rezo.sceneDraw.position.y -scene.position.y;
+                //// this.hitArea.x=-this.position.x+windowW/2*this.scale.x
+                // this.hitArea.y=-this.position.y+windowH/2*this.scale.y
+                // this.clear();
+                // updateWindowSize()
+                // this.beginFill(0xFF5500, 0.2)
+                // this.drawRect(-this.position.x/this.scale.x,-this.position.y/this.scale.y,windowW/this.scale.x,windowH/this.scale.x)
             }
         };
         this.on("mousemove", drag);
         this.on("touchmove", drag);
-    };
-    return UpperScene;
-}(PIXI.Graphics));
-//# sourceMappingURL=UpperScene.js.map
+    }
+}
+exports.UpperScene = UpperScene;

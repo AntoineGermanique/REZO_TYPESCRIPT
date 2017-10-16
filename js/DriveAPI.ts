@@ -70,7 +70,7 @@ export class DriveAPI {
      *
      * @param {Object} authResult Authorization result.
      */
-    handleAuthResult(authResult, auto?) {
+    handleAuthResult(authResult) {
 
         if (authResult && !authResult.error) {
             // Hide auth UI, then load client library.
@@ -100,14 +100,13 @@ export class DriveAPI {
      *
      * @param {Event} event Button click event.
      */
-    handleAuthClick(event) {
+    handleAuthClick() {
         if (gapi) {
             gapi.auth.authorize(
                 { client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false },
                 (authResult) => {
                     this.handleAuthResult(authResult)
                 });
-            return false;
         } else {
             alert("connexion au drive impossible, vérifiez votre connexion  internet")
             Utilitary.stopLoad();
@@ -244,7 +243,7 @@ export class DriveAPI {
     }
 
 
-    createFile(fileName: string, callback) {
+    createFile(fileName: string) {
         var event = new CustomEvent("startloaddrive");
         document.dispatchEvent(event);
 
@@ -280,7 +279,7 @@ export class DriveAPI {
 
         var reader = new FileReader();
         reader.readAsBinaryString(fileData);
-        reader.onload = function (e) {
+        reader.onload = () => {
             var contentType = fileData.type || 'application/octet-stream';
             // Updating the metadata is optional and you can instead use the value from drive.files.get.
             var base64Data = btoa(reader.result);
@@ -321,7 +320,7 @@ export class DriveAPI {
                 'title': newname + '.rezo'
             }
         })
-        request.execute((resp) => {
+        request.execute(() => {
             $(".open").remove();
             this.updateConnection();
         })
@@ -332,7 +331,7 @@ export class DriveAPI {
         var request = gapi.client.drive.files.trash({
             'fileId': fileId
         });
-        request.execute((resp) => {
+        request.execute(() => {
             console.log(DriveAPI.counter++)
             $(".open").remove();
             $('#loading').css("display", "block");

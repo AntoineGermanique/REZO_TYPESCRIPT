@@ -1,14 +1,13 @@
-///////////////////////////////////////array.js
 "use strict";
-var bubbleArray;
-bubbleArray = [];
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.bubbleArray = [];
 function array(data) {
-    var bulleArray = {
+    let bulleArray = {
         bulle: data,
         links: [],
         linksIndex: []
     };
-    bubbleArray.push(bulleArray);
-    console.log(bubbleArray);
+    exports.bubbleArray.push(bulleArray);
+    console.log(exports.bubbleArray);
 }
-//# sourceMappingURL=array.js.map
+exports.array = array;

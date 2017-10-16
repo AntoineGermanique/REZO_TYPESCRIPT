@@ -82,7 +82,7 @@ export class Zoom {
 		}
 		sensorZoomScene.on("touchstart", touch1Start);
 
-		var touch1Stop = (data) => {
+		var touch1Stop = () => {
 			Zoom.touchZoomCounter = 0
 			sensorZoomScene.dragging = false;
 			Zoom.touch1MoveX1 = Zoom.touch1MoveY1 = Zoom.touch1MoveX2 = Zoom.touch1MoveY2 = 0
@@ -138,7 +138,7 @@ export class Zoom {
 		}
 		sensorZoomScene2.on("touchstart", touch2Start);
 
-		var touch2Stop = (data) => {
+		var touch2Stop = () => {
 			sensorZoomScene2.interactive = false
 
 			sensorZoomScene2.dragging = false;
@@ -155,7 +155,7 @@ export class Zoom {
 		sensorZoomScene2.on("touchend", touch2Stop);
 		sensorZoomScene2.on("touchendoutside", touch2Stop);
 
-		var touch2Move = (data) => {
+		var touch2Move = () => {
 			if (sensorZoomScene2.dragging && Zoom.touchZoomCounter == 2) {
 				console.log("zooming double touch")
 				Zoom.squeze2 += 1

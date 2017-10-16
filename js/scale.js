@@ -1,118 +1,122 @@
 /////////////////////////scale.js
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
 var scalBullFirstPo;
 var tempScaleArray = [];
-function scaleBulle() {
-    var selectedBulle = Rezo.selectedBulle;
-    var startZoom = function (data) {
-        selectedBulle = Rezo.selectedBulle;
-        data.data.originalEvent.preventDefault();
-        this.dragging = true;
-        //upperScene.dragging = false;
-        scalBullFirstPo = data.data.getLocalPosition(this.parent);
-        if (multBool) {
-            tempScaleArray = multiArray;
+class Scale {
+    static scaleBulle() {
+        var selectedBulle = _1.Rezo.selectedBulle;
+        var startZoom = (data) => {
+            selectedBulle = _1.Rezo.selectedBulle;
+            data.data.originalEvent.preventDefault();
+            data.dragging = true;
+            //upperScene.dragging = false;
+            scalBullFirstPo = data.data.getLocalPosition(data.parent);
+            if (_1.Menu.multBool) {
+                tempScaleArray = _1.Multi.multiArray;
+            }
+            else {
+                tempScaleArray.push({
+                    bulle: selectedBulle,
+                    loc: {
+                        x: selectedBulle.x,
+                        y: selectedBulle.y
+                    },
+                    links: [],
+                    linksIndex: []
+                });
+            }
+        };
+        var sensorScaleBulleScene = _1.Rezo.sensorScaleBulleScene;
+        sensorScaleBulleScene.on("touchstart", startZoom);
+        var stopZoom = (data) => {
+            data.dragging = false;
+            tempScaleArray = [];
+        };
+        sensorScaleBulleScene.on("touchend", stopZoom);
+        sensorScaleBulleScene.on("touchendouside", stopZoom);
+        var zoomTouch = (data) => {
+            if (data.dragging && _1.Menu.selectBool == false) {
+                var newPosition = data.data.getLocalPosition(data.parent);
+                if (newPosition.y < scalBullFirstPo.y) {
+                    for (var i = 0; i < tempScaleArray.length; i++) {
+                        tempScaleArray[i].bulle.scale.x *= 1.03;
+                        tempScaleArray[i].bulle.scale.y *= 1.03;
+                    }
+                }
+                else {
+                    for (var i = 0; i < tempScaleArray.length; i++) {
+                        tempScaleArray[i].bulle.scale.x /= 1.03;
+                        tempScaleArray[i].bulle.scale.y /= 1.03;
+                    }
+                }
+            }
+        };
+        sensorScaleBulleScene.on("touchmove", zoomTouch);
+        sensorScaleBulleScene.interactive = false;
+    }
+    static scaleBulleScroll(scrollEvent) {
+        if (_1.Menu.multBool) {
+            tempScaleArray = _1.Multi.multiArray;
         }
         else {
             tempScaleArray.push({
-                bulle: selectedBulle,
+                bulle: _1.Rezo.selectedBulle,
                 loc: {
-                    x: selectedBulle.x,
-                    y: selectedBulle.y
+                    x: _1.Rezo.selectedBulle.x,
+                    y: _1.Rezo.selectedBulle.y
                 },
                 links: [],
                 linksIndex: []
             });
         }
-    };
-    var sensorScaleBulleScene = Rezo.sensorScaleBulleScene;
-    sensorScaleBulleScene.on("touchstart", startZoom);
-    var stopZoom = function (data) {
-        this.dragging = false;
+        if (scrollEvent.deltaY < 0) {
+            for (var i = 0; i < tempScaleArray.length; i++) {
+                tempScaleArray[i].bulle.scale.x /= 1.1;
+                tempScaleArray[i].bulle.scale.y /= 1.1;
+            }
+        }
+        else {
+            for (var i = 0; i < tempScaleArray.length; i++) {
+                tempScaleArray[i].bulle.scale.x *= 1.1;
+                tempScaleArray[i].bulle.scale.y *= 1.1;
+            }
+        }
         tempScaleArray = [];
-    };
-    sensorScaleBulleScene.on("touchend", stopZoom);
-    sensorScaleBulleScene.on("touchendouside", stopZoom);
-    var zoomTouch = function (data) {
-        if (this.dragging && selectBool == false) {
-            var newPosition = data.data.getLocalPosition(this.parent);
-            if (newPosition.y < scalBullFirstPo.y) {
-                for (var i = 0; i < tempScaleArray.length; i++) {
-                    tempScaleArray[i].bulle.scale.x *= 1.03;
-                    tempScaleArray[i].bulle.scale.y *= 1.03;
-                }
-            }
-            else {
-                for (var i = 0; i < tempScaleArray.length; i++) {
-                    tempScaleArray[i].bulle.scale.x /= 1.03;
-                    tempScaleArray[i].bulle.scale.y /= 1.03;
-                }
-            }
+    }
+    static scaleBullePlus(bulleToScale) {
+        bulleToScale.scale.x *= 1.5;
+        bulleToScale.scale.y *= 1.5;
+    }
+    static scaleBulleMoins(bulleToScale) {
+        bulleToScale.scale.x /= 1.5;
+        bulleToScale.scale.y /= 1.5;
+    }
+    static scaleBulleTouch() {
+        var stage = _1.Rezo.stage;
+        if (_1.Menu.scalBool) {
+            _1.Rezo.sensorScaleBulleScene.interactive = true;
+            _1.Rezo.upperScene.interactive = false;
+            _1.Rezo.sensorZoomScene.interactive = false;
+            stage.swapChildren(stage.sensorZoomScene, stage.sensorScaleBulleScene);
         }
-    };
-    sensorScaleBulleScene.on("touchmove", zoomTouch);
-    sensorScaleBulleScene.interactive = false;
-}
-function scaleBulleScroll(scrollEvent) {
-    if (multBool) {
-        tempScaleArray = multiArray;
-    }
-    else {
-        tempScaleArray.push({
-            bulle: Rezo.selectedBulle,
-            loc: {
-                x: Rezo.selectedBulle.x,
-                y: Rezo.selectedBulle.y
-            },
-            links: [],
-            linksIndex: []
-        });
-    }
-    if (scrollEvent.deltaY < 0) {
-        for (var i = 0; i < tempScaleArray.length; i++) {
-            tempScaleArray[i].bulle.scale.x /= 1.1;
-            tempScaleArray[i].bulle.scale.y /= 1.1;
+        else {
+            _1.Rezo.sensorScaleBulleScene.interactive = false;
+            _1.Rezo.upperScene.interactive = true;
+            _1.Rezo.sensorZoomScene.interactive = true;
+            stage.swapChildren(stage.sensorZoomScene, stage.sensorScaleBulleScene);
         }
     }
-    else {
-        for (var i = 0; i < tempScaleArray.length; i++) {
-            tempScaleArray[i].bulle.scale.x *= 1.1;
-            tempScaleArray[i].bulle.scale.y *= 1.1;
+    static multiScaleBullePlus(scaleMultiArray) {
+        for (var i = 0; i < scaleMultiArray.length; i++) {
+            Scale.scaleBullePlus(scaleMultiArray[i].bulle);
         }
     }
-    tempScaleArray = [];
-}
-function scaleBullePlus(bulleToScale) {
-    bulleToScale.scale.x *= 1.5;
-    bulleToScale.scale.y *= 1.5;
-}
-function scaleBulleMoins(bulleToScale) {
-    bulleToScale.scale.x /= 1.5;
-    bulleToScale.scale.y /= 1.5;
-}
-function scaleBulleTouch() {
-    var stage = Rezo.stage;
-    if (scalBool) {
-        Rezo.sensorScaleBulleScene.interactive = true;
-        Rezo.upperScene.interactive = false;
-        Rezo.sensorZoomScene.interactive = false;
-        stage.swapChildren(stage.sensorZoomScene, stage.sensorScaleBulleScene);
-    }
-    else {
-        Rezo.sensorScaleBulleScene.interactive = false;
-        Rezo.upperScene.interactive = true;
-        Rezo.sensorZoomScene.interactive = true;
-        stage.swapChildren(stage.sensorZoomScene, stage.sensorScaleBulleScene);
+    static multiScaleBulleMoins(scaleMultiArray) {
+        for (var i = 0; i < scaleMultiArray.length; i++) {
+            Scale.scaleBulleMoins(scaleMultiArray[i].bulle);
+        }
     }
 }
-function multiScaleBullePlus(scaleMultiArray) {
-    for (var i = 0; i < scaleMultiArray.length; i++) {
-        scaleBullePlus(scaleMultiArray[i].bulle);
-    }
-}
-function multiScaleBulleMoins(scaleMultiArray) {
-    for (var i = 0; i < scaleMultiArray.length; i++) {
-        scaleBulleMoins(scaleMultiArray[i].bulle);
-    }
-}
-//# sourceMappingURL=scale.js.map
+exports.Scale = Scale;

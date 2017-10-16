@@ -1,16 +1,15 @@
+"use strict";
 //Utilitary
-var Utilitary = (function () {
-    function Utilitary() {
-    }
-    Utilitary.replaceAll = function (str, find, replace) {
+Object.defineProperty(exports, "__esModule", { value: true });
+class Utilitary {
+    static replaceAll(str, find, replace) {
         return str.replace(new RegExp(find, 'g'), replace);
-    };
-    Utilitary.startLoad = function () {
+    }
+    static startLoad() {
         $("#loading").css("display", "block");
-    };
-    Utilitary.stopLoad = function () {
+    }
+    static stopLoad() {
         $("#loading").css("display", "none");
-    };
-    return Utilitary;
-}());
-//# sourceMappingURL=Utilitary.js.map
+    }
+}
+exports.Utilitary = Utilitary;

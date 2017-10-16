@@ -82,7 +82,7 @@ export class Link extends PIXI.Graphics {
 
     }
     interactiveLink() {
-        var click = function (data) {
+        var click = function () {
             Link.selectedLink = this;
             if (this.alpha == 1) {
                 this.clickLink(this)
@@ -93,7 +93,7 @@ export class Link extends PIXI.Graphics {
         this.on("mousedown", click);
         this.on("touchstart", click);
 
-        var over = function (data) {
+        var over = () => {
             this.alpha = 1;
         }
         this.on("mouseupoutside", over);
@@ -188,7 +188,6 @@ export class Link extends PIXI.Graphics {
                 link.saveBubbleLinked()
                 if (Link.link2Bool == true) {
                     Link.emptyLinkArray()
-                    return true
                 } else if (Link.link3Bool == true) {
                 } else {
                     $("#linkBulle").trigger("click");

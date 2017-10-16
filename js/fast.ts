@@ -40,7 +40,7 @@ export function fastFun() {
                 var scaleScene = Rezo.scaleScene;
                 var fastPoX = newPosition.x / scaleScene.scale.x - scaleScene.scene.x - (windowW / scaleScene.scale.x - windowW) / 2
                 var fastPoY = newPosition.y / scaleScene.scale.x - scaleScene.scene.y - (windowH / scaleScene.scale.x - windowH) / 2
-                Rezo.sceneBulle.addChild(new Bulle(fastPoX, fastPoY, newFastBulleText, Select.color));
+                Rezo.sceneBulle.addChild(new Bulle(fastPoX, fastPoY, newFastBulleText, Bulle.bulleColor));
                 Link.linkBool = true
                 Link.link3Bool = true
                 Link.link2Bool = false

@@ -1,57 +1,57 @@
-var Realtime = (function () {
-    function Realtime() {
-        this.realtimeUtils = new utils.RealtimeUtils({ clientId: drive.CLIENT_ID });
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
+const gapi_client_1 = require("gapi-client");
+class Realtime {
+    constructor() {
+        this.realtimeUtils = new utils.RealtimeUtils({ clientId: _1.drive.CLIENT_ID });
     }
-    Realtime.prototype.init = function () {
-        var _this = this;
-        gapi.load("auth:client,drive-realtime,drive-share", function () { _this.authorize(); });
-    };
-    Realtime.prototype.startUsingRealtime = function () {
-        var _this = this;
-        var fileId = (Rezo.rezoId) ? Rezo.rezoId : saveDrive();
+    init() {
+        gapi_client_1.default.load("auth:client,drive-realtime,drive-share", () => { this.authorize(); });
+    }
+    startUsingRealtime() {
+        var fileId = (_1.Rezo.rezoId) ? _1.Rezo.rezoId : _1.Save.saveDrive();
         if (fileId)
-            gapi.drive.realtime.load(fileId, function (doc) { _this.onFileLoaded(doc); }, function (model) { _this.opt_initializerFn(model); }, function (error) { _this.opt_errorFn(error); });
-    };
-    Realtime.prototype.onFileLoaded = function (doc) {
+            gapi_client_1.default.drive.realtime.load(fileId, (doc) => { this.onFileLoaded(doc); }, (model) => { this.opt_initializerFn(model); }, (error) => { this.opt_errorFn(error); });
+    }
+    onFileLoaded(doc) {
         // Get the field named "text" in the root map.
         var text = doc.getModel().getRoot().get("text");
         // Connect the event to the listener.
-        text.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, this.onStringChanged);
-    };
-    Realtime.prototype.opt_initializerFn = function (model) {
+        text.addEventListener(gapi_client_1.default.drive.realtime.EventType.TEXT_INSERTED, this.onStringChanged);
+    }
+    opt_initializerFn(model) {
         this.initializeModel(model);
-    };
-    Realtime.prototype.opt_errorFn = function (error) {
+    }
+    opt_errorFn(error) {
         console.log(error);
-    };
-    Realtime.prototype.initializeModel = function (model) {
+    }
+    initializeModel(model) {
         var string = model.createString("Hello Realtime World!");
         model.getRoot().set("text", string);
-    };
-    Realtime.prototype.onStringChanged = function (evt) {
+    }
+    onStringChanged(evt) {
         // Log the event to the console.
         console.log(evt);
-    };
-    Realtime.prototype.authorize = function () {
-        var _this = this;
+    }
+    authorize() {
         // Attempt to authorize
-        this.realtimeUtils.authorize(function (response) {
+        this.realtimeUtils.authorize((response) => {
             if (response.error) {
                 // Authorization failed because this is the first time the user has used your application,
                 // show the authorize button to prompt them to authorize manually.
                 var button = document.getElementById('auth_button');
                 button.classList.add('visible');
-                button.addEventListener('click', function () {
-                    _this.realtimeUtils.authorize(function (response) {
-                        _this.startUsingRealtime();
+                button.addEventListener('click', () => {
+                    this.realtimeUtils.authorize((response) => {
+                        this.startUsingRealtime();
                     }, true);
                 });
             }
             else {
-                _this.startUsingRealtime();
+                this.startUsingRealtime();
             }
         }, false);
-    };
-    return Realtime;
-}());
-//# sourceMappingURL=realtime.js.map
+    }
+}
+exports.Realtime = Realtime;

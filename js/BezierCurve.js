@@ -1,10 +1,13 @@
-var Bezier = (function () {
-    function Bezier() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
+class Bezier {
+    constructor() {
         this.pathTest = [];
     }
-    Bezier.prototype.testBezier = function () {
+    testBezier() {
         var bezierCurve = new PIXI.Graphics();
-        Rezo.scene.addChild(bezierCurve);
+        _1.Rezo.scene.addChild(bezierCurve);
         bezierCurve.lineStyle(5, 0x000000, 1);
         //bezierCurve.moveTo(0, 0);
         var loc1 = { x: 0, y: 0 };
@@ -22,8 +25,8 @@ var Bezier = (function () {
         this.drawQuadraticCurve(this.pathTest, bezierCurve);
         this.drawStraightLines(this.pathTest);
         // bezierCurve.quadraticCurveTo(75, 0, 50, 100);
-    };
-    Bezier.prototype.drawQuadraticCurve = function (path, bezierCurve) {
+    }
+    drawQuadraticCurve(path, bezierCurve) {
         bezierCurve.clear();
         var pathPath = this.slicePath(path);
         for (var j = 0; j < pathPath.length; j++) {
@@ -54,8 +57,8 @@ var Bezier = (function () {
                 }
             }
         }
-    };
-    Bezier.prototype.drawStraightLines = function (path) {
+    }
+    drawStraightLines(path) {
         var straightCurve = new PIXI.Graphics();
         straightCurve.lineStyle(1, 0xFF0000);
         for (var i = 0; i < path.length; i++) {
@@ -66,23 +69,23 @@ var Bezier = (function () {
                 straightCurve.moveTo(path[i].x, path[i].y);
             }
         }
-        Rezo.scene.addChild(straightCurve);
-    };
-    Bezier.prototype.calculateOppositeControlePoint = function (x2, x3, y2, y3) {
+        _1.Rezo.scene.addChild(straightCurve);
+    }
+    calculateOppositeControlePoint(x2, x3, y2, y3) {
         var xp = x2 + ((x3 - x2) / 2);
         var yp = y2 + ((y3 - y2) / 2);
         return { x: xp, y: yp };
-    };
-    Bezier.prototype.calculateControlePoint = function (loc) {
+    }
+    calculateControlePoint(loc) {
         return { x: loc.x * -1, y: loc.y * -1 };
-    };
-    Bezier.prototype.relativeLoc = function (locP, loc2) {
+    }
+    relativeLoc(locP, loc2) {
         return { x: locP.x - loc2.x, y: locP.y - loc2.y };
-    };
-    Bezier.prototype.absoluteControlePoint = function (locC, loc2) {
+    }
+    absoluteControlePoint(locC, loc2) {
         return { x: locC.x + loc2.x, y: locC.y + loc2.y };
-    };
-    Bezier.prototype.trimControlePoint = function (loc1, loc2, locC) {
+    }
+    trimControlePoint(loc1, loc2, locC) {
         var xMax = (loc1.x < loc2.x) ? loc2.x : loc1.x;
         var xMin = (loc1.x > loc2.x) ? loc2.x : loc1.x;
         var yMax = (loc1.y < loc2.y) ? loc2.y : loc1.y;
@@ -92,8 +95,8 @@ var Bezier = (function () {
         locC.y = (locC.y < yMin) ? yMin : locC.y;
         locC.y = (locC.y > yMax) ? yMax : locC.y;
         return locC;
-    };
-    Bezier.prototype.setLineWidth = function (i, path, bezierCurve) {
+    }
+    setLineWidth(i, path, bezierCurve) {
         if (i < 2 || i > path.length - 4) {
             bezierCurve.lineStyle(0.5, 0x000000, 1);
         }
@@ -128,8 +131,8 @@ var Bezier = (function () {
             bezierCurve.lineStyle(3, 0x000000, 1);
         }
         return bezierCurve;
-    };
-    Bezier.prototype.slicePath = function (path) {
+    }
+    slicePath(path) {
         var pathPath = [];
         var counter = 0;
         for (var i = 1; i < path.length; i++) {
@@ -144,7 +147,6 @@ var Bezier = (function () {
         }
         pathPath.push(path.slice(counter, i));
         return pathPath;
-    };
-    return Bezier;
-}());
-//# sourceMappingURL=BezierCurve.js.map
+    }
+}
+exports.Bezier = Bezier;

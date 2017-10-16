@@ -1,6 +1,6 @@
 ﻿
 declare var utils;
-import {Rezo, drive, Save} from './'
+import { Rezo, drive, Save } from './'
 import gapi from 'gapi-client'
 export class Realtime {
     realtimeUtils = new utils.RealtimeUtils({ clientId: drive.CLIENT_ID });
@@ -33,31 +33,31 @@ export class Realtime {
         console.log(error);
     }
     initializeModel(model) {
-    var string = model.createString("Hello Realtime World!");
-    model.getRoot().set("text", string);
+        var string = model.createString("Hello Realtime World!");
+        model.getRoot().set("text", string);
     }
     onStringChanged(evt) {
         // Log the event to the console.
         console.log(evt);
     }
-   
+
 
     authorize() {
-    // Attempt to authorize
-    this.realtimeUtils.authorize((response)=> {
-        if (response.error) {
-            // Authorization failed because this is the first time the user has used your application,
-            // show the authorize button to prompt them to authorize manually.
-            var button = document.getElementById('auth_button');
-            button.classList.add('visible');
-            button.addEventListener('click', ()=> {
-                this.realtimeUtils.authorize((response)=> {
-                    this.startUsingRealtime();
-                }, true);
-            });
-        } else {
-            this.startUsingRealtime();
-        }
-    }, false);
-}
+        // Attempt to authorize
+        this.realtimeUtils.authorize((response) => {
+            if (response.error) {
+                // Authorization failed because this is the first time the user has used your application,
+                // show the authorize button to prompt them to authorize manually.
+                var button = document.getElementById('auth_button');
+                button.classList.add('visible');
+                button.addEventListener('click', () => {
+                    this.realtimeUtils.authorize(() => {
+                        this.startUsingRealtime();
+                    }, true);
+                });
+            } else {
+                this.startUsingRealtime();
+            }
+        }, false);
+    }
 }

@@ -10,7 +10,7 @@
 } from './'
 
 export class LocalStorage {
-    localSave(array: RezoSave, name: string) {
+    static localSave(array: RezoSave, name: string) {
         if (typeof sessionStorage != 'undefined') {
             var arrayStringify = JSON.stringify(array);
             localStorage.setItem(name, arrayStringify);

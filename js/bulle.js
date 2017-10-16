@@ -1,26 +1,16 @@
 /////////////bulle.js
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var bulleX = Rezo.windowW / 2;
-var bulleY = Rezo.windowH / 2;
-var bulleDefaultSize = 50;
-var bulleColor = parseInt("#FF00CC".replace(/^#/, ''), 16);
-var defaultScale = 1;
-var lastBulleSelected;
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
 var dataFake;
 var startDragBulle;
 var stopDragBulle;
-var Bulle = (function (_super) {
-    __extends(Bulle, _super);
-    function Bulle(X, Y, bulleText, color, scale, shapeEnum, bulleDraw, textDraw) {
-        _super.call(this);
+class Bulle extends PIXI.Graphics {
+    constructor(X, Y, bulleText, color, scale, shapeEnum, bulleDraw, textDraw) {
+        super();
         //init and set Bulle params
         if (shapeEnum) {
-            if (shapeEnum == ShapeEnum.circle) {
+            if (shapeEnum === ShapeEnum.circle) {
                 this.createCircleBulle(X, Y, bulleText, color, scale, shapeEnum);
             }
             else if (shapeEnum == ShapeEnum.poly) {
@@ -31,8 +21,8 @@ var Bulle = (function (_super) {
             this.createCircleBulle(X, Y, bulleText, color, scale, shapeEnum);
         }
     }
-    Bulle.prototype.createPolyBulle = function (posX, posY, bulleText, color, scale, shapeEnum, bulleDraw, textDraw) {
-        color = color || bulleColor;
+    createPolyBulle(posX, posY, bulleText, color, scale, shapeEnum, bulleDraw, textDraw) {
+        color = color || Bulle.bulleColor;
         this.lineStyle(16, color, 0.5);
         this.drawPolygon(bulleDraw.getPathNumber());
         var pointPath = this.numberPathToPointPath(bulleDraw.getPathNumber());
@@ -49,14 +39,14 @@ var Bulle = (function (_super) {
         this.scale.x = scale;
         this.scale.y = scale;
         var shape;
-        shape = new Shape(ShapeEnum.poly, bulleDefaultSize, color, bulleDraw.getPathNumber());
+        shape = new Shape(ShapeEnum.poly, Bulle.bulleDefaultSize, color, bulleDraw.getPathNumber());
         shape.endFill();
-        var text = new TextRezo("", TextRezoType.codex);
+        var text = new _1.TextRezo("", _1.TextRezoType.codex);
         text.setTextDraw(textDraw);
         this.shape = shape;
         this.text = text;
         if (this.text.textDraw.getBounds().x != 0 && this.text.textDraw.getBounds().y != 0)
-            this.text.textDraw.setTransform(-Rezo.scene.x, -Rezo.scene.y);
+            this.text.textDraw.setTransform(-_1.Rezo.scene.x, -_1.Rezo.scene.y);
         this.addChild(this.shape);
         if (!this.text.textDraw._bmp) {
             this.addChild(this.text.textDraw);
@@ -65,21 +55,21 @@ var Bulle = (function (_super) {
             this.addChild(this.text.textDraw._bmp);
         }
         this.dragBulle();
-        array(this);
-        var selectedBulle = Rezo.selectedBulle;
+        _1.array(this);
+        var selectedBulle = _1.Rezo.selectedBulle;
         if (!selectedBulle) {
-            Rezo.selectedBulle = this;
+            _1.Rezo.selectedBulle = this;
         }
-        else if (multBool) {
+        else if (_1.Menu.multBool) {
             Bulle.fakeClickFun(this);
         }
         else {
-            lastBulleSelected = selectedBulle;
-            Rezo.selectedBulle = this;
-            lastBulleSelected.clear();
+            Bulle.lastBulleSelected = selectedBulle;
+            _1.Rezo.selectedBulle = this;
+            Bulle.lastBulleSelected.clear();
         }
-    };
-    Bulle.prototype.numberPathToPointPath = function (path) {
+    }
+    numberPathToPointPath(path) {
         var pathPoint = [];
         for (var i = 0; i < path.length; i++) {
             if (i % 2 == 0) {
@@ -87,12 +77,12 @@ var Bulle = (function (_super) {
             }
         }
         return pathPoint;
-    };
-    Bulle.prototype.createCircleBulle = function (posX, posY, bulleText, color, scale, shapeEnum) {
-        color = color || bulleColor;
+    }
+    createCircleBulle(posX, posY, bulleText, color, scale, shapeEnum) {
+        color = color || Bulle.bulleColor;
         this.lineStyle(16, color, 0.5);
-        this.drawCircle(0, 0, bulleDefaultSize);
-        this.hitArea = new PIXI.Circle(0, 0, bulleDefaultSize);
+        this.drawCircle(0, 0, Bulle.bulleDefaultSize);
+        this.hitArea = new PIXI.Circle(0, 0, Bulle.bulleDefaultSize);
         this.interactive = true;
         this.x = posX;
         this.y = posY;
@@ -103,50 +93,49 @@ var Bulle = (function (_super) {
         this.scale.y = scale;
         //createShape
         var shape;
-        shape = new Shape(ShapeEnum.circle, bulleDefaultSize, color);
+        shape = new Shape(ShapeEnum.circle, Bulle.bulleDefaultSize, color);
         //check special case for white bulle
         if (color == 0xffffff) {
             console.log(color);
             shape.lineStyle(1, 0x000000, 1);
             this.lineStyle(16, 0x000000, 0.5);
-            this.drawCircle(0, 0, bulleDefaultSize);
+            this.drawCircle(0, 0, Bulle.bulleDefaultSize);
         }
         shape.endFill();
-        var text = new TextRezo(wordwrap(bulleText, 10), TextRezoType.type);
+        var text = new _1.TextRezo(_1.wordwrap(bulleText, 10), _1.TextRezoType.type);
         this.text = text;
         this.shape = shape;
         this.addChild(shape);
         this.addChild(text);
         this.dragBulle();
-        array(this);
-        text.autoSizeText(bulleDefaultSize);
-        var selectedBulle = Rezo.selectedBulle;
+        _1.array(this);
+        text.autoSizeText(Bulle.bulleDefaultSize);
+        var selectedBulle = _1.Rezo.selectedBulle;
         if (!selectedBulle) {
-            Rezo.selectedBulle = this;
+            _1.Rezo.selectedBulle = this;
         }
-        else if (multBool) {
+        else if (_1.Menu.multBool) {
             Bulle.fakeClickFun(this);
         }
         else {
-            lastBulleSelected = selectedBulle;
-            Rezo.selectedBulle = this;
-            lastBulleSelected.clear();
+            Bulle.lastBulleSelected = selectedBulle;
+            _1.Rezo.selectedBulle = this;
+            Bulle.lastBulleSelected.clear();
         }
         text.textDesign(text);
-    };
-    Bulle.prototype.dragBulle = function () {
-        var _this = this;
-        startDragBulle = function (data) {
+    }
+    dragBulle() {
+        startDragBulle = (data) => {
             var bulle;
-            if (multBool) {
+            if (_1.Menu.multBool) {
                 if (!data) {
                     data = { data: dataFake };
                 }
                 bulle = data.data.target;
                 if (bulle == null)
                     bulle = data.target;
-                _this.selectBulleFun(bulle, data);
-                multiSelect(bulle);
+                this.selectBulleFun(bulle, data);
+                _1.Multi.multiSelect(bulle);
             }
             else {
                 if (data == undefined) {
@@ -155,18 +144,18 @@ var Bulle = (function (_super) {
                 bulle = data.data.target;
                 if (bulle == null)
                     bulle = data.target;
-                _this.selectBulleFun(bulle, data);
+                this.selectBulleFun(bulle, data);
                 bulle.dragging = true;
-                _this.lastSelectedBulleFun();
-                linkSelection(bulle);
-                Link.linkFun();
+                this.lastSelectedBulleFun();
+                _1.Motion.linkSelection(bulle);
+                _1.Link.linkFun();
             }
         };
         this.on("mousedown", startDragBulle);
         this.on("touchstart", startDragBulle);
         // set the events for when the mouse is released or a touch is released
-        stopDragBulle = function (data) {
-            if (multBool) {
+        stopDragBulle = (data) => {
+            if (_1.Menu.multBool) {
             }
             else {
                 if (!data) {
@@ -175,7 +164,7 @@ var Bulle = (function (_super) {
                 var bulle = data.data.target;
                 if (bulle == null)
                     bulle = data.target;
-                _this.releaseBulle(bulle);
+                this.releaseBulle(bulle);
             }
         };
         this.on("mouseup", stopDragBulle);
@@ -183,38 +172,38 @@ var Bulle = (function (_super) {
         this.on("touchend", stopDragBulle);
         this.on("touchendoutside", stopDragBulle);
         // set the callbacks for when the mouse or a touch moves
-        var drag = function (data) {
-            if (multBool) {
+        var drag = (data) => {
+            if (_1.Menu.multBool) {
             }
-            else if (_this.dragging) {
-                _this.bulleDragging(_this);
+            else if (this.dragging) {
+                this.bulleDragging(this);
             }
         };
         this.on("mousemove", drag);
         this.on("touchmove", drag);
-    };
-    Bulle.prototype.selectBulleFun = function (clickedBulle, data) {
+    }
+    selectBulleFun(clickedBulle, data) {
         data.data.originalEvent.preventDefault();
         if (data.stopPropagation) {
             data.stopPropagation();
         }
-        var selectedBulle = Rezo.selectedBulle;
+        var selectedBulle = _1.Rezo.selectedBulle;
         clickedBulle.data = data;
         //upperScene.dragging = false;
         if (selectedBulle != clickedBulle) {
-            lastBulleSelected = selectedBulle;
+            Bulle.lastBulleSelected = selectedBulle;
         }
-        Rezo.selectedBulle = clickedBulle;
-        selectedBulle = Rezo.selectedBulle;
-        bulleDefaultSize = bulleSize(selectedBulle);
+        _1.Rezo.selectedBulle = clickedBulle;
+        selectedBulle = _1.Rezo.selectedBulle;
+        Bulle.bulleDefaultSize = _1.bulleSize(selectedBulle);
         var color = selectedBulle.shape.rezoColor;
         if (selectedBulle.lineAlpha == 0) {
             if (selectedBulle.shape.kind == ShapeEnum.circle) {
                 selectedBulle.lineStyle(16, color, 0.5);
-                selectedBulle.drawCircle(0, 0, bulleDefaultSize);
+                selectedBulle.drawCircle(0, 0, Bulle.bulleDefaultSize);
                 if (color == 0xffffff) {
                     selectedBulle.lineStyle(16, 0x000000, 0.5);
-                    selectedBulle.drawCircle(0, 0, bulleDefaultSize);
+                    selectedBulle.drawCircle(0, 0, Bulle.bulleDefaultSize);
                 }
             }
             else if (selectedBulle.shape.kind == ShapeEnum.poly) {
@@ -227,10 +216,10 @@ var Bulle = (function (_super) {
             if (selectedBulle.shape.kind == ShapeEnum.circle) {
                 selectedBulle.clear();
                 selectedBulle.lineStyle(16, color, 0.5);
-                selectedBulle.drawCircle(0, 0, bulleDefaultSize);
+                selectedBulle.drawCircle(0, 0, Bulle.bulleDefaultSize);
                 if (color == 0xffffff) {
                     selectedBulle.lineStyle(16, 0x000000, 0.5);
-                    selectedBulle.drawCircle(0, 0, bulleDefaultSize);
+                    selectedBulle.drawCircle(0, 0, Bulle.bulleDefaultSize);
                 }
             }
             else if (selectedBulle.shape.kind == ShapeEnum.poly) {
@@ -240,28 +229,28 @@ var Bulle = (function (_super) {
                 selectedBulle.endFill();
             }
         }
-    };
-    Bulle.prototype.lastSelectedBulleFun = function () {
-        if (lastBulleSelected) {
-            lastBulleSelected.clear();
-            lastBulleSelected.lineAlpha = 0;
+    }
+    lastSelectedBulleFun() {
+        if (Bulle.lastBulleSelected) {
+            Bulle.lastBulleSelected.clear();
+            Bulle.lastBulleSelected.lineAlpha = 0;
         }
-    };
-    Bulle.prototype.releaseBulle = function (releasedBulle) {
+    }
+    releaseBulle(releasedBulle) {
         //var positionTemp = releasedBulle.data.getLocalPosition(releasedBulle.parent)
         releasedBulle.dragging = false;
         releasedBulle.data = null;
-        clearMotion();
-    };
-    Bulle.prototype.bulleDragging = function (draggedBulle) {
-        if (draggedBulle.dragging && Link.linkBool == false) {
+        _1.Motion.clearMotion();
+    }
+    bulleDragging(draggedBulle) {
+        if (draggedBulle.dragging && _1.Link.linkBool == false) {
             var newPosition = draggedBulle.data.data.getLocalPosition(draggedBulle.parent);
             draggedBulle.position.x = newPosition.x;
             draggedBulle.position.y = newPosition.y;
-            motion(newPosition.x, newPosition.y);
+            _1.Motion.motion(newPosition.x, newPosition.y);
         }
-    };
-    Bulle.fakeClickFun = function (fakeBulle) {
+    }
+    static fakeClickFun(fakeBulle) {
         dataFake = new PIXI.interaction.InteractionData();
         dataFake.target = fakeBulle;
         var evt = new MouseEvent("mousedown", {
@@ -273,9 +262,14 @@ var Bulle = (function (_super) {
         dataFake.originalEvent = evt;
         startDragBulle();
         stopDragBulle();
-    };
-    return Bulle;
-}(PIXI.Graphics));
+    }
+}
+Bulle.bulleX = _1.Rezo.windowW / 2;
+Bulle.bulleY = _1.Rezo.windowH / 2;
+Bulle.defaultScale = 1;
+Bulle.bulleDefaultSize = 50;
+Bulle.bulleColor = parseInt("#FF00CC".replace(/^#/, ''), 16);
+exports.Bulle = Bulle;
 var ShapeEnum;
 (function (ShapeEnum) {
     ShapeEnum[ShapeEnum["circle"] = 0] = "circle";
@@ -283,17 +277,16 @@ var ShapeEnum;
     ShapeEnum[ShapeEnum["roundedSquare"] = 2] = "roundedSquare";
     ShapeEnum[ShapeEnum["poly"] = 3] = "poly";
     ShapeEnum[ShapeEnum["draw"] = 4] = "draw";
-})(ShapeEnum || (ShapeEnum = {}));
-var Shape = (function (_super) {
-    __extends(Shape, _super);
-    function Shape(shape, size, color, path) {
-        _super.call(this);
+})(ShapeEnum = exports.ShapeEnum || (exports.ShapeEnum = {}));
+class Shape extends PIXI.Graphics {
+    constructor(shape, size, color, path) {
+        super();
         this.polyPathNumber = [];
         this.kind = shape;
         this.rezoColor = color;
         this.drawRezoShape(shape, size, path);
     }
-    Shape.prototype.drawRezoShape = function (shape, size, path) {
+    drawRezoShape(shape, size, path) {
         switch (shape) {
             case ShapeEnum.circle:
                 this.beginFill(this.rezoColor, 1);
@@ -309,7 +302,6 @@ var Shape = (function (_super) {
                 this.drawCircle(0, 0, size);
                 break;
         }
-    };
-    return Shape;
-}(PIXI.Graphics));
-//# sourceMappingURL=bulle.js.map
+    }
+}
+exports.Shape = Shape;

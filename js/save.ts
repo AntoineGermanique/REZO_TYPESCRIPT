@@ -6,6 +6,16 @@ var sceneLinkPo = []
 var scenePo = []
 var scalePo = []
 
+import {
+    Ressource,
+    Rezo,
+    LocalStorage,
+    drive, Link,
+    bubbleArray,
+    BulleArray,
+    Utilitary
+} from './'
+
 export interface RezoSave {
     bullesArray: BulleSave[];
     linkSave: LinkSave[];
@@ -60,7 +70,7 @@ export class Save {
             for (var i = 0; i < localStorage.length; i++) {
                 if (rezoName == localStorage.key(i) && rezoName != "AutoSave") {
                     if (confirm(Ressource.confirmLocalOverwriting)) {
-                        localSave(rezoSave, rezoName);
+                        LocalStorage.localSave(rezoSave, rezoName);
                         return true
 
                     } else {
@@ -68,11 +78,11 @@ export class Save {
                     }
                 }
             }
-            localSave(rezoSave, rezoName);
+            LocalStorage.localSave(rezoSave, rezoName);
             if (rezoName == "AutoSave") {
-                AutoSaveCookie(rezoSave)
+                Save.AutoSaveCookie(rezoSave)
             } else {
-                ResetAutoSaveCookie(rezoSave)
+                Save.ResetAutoSaveCookie(rezoSave)
 
             }
             return true
@@ -93,14 +103,14 @@ export class Save {
                     if (Rezo.rezoId != "") {
                         drive.getFile(Rezo.rezoId, (fileMetada) => { drive.updateFile(Rezo.rezoId, fileMetada, drive.tempBlob, null) })
                     } else {
-                        drive.createFile(Rezo.rezoName, drive.updateFile);
+                        drive.createFile(Rezo.rezoName, );
                     }
 
                 } else {
-                    drive.createFile(Rezo.rezoName, drive.updateFile);
+                    drive.createFile(Rezo.rezoName);
                 }
             }
-            ResetAutoSaveCookie(rezoSave)
+            Save.ResetAutoSaveCookie(rezoSave)
             return Rezo.rezoId;
         } else {
             return null;
@@ -109,7 +119,7 @@ export class Save {
 
     static createJsonRezo(title?: string): RezoSave {
         if (!title) {
-            title = promptTitle()
+            title = Save.promptTitle()
         }
         if (title) {
             if (title != "AutoSave") {
@@ -160,7 +170,7 @@ export class Save {
             return null;
         }
     }
-    cleanName(newName: string): string {
+    static cleanName(newName: string): string {
         newName = Utilitary.replaceAll(newName, "é", "e");
         newName = Utilitary.replaceAll(newName, "è", "e");
         newName = Utilitary.replaceAll(newName, "à", "a");
@@ -175,19 +185,19 @@ export class Save {
         }
         var title = prompt("titre", value);
         if (title) {
-            title = cleanName(title);
-            if (title != "" && isNameValid(title) && title != "AutoSave") {
+            title = Save.cleanName(title);
+            if (title != "" && Save.isNameValid(title) && title != "AutoSave") {
                 return title;
 
 
             } else {
-                return promptTitle("le nom choisie est invalide, merci de le modifier (caractères de a à z, nombres acceptés");
+                return Save.promptTitle("le nom choisie est invalide, merci de le modifier (caractères de a à z, nombres acceptés");
             }
         } else {
             return title;
         }
     }
-    isNameValid(newName: string): boolean {
+    static isNameValid(newName: string): boolean {
         var pattern: RegExp = new RegExp("^[a-zA-Z_][a-zA-Z_0-9]{1,50}$");
         if (pattern.test(newName)) {
             return true
@@ -200,16 +210,17 @@ export class Save {
             rezoSaveObj.timeStamp = null;
             return rezoSaveObj
         }
+        return null
     }
-    AutoSaveCookie(rezoSave: RezoSave) {
+    static AutoSaveCookie(rezoSave: RezoSave) {
         console.log("auto save");
-        Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+        Rezo.autoSaveRezo = JSON.stringify(Save.nullifyTimeStamp(rezoSave));
         if (Rezo.autoSaveRezo != Rezo.initialRezo)
             document.cookie = "hasRecoveryAvailable=true"
     }
     static ResetAutoSaveCookie(rezoSave: RezoSave) {
-        Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
-        Rezo.autoSaveRezo = JSON.stringify(nullifyTimeStamp(rezoSave));
+        Rezo.initialRezo = JSON.stringify(Save.nullifyTimeStamp(rezoSave));
+        Rezo.autoSaveRezo = JSON.stringify(Save.nullifyTimeStamp(rezoSave));
         document.cookie = "hasRecoveryAvailable=false";
     }
 }

@@ -10,7 +10,7 @@ export class Hyper {
     hyperHandlerSize = 40
     static hyperHandler: PIXI.Graphics;
     hyperText = "texte long pour voir ce que �a donne'"
-    selectedHyper;
+    static selectedHyper;
 
 
     hyperPlusFun() {
@@ -34,7 +34,7 @@ export class Hyper {
         Hyper.hyperHandler.y = -this.hyperSize;
 
         Hyper.hyperHandler.endFill();
-        var text = new TextRezo(wordwrap(this.hyperText, 15), TextRezoType.type);
+        var text = new TextRezo(wordwrap(this.hyperText), TextRezoType.type);
         Hyper.hyperHandler.addChild(text);
         Hyper.hyperHandler.addChild(text);
         this.hyper.addChild(hyperBelly);

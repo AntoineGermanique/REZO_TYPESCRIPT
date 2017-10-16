@@ -1,7 +1,8 @@
-var TextRecognition = (function () {
-    function TextRecognition() {
-    }
-    TextRecognition.prototype.xhr = function (type, url, data, text) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
+class TextRecognition {
+    xhr(type, url, data, text) {
         function onLoad() {
             if (request.status >= 200 && request.status < 300) {
                 var textResult = JSON.parse(request.response).result.textSegmentResult.candidates[0].label;
@@ -26,8 +27,8 @@ var TextRecognition = (function () {
         //request.onprogress = onProgress;
         request.onreadystatechange = onStateChange;
         request.send(this.transformRequest(data));
-    };
-    TextRecognition.prototype.transformRequest = function (data) {
+    }
+    transformRequest(data) {
         var str = [];
         for (var p in data) {
             if ((typeof data[p] !== 'undefined') &&
@@ -36,8 +37,8 @@ var TextRecognition = (function () {
             }
         }
         return str.join('&');
-    };
-    TextRecognition.prototype.createInput = function (path) {
+    }
+    createInput(path) {
         var textInputUnits;
         textInputUnits = {
             components: [],
@@ -54,33 +55,32 @@ var TextRecognition = (function () {
             textInputUnits.components.push(strokeComponent);
         }
         return textInputUnits;
-    };
-    TextRecognition.prototype.createRequestInputParams = function (inputUnits) {
+    }
+    createRequestInputParams(inputUnits) {
         var textRecoInputs = {
             textParameter: {
-                language: Ressource.langage,
-                textInputMode: Ressource.textInputNode,
+                language: _1.Ressource.langage,
+                textInputMode: _1.Ressource.textInputNode,
             },
             inputUnits: []
         };
         textRecoInputs.inputUnits.push(inputUnits);
         this.input = textRecoInputs;
         return textRecoInputs;
-    };
-    TextRecognition.prototype.createDataRequest = function (input) {
+    }
+    createDataRequest(input) {
         this.data = {
-            applicationKey: Ressource.RecoAppliKey,
-            hmac: this.computeHmac(Ressource.RecoAppliKey, input, Ressource.HmacKey),
+            applicationKey: _1.Ressource.RecoAppliKey,
+            hmac: this.computeHmac(_1.Ressource.RecoAppliKey, input, _1.Ressource.HmacKey),
             textInput: JSON.stringify(input),
             instanceId: undefined
         };
         return this.data;
-    };
-    TextRecognition.prototype.computeHmac = function (applicationKey, data, hmacKey) {
+    }
+    computeHmac(applicationKey, data, hmacKey) {
         var jsonInput = (typeof data === 'object') ? JSON.stringify(data) : data;
         return CryptoJS.HmacSHA512(jsonInput, applicationKey + hmacKey).toString(CryptoJS.enc.Hex);
-    };
+    }
     ;
-    return TextRecognition;
-}());
-//# sourceMappingURL=TextRecognition.js.map
+}
+exports.TextRecognition = TextRecognition;

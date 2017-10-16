@@ -1,23 +1,24 @@
 /////////////open.js
 "use strict";
-var bubbleTemp;
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
 var isTitreInvalid;
 var titre;
-export var drive = new DriveAPI();
+exports.drive = new _1.DriveAPI();
 var counter = 0;
-
 function openLoad(data) {
     if (data) {
         $("#openContainer").append(data);
     }
     addListenersDrive();
 }
+exports.openLoad = openLoad;
 function addListenersDrive() {
     $(".openSpan").click(function () {
         console.log(counter++);
         var id = $(this).parent().attr("id");
         $('#loading').css("display", "block");
-        drive.getFile(id, function (file) { drive.downloadFile(file, load2); });
+        exports.drive.getFile(id, (file) => { exports.drive.downloadFile(file, _1.Load.load2); });
     });
     $(".openImgModif").click(function () {
         var oldTitle = $(this).attr("id");
@@ -33,21 +34,22 @@ function addListenersDrive() {
                 $(this).trigger("click");
             }
             else {
-                Utilitary.startLoad();
-                drive.updateName(newTitle, id);
+                _1.Utilitary.startLoad();
+                exports.drive.updateName(newTitle, id);
             }
         }
     });
     $(".openImgSuppr").click(function () {
         titre = $(this).parent().attr("id");
-        if (confirm(Ressource.confirmSupprRezo)) {
-            drive.trashFile($(this).parent().attr("id"));
+        if (confirm(_1.Ressource.confirmSupprRezo)) {
+            exports.drive.trashFile($(this).parent().attr("id"));
         }
         else {
+            // Do nothing!
         }
     });
     $("img#closeOpen").click(function () {
-        openActif = true;
+        _1.Menu.openActif = true;
         $("#homeBulle").trigger("click");
     });
     //$("img#saveOpen").click(function(){
@@ -55,9 +57,9 @@ function addListenersDrive() {
     //	save("Enregistrer le rezo "+Rezo.rezoName+" sous un nouveau titre")
     //})
     $("img#driveOpen").click(function () {
-        drive.logOut();
+        exports.drive.logOut();
     });
-    $("img#plusOpen").click(Rezo.newRezo);
+    $("img#plusOpen").click(_1.Rezo.newRezo);
 }
 function titreIsValid(newTitle) {
     var iChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
@@ -86,11 +88,12 @@ var Sort;
 })(Sort || (Sort = {}));
 function setSortingListener() {
     console.log("set listeners");
-    $("#orderName .arrowUp").click(function () { sort(Sort.nameUp); });
-    $("#orderName .arrowDown").click(function () { sort(Sort.nameDown); });
-    $("#orderDate .arrowUp").click(function () { sort(Sort.dateUp); });
-    $("#orderDate .arrowDown").click(function () { sort(Sort.dateDown); });
+    $("#orderName .arrowUp").click(() => { sort(Sort.nameUp); });
+    $("#orderName .arrowDown").click(() => { sort(Sort.nameDown); });
+    $("#orderDate .arrowUp").click(() => { sort(Sort.dateUp); });
+    $("#orderDate .arrowDown").click(() => { sort(Sort.dateDown); });
 }
+exports.setSortingListener = setSortingListener;
 function sort(sort) {
     console.log("general sort");
     var nodeList = document.getElementsByClassName("open");
@@ -117,16 +120,16 @@ function sort(sort) {
     for (var i = 0; i < array.length; i++) {
         $("#openContainer").append(array[i]);
     }
-    if (isLocalHome) {
-        addListenersLocal();
+    if (_1.Menu.isLocalHome) {
+        _1.LocalStorage.addListenersLocal();
     }
-    else if (isDriveHome) {
+    else if (_1.Menu.isDriveHome) {
         addListenersDrive();
     }
 }
 function sortUpDate(array) {
     console.log("sortUpDate");
-    array.sort(function (b, a) {
+    array.sort((b, a) => {
         if ($(a).attr("attr") < $(b).attr("attr"))
             return 1;
         if ($(a).attr("attr") > $(b).attr("attr"))
@@ -137,7 +140,7 @@ function sortUpDate(array) {
 }
 function sortDownDate(array) {
     console.log("sortDownDate");
-    array.sort(function (a, b) {
+    array.sort((a, b) => {
         if ($(a).attr("attr") < $(b).attr("attr"))
             return 1;
         if ($(a).attr("attr") > $(b).attr("attr"))
@@ -148,7 +151,7 @@ function sortDownDate(array) {
 }
 function sortUpName(array) {
     console.log("sortUpName");
-    array.sort(function (b, a) {
+    array.sort((b, a) => {
         if ($(a).children(".openSpan").attr("id").toLowerCase() < $(b).children(".openSpan").attr("id").toLowerCase())
             return 1;
         if ($(a).children(".openSpan").attr("id").toLowerCase() > $(b).children(".openSpan").attr("id").toLowerCase())
@@ -159,7 +162,7 @@ function sortUpName(array) {
 }
 function sortDownName(array) {
     console.log("sortDownName");
-    array.sort(function (a, b) {
+    array.sort((a, b) => {
         if ($(a).children(".openSpan").attr("id").toLowerCase() < $(b).children(".openSpan").attr("id").toLowerCase())
             return 1;
         if ($(a).children(".openSpan").attr("id").toLowerCase() > $(b).children(".openSpan").attr("id").toLowerCase())
@@ -168,4 +171,3 @@ function sortDownName(array) {
     });
     return array;
 }
-//# sourceMappingURL=open.js.map

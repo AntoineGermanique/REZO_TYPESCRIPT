@@ -44,16 +44,16 @@ export class Bulle extends PIXI.Graphics {
         //init and set Bulle params
         if (shapeEnum) {
             if (shapeEnum === ShapeEnum.circle as ShapeEnum) {
-                this.createCircleBulle(X, Y, bulleText, color, scale, shapeEnum)
+                this.createCircleBulle(X, Y, bulleText, color, scale)
             } else if (shapeEnum == ShapeEnum.poly) {
-                this.createPolyBulle(X, Y, bulleText, color, scale, shapeEnum, bulleDraw, textDraw);
+                this.createPolyBulle(X, Y, color, scale, bulleDraw, textDraw);
             }
         } else {
-            this.createCircleBulle(X, Y, bulleText, color, scale, shapeEnum)
+            this.createCircleBulle(X, Y, bulleText, color, scale)
         }
 
     }
-    private createPolyBulle(posX: number, posY: number, bulleText: string, color?: number, scale?: number, shapeEnum?: ShapeEnum, bulleDraw?: Draw, textDraw?: Draw) {
+    private createPolyBulle(posX: number, posY: number, color?: number, scale?: number, bulleDraw?: Draw, textDraw?: Draw) {
         color = color || Bulle.bulleColor;
         this.lineStyle(16, color, 0.5);
         this.drawPolygon(bulleDraw.getPathNumber());
@@ -111,7 +111,7 @@ export class Bulle extends PIXI.Graphics {
         }
         return pathPoint
     }
-    private createCircleBulle(posX: number, posY: number, bulleText: string, color?: number, scale?: number, shapeEnum?: ShapeEnum) {
+    private createCircleBulle(posX: number, posY: number, bulleText: string, color?: number, scale?: number) {
         color = color || Bulle.bulleColor;
         this.lineStyle(16, color, 0.5);
         this.drawCircle(0, 0, Bulle.bulleDefaultSize);
@@ -138,7 +138,7 @@ export class Bulle extends PIXI.Graphics {
             this.drawCircle(0, 0, Bulle.bulleDefaultSize);
         }
         shape.endFill();
-        var text = new TextRezo(wordwrap(bulleText, 10), TextRezoType.type);
+        var text = new TextRezo(wordwrap(bulleText), TextRezoType.type);
         this.text = text;
         this.shape = shape;
         this.addChild(shape);
@@ -213,7 +213,7 @@ export class Bulle extends PIXI.Graphics {
         this.on("touchendoutside", stopDragBulle);
 
         // set the callbacks for when the mouse or a touch moves
-        var drag = (data) => {
+        var drag = () => {
             if (Menu.multBool) {
 
             } else if (this.dragging) {

@@ -1,5 +1,4 @@
 /////////////menu.js
-import $ from 'jquery'
 import {
     Rezo,
     Link,
@@ -16,7 +15,8 @@ import {
     Scale, 
     gradient,
     Multi,
-    bubbleArray, Realtime
+    bubbleArray, Realtime,
+    Select
 } from './'
 
 "use strict"
@@ -85,9 +85,9 @@ export class Menu {
         })
 
         $("#supprBulle").click(() => { supprFun() });
-        $("#driveBulle").click((event) => {
+        $("#driveBulle").click(() => {
             $('#loading').css("display", "block");
-            drive.handleAuthClick(event)
+            drive.handleAuthClick()
         });
 
         $("#saveBulle").click(Save.saveDrive);
@@ -262,8 +262,8 @@ export class Menu {
             if (Menu.selectBool) {
                 Menu.setBackground(Ressource.pathImgMulti);
                 Menu.selectBool = false
-                select();
-                detectPathGraphics.clear()
+                Select.select();
+                Select.detectPathGraphics.clear()
                 $("#selectBulle").css({ "box-shadow": "none" })
                 $("#selectBulle").addClass("noRound")
 
@@ -271,7 +271,7 @@ export class Menu {
                 Menu.setBackground(Ressource.pathImgSelect);
                 if (Menu.scalBool) { $("#scalBulle").trigger("click") }
                 Menu.selectBool = true
-                select();
+                Select.select();
                 $("#selectBulle").css({ "box-shadow": "0PX 0PX 5PX 5px orangered" })
                 $("#selectBulle").removeClass("noRound")
 
@@ -358,7 +358,7 @@ export class Menu {
             $("#multiBackground").css({ "box-shadow": "none" })
             Multi.multi()
             if (Menu.selectBool) { $("#selectBulle").trigger("click") }
-            detectPathGraphics.clear()
+            Select.detectPathGraphics.clear()
             Menu.setBackground();
 
         }

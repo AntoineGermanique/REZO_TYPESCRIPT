@@ -1,32 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 ////////////////////////////////link.js
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Link = (function (_super) {
-    __extends(Link, _super);
-    function Link() {
-        _super.apply(this, arguments);
-    }
-    Link.prototype.saveBubbleLinked = function () {
-        for (var i = 0; i < bubbleArray.length; i++) {
-            if (bubbleArray[i].bulle == lastBulleSelected) {
-                bubbleArray[i].links.push(this);
-                bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
+const _1 = require("./");
+class Link extends PIXI.Graphics {
+    saveBubbleLinked() {
+        for (var i = 0; i < _1.bubbleArray.length; i++) {
+            if (_1.bubbleArray[i].bulle == _1.Bulle.lastBulleSelected) {
+                _1.bubbleArray[i].links.push(this);
+                _1.bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
             }
-            if (bubbleArray[i].bulle == Rezo.selectedBulle) {
-                bubbleArray[i].links.push(this);
-                bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
+            if (_1.bubbleArray[i].bulle == _1.Rezo.selectedBulle) {
+                _1.bubbleArray[i].links.push(this);
+                _1.bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
             }
         }
-    };
-    Link.emptyLinkArray = function () {
+    }
+    static emptyLinkArray() {
         while (Link.bubbleLinked.length > 0) {
             Link.bubbleLinked.pop();
         }
-    };
-    Link.optimiseLink = function (sceneBulle, sceneLink) {
+    }
+    static optimiseLink(sceneBulle, sceneLink) {
         for (var i = 0; i < Link.linkArray.length; i++) {
             var indexI1 = sceneBulle.getChildIndex(Link.linkArray[i].bulle1);
             var indexI2 = sceneBulle.getChildIndex(Link.linkArray[i].bulle2);
@@ -57,14 +51,14 @@ var Link = (function (_super) {
             Link.optimizeCounter = 0;
         }
         for (var ii = 0; ii < Link.linkOptimizedArray.length; ii++) {
-            supprFun();
+            _1.supprFun();
             console.log("suppr");
         }
         while (Link.linkOptimizedArray.length > 0) {
             Link.linkOptimizedArray.pop();
         }
-    };
-    Link.prototype.interactiveLink = function () {
+    }
+    interactiveLink() {
         var click = function (data) {
             Link.selectedLink = this;
             if (this.alpha == 1) {
@@ -81,8 +75,8 @@ var Link = (function (_super) {
         };
         this.on("mouseupoutside", over);
         this.on("touchendoutside", over);
-    };
-    Link.prototype.unclickLink = function () {
+    }
+    unclickLink() {
         this.alpha = 1;
         Link.linkSelected = false;
         this.data = false;
@@ -101,8 +95,8 @@ var Link = (function (_super) {
         this.moveTo(this.x0, this.y0);
         this.lineTo(this.x1, this.y1);
         this.endFill();
-    };
-    Link.prototype.clickLink = function (clicked) {
+    }
+    clickLink(clicked) {
         if (Link.linkSelected) {
             for (var i = 0; i < Link.linkArray.length; i++) {
                 if (Link.linkArray[i].link.data) {
@@ -130,9 +124,9 @@ var Link = (function (_super) {
         clicked.moveTo(bulleX0, bulleY0);
         clicked.lineTo(bulleX1, bulleY1);
         clicked.endFill();
-    };
-    Link.linkFun = function () {
-        var selectedBulle = Rezo.selectedBulle;
+    }
+    static linkFun() {
+        var selectedBulle = _1.Rezo.selectedBulle;
         if (Link.linkBool == true) {
             if (Link.bubbleLinked.length == 0) {
                 Link.bubbleLinked.push(selectedBulle);
@@ -140,8 +134,8 @@ var Link = (function (_super) {
             }
             else {
                 Link.bubbleLinked.push(selectedBulle);
-                var bulleX0 = Number(lastBulleSelected.x);
-                var bulleY0 = Number(lastBulleSelected.y);
+                var bulleX0 = Number(_1.Bulle.lastBulleSelected.x);
+                var bulleY0 = Number(_1.Bulle.lastBulleSelected.y);
                 var bulleX1 = Number(selectedBulle.x);
                 var bulleY1 = Number(selectedBulle.y);
                 var link = new Link();
@@ -154,7 +148,7 @@ var Link = (function (_super) {
                 link.hitArea = new PIXI.Polygon(bulleX0 - Link.lineHitFact, bulleY0 - Link.lineHitFact, bulleX0 + Link.lineHitFact, bulleY0 + Link.lineHitFact, bulleX1 + Link.lineHitFact, bulleY1 + Link.lineHitFact, bulleX1 - Link.lineHitFact, bulleY1 - Link.lineHitFact);
                 link.endFill();
                 //link.data=false;
-                if (Rezo.sceneLink.addChild(link)) {
+                if (_1.Rezo.sceneLink.addChild(link)) {
                     console.log("link added");
                 }
                 ;
@@ -163,10 +157,10 @@ var Link = (function (_super) {
                 var linkArray = Link.linkArray;
                 linkArray.push({
                     link: link,
-                    bulle1: lastBulleSelected,
+                    bulle1: _1.Bulle.lastBulleSelected,
                     bulle2: selectedBulle,
-                    indexBulle1: Rezo.sceneBulle.getChildIndex(lastBulleSelected),
-                    indexBulle2: Rezo.sceneBulle.getChildIndex(selectedBulle)
+                    indexBulle1: _1.Rezo.sceneBulle.getChildIndex(_1.Bulle.lastBulleSelected),
+                    indexBulle2: _1.Rezo.sceneBulle.getChildIndex(selectedBulle)
                 });
                 link.saveBubbleLinked();
                 if (Link.link2Bool == true) {
@@ -181,16 +175,15 @@ var Link = (function (_super) {
                 }
             }
         }
-    };
-    Link.linkBool = false;
-    Link.link2Bool = false;
-    Link.link3Bool = false;
-    Link.optimizeCounter = 0;
-    Link.bubbleLinked = new Array;
-    Link.linkArray = [];
-    Link.lineHitFact = 8;
-    Link.linkSelected = false;
-    Link.linkOptimizedArray = [];
-    return Link;
-}(PIXI.Graphics));
-//# sourceMappingURL=link.js.map
+    }
+}
+Link.linkBool = false;
+Link.link2Bool = false;
+Link.link3Bool = false;
+Link.optimizeCounter = 0;
+Link.bubbleLinked = new Array;
+Link.linkArray = [];
+Link.lineHitFact = 8;
+Link.linkSelected = false;
+Link.linkOptimizedArray = [];
+exports.Link = Link;

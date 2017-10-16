@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function wordwrap(str, int_width, str_break, anycut) {
     //  discuss at: http://phpjs.org/functions/wordwrap/
     // original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
@@ -32,4 +34,4 @@ function wordwrap(str, int_width, str_break, anycut) {
     }
     return r.join('\n');
 }
-//# sourceMappingURL=wordwrap.js.map
+exports.wordwrap = wordwrap;

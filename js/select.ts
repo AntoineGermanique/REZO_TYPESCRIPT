@@ -2,85 +2,85 @@
 "use strict";
 import { Rezo, updateWindowSize, Menu, Multi, Bulle, bulleSize } from './'
 export class Select {
-	rectTestGraph: PIXI.Graphics = new PIXI.Graphics();
-	sceneMulti: PIXI.Container;
-	sceneSelect: PIXI.Container;
+	static rectTestGraph: PIXI.Graphics = new PIXI.Graphics();
+	static sceneMulti: PIXI.Container;
+	static sceneSelect: PIXI.Container;
 	path = [];
 	color: number;
-	drawnGraphics = new PIXI.Graphics();
-	detectPathGraphics = new PIXI.Graphics();
+	static drawnGraphics = new PIXI.Graphics();
+	static detectPathGraphics = new PIXI.Graphics();
 	rectTestArray = [];
-	selectDown = false;
+	static selectDown = false;
 	clockwiseSelect = true;
 	counterClockwiseSelect = false;
 	diffScaleX
 	diffScaleY
 
 	constructor() {
-		this.drawnGraphics.alpha = 0.2;
-		this.detectPathGraphics.alpha = 0.3;
+		Select.drawnGraphics.alpha = 0.2;
+		Select.detectPathGraphics.alpha = 0.3;
 
 	}
 
-	selectIntercative() {
-		this.sceneSelect.addChild(this.drawnGraphics);
-		this.sceneMulti.addChild(this.detectPathGraphics);
+	static selectIntercative() {
+		Select.sceneSelect.addChild(Select.drawnGraphics);
+		this.sceneMulti.addChild(Select.detectPathGraphics);
 		this.sceneMulti.addChild(this.rectTestGraph);
-		var selectStart = function (data) {
+		var selectStart = function () {
 			console.log("select")
 			updateWindowSize();
-			this.drawnGraphics.clear();
+			Select.drawnGraphics.clear();
 			this.selectDown = true;
 			this.path = [];
 			this.color = 0x5D0776;
 		}
-		this.sceneSelect.on("mousedown", selectStart);
-		this.sceneSelect.on("touchstart", selectStart);
+		Select.sceneSelect.on("mousedown", selectStart);
+		Select.sceneSelect.on("touchstart", selectStart);
 
 		var select = function (data) {
 			if (!this.selectDown) return;
 
 			this.path.push(data.data.global.x);
 			this.path.push(data.data.global.y);
-			this.drawnGraphics.clear()
-			this.drawnGraphics.lineStyle(5, 0x000000, 1)
-			this.drawnGraphics.drawPolygon(this.path)
-			this.drawnGraphics.endFill();
+			Select.drawnGraphics.clear()
+			Select.drawnGraphics.lineStyle(5, 0x000000, 1)
+			Select.drawnGraphics.drawPolygon(this.path)
+			Select.drawnGraphics.endFill();
 
 
 		}
-		this.sceneSelect.on("mousemove", select);
-		this.sceneSelect.on("touchmove", select);
+		Select.sceneSelect.on("mousemove", select);
+		Select.sceneSelect.on("touchmove", select);
 
 		var selectStop = function () {
 			this.selectDown = false;
-			this.drawnGraphics.beginFill(this.color);
-			this.drawnGraphics.drawPolygon(this.path);
-			this.drawnGraphics.endFill();
-			this.drawnGraphics.hitArea = new PIXI.Polygon(this.path);
-			this.drawnGraphics.interactive = true;
-			this.rectCollisionTest(this.drawnGraphics, this.path);
+			Select.drawnGraphics.beginFill(this.color);
+			Select.drawnGraphics.drawPolygon(this.path);
+			Select.drawnGraphics.endFill();
+			Select.drawnGraphics.hitArea = new PIXI.Polygon(this.path);
+			Select.drawnGraphics.interactive = true;
+			this.rectCollisionTest(Select.drawnGraphics, this.path);
 			this.path = [];
 		}
-		this.sceneSelect.on("mouseup", selectStop);
-		this.sceneSelect.on("mouseupoutside", selectStop);
-		this.sceneSelect.on("touchend", selectStop);
-		this.sceneSelect.on("touchendoutside", selectStop);
+		Select.sceneSelect.on("mouseup", selectStop);
+		Select.sceneSelect.on("mouseupoutside", selectStop);
+		Select.sceneSelect.on("touchend", selectStop);
+		Select.sceneSelect.on("touchendoutside", selectStop);
 	}
-select() {
+static select() {
 	if (Menu.selectBool) {
 		console.log("it's on!!!");
 		Rezo.sensorZoomScene.interactive = false;
 
 		Rezo.upperScene.interactive = false
-		this.sceneSelect.interactive = true
+		Select.sceneSelect.interactive = true
 	} else {
 		console.log("it's off...")
 		Rezo.upperScene.interactive = true
 		Rezo.sensorZoomScene.interactive = true;
 
-		this.sceneSelect.interactive = false
-		this.drawnGraphics.clear()
+		Select.sceneSelect.interactive = false
+		Select.drawnGraphics.clear()
 	}
 }
 rectCollisionTest(rectTest, currentPath) {
@@ -102,7 +102,7 @@ rectCollisionTest(rectTest, currentPath) {
 	// this.rectTestGraph.clear()
 	// this.rectTestGraph.beginFill(0x373173,0.3)
 	// this.rectTestGraph.drawPolygon(x1,y1,x2,y1,x2,y2,x1,y2)
-	console.log(this.rectTestGraph.x)
+	console.log(Select.rectTestGraph.x)
 	for (var i = 0; i < allBulle.length; i++) {
 		console.log("bulle test par rectTest")
 		var bx = allBulle[i].x
@@ -116,7 +116,7 @@ rectCollisionTest(rectTest, currentPath) {
 		console.log("au moins Une bulle dans la selection")
 		this.polygonCollisionTest(this.rectTestArray, currentPath)
 	}
-	this.drawnGraphics.clear();
+	Select.drawnGraphics.clear();
 }
 
 currentPathX = []
@@ -232,7 +232,7 @@ polygonCollisionTest(rectTestArray, currentPath) {
 		this.z = 0;
 
 		this.funDelay()
-		//this.drawnGraphics.clear();
+		//Select.drawnGraphics.clear();
 		console.log(this.arrayDetect[0])
 		if (this.arrayDetect.length == 1) {//si une detection
 			this.isDetect = this.arrayDetect[0][0]
@@ -301,11 +301,11 @@ funDelay() {
 		this.path.push(this.pathX[this.z])
 		this.path.push(this.pathY[this.z])
 		//console.log(this.pathY[this.z])
-		this.detectPathGraphics.clear();
-		this.detectPathGraphics.lineStyle(5, 0x000000, 1)
-		this.detectPathGraphics.beginFill(this.color);
-		this.detectPathGraphics.drawPolygon(this.path)
-		this.detectPathGraphics.endFill();
+		Select.detectPathGraphics.clear();
+		Select.detectPathGraphics.lineStyle(5, 0x000000, 1)
+		Select.detectPathGraphics.beginFill(this.color);
+		Select.detectPathGraphics.drawPolygon(this.path)
+		Select.detectPathGraphics.endFill();
 
 		this.z += 5
 		window.setTimeout(this.funDelay, 2);

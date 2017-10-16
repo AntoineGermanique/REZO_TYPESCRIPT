@@ -1,6 +1,9 @@
+"use strict";
 ///////////////////////////////////whipe.js
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
 function whipe() {
-    Rezo.sceneLink.removeChildren();
-    Rezo.sceneBulle.removeChildren();
+    _1.Rezo.sceneLink.removeChildren();
+    _1.Rezo.sceneBulle.removeChildren();
 }
-//# sourceMappingURL=whipe.js.map
+exports.whipe = whipe;

@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function afficheGoodNews() {
     $("#goodNews").css("visibility", "visible");
     $("#goodNews").css("background-color", "#0F0");
@@ -6,10 +8,11 @@ function afficheGoodNews() {
         cacherGoodNews();
     }, 3000);
 }
+exports.afficheGoodNews = afficheGoodNews;
 function cacherGoodNews() {
     $("#goodNews").css("visibility", "");
     $("#goodNews").css("background-color", "");
     $("#goodNews").css("top", "");
 }
-//# sourceMappingURL=styleAnim.js.map
+exports.cacherGoodNews = cacherGoodNews;
 //# sourceMappingURL=styleAnim.js.map

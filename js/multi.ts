@@ -1,5 +1,5 @@
 ////////multi.js
-import {BulleArray, Loc, LinkArray, Menu, Rezo, Bulle, Link} from './'
+import {BulleArray, Loc, LinkArray, Menu, Rezo, Bulle, Link, Select} from './'
 
 var multiLinkArray: LinkArray[] = [];
 var multiExist = false;
@@ -14,8 +14,8 @@ export class Multi {
         var selectedBulle = Rezo.selectedBulle;
         if (Menu.multBool) {
             Multi.spriteMove = PIXI.Sprite.fromImage('./images/MOVE.png');
-            this.setSpriteMoveMultiListeners();
-            sceneMulti.addChild(Multi.spriteMove)
+            Multi.setSpriteMoveMultiListeners();
+            Rezo.sceneMulti.addChild(Multi.spriteMove)
             Multi.spriteMove.x = selectedBulle.x - (<PIXI.Graphics>selectedBulle.getChildAt(0)).width / 2
             Multi.spriteMove.y = selectedBulle.y - (<PIXI.Graphics>selectedBulle.getChildAt(0)).width / 2
             console.log(selectedBulle)
@@ -34,7 +34,7 @@ export class Multi {
             Multi.multiLinkSelect()
         } else {
             Multi.spriteMove.interactive = false
-            sceneMulti.removeChild(Multi.spriteMove)
+            Rezo.sceneMulti.removeChild(Multi.spriteMove)
             while (Multi.multiArray.length > 0) {
                 Bulle.fakeClickFun(Multi.multiArray[Multi.multiArray.length - 1].bulle);
                 Multi.multiArray.pop();
@@ -123,15 +123,15 @@ export class Multi {
 
     }
 
-    setSpriteMoveMultiListeners() {
+    static setSpriteMoveMultiListeners() {
         var startDrag = function (data) {
             console.log("Multi.spriteMove")
-            detectPathGraphics.clear()
+            Select.detectPathGraphics.clear()
             data.stopPropagation();
 
             if (Menu.selectBool) {
                 Menu.selectBool = false
-                select()
+                Select.select()
                 Menu.selectBool = true
             }
             data.data.originalEvent.preventDefault();
@@ -144,12 +144,12 @@ export class Multi {
         Multi.spriteMove.on("mousedown", startDrag);
         Multi.spriteMove.on("touchstart", startDrag);
 
-        var stopDrag = function (data) {
+        var stopDrag = function () {
             this.dragging = false;
             this.data = null;
             if (Menu.selectBool) {
-                selectDown = false
-                select()
+                Select.selectDown = false
+                Select.select()
             }
         }
 
@@ -158,7 +158,7 @@ export class Multi {
         Multi.spriteMove.on("touchend", stopDrag);
         Multi.spriteMove.on("touchendoutside", stopDrag);
 
-        var drag = function (data) {
+        var drag = function () {
             if (this.dragging) {
                 var newPosition = this.data.data.getLocalPosition(this.parent);
                 this.position.x = newPosition.x;

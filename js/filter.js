@@ -1,10 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 ////////////filter.js
-var invertFilter = new PIXI.filters.InvertFilter();
+const _1 = require("./");
 var blurFilter = new PIXI.filters.BlurFilter();
-var dotFilter = new PIXI.filters.DotScreenFilter();
 blurFilter.blur = 5;
 function invertFilterFun() {
-    Rezo.scene.filters = [invertFilter, blurFilter];
+    _1.Rezo.scene.filters = [blurFilter];
     //scene.filterArea = new PIXI.Rectangle(0, 0, windowW, windowH);
     //console.log(scene.filterArea)
     // for(i=0;i<(sceneBulle.children).length;i++){
@@ -12,9 +13,8 @@ function invertFilterFun() {
     // }
 }
 function supprFilterFun() {
-    Rezo.scene.filters = null;
+    _1.Rezo.scene.filters = null;
     // for(i=0;i<(sceneBulle.children).length;i++){
     // ((sceneBulle.children)[i].getChildAt(0)).filters=null
     // }
 }
-//# sourceMappingURL=filter.js.map

@@ -1,14 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //////////resizeFun.js
+const _1 = require("./");
 function resizeFun() {
     $(window).resize(function () {
         updateWindowSize();
-        var renderer = Rezo.renderer;
-        var windowW = Rezo.windowW;
-        var windowH = Rezo.windowH;
-        var scaleScene = Rezo.scaleScene;
-        var upperScene = Rezo.upperScene;
-        renderer.width = windowW;
-        renderer.height = windowH;
+        var renderer = _1.Rezo.renderer;
+        var windowW = _1.Rezo.windowW;
+        var windowH = _1.Rezo.windowH;
+        var scaleScene = _1.Rezo.scaleScene;
+        var upperScene = _1.Rezo.upperScene;
         renderer.resize(windowW, windowH);
         renderer.view.style.width = windowW + "px";
         renderer.view.style.height = windowH + "px";
@@ -23,14 +24,15 @@ function resizeFun() {
         //upperScene.hitArea.height = windowH;
         upperScene.width = windowW;
         upperScene.height = windowH;
-        Rezo.sensorZoomScene.width = windowW;
-        Rezo.sensorZoomScene.height = windowH;
-        Rezo.sensorZoomScene2.width = windowW;
-        Rezo.sensorZoomScene2.height = windowH;
+        _1.Rezo.sensorZoomScene.width = windowW;
+        _1.Rezo.sensorZoomScene.height = windowH;
+        _1.Rezo.sensorZoomScene2.width = windowW;
+        _1.Rezo.sensorZoomScene2.height = windowH;
         scaleScene.scene.filterArea.width = windowW;
         scaleScene.scene.filterArea.height = windowH;
     });
 }
+exports.resizeFun = resizeFun;
 function updateWindowSize() {
     var windowH = window.innerHeight;
     var windowW = window.innerWidth;
@@ -38,7 +40,7 @@ function updateWindowSize() {
         windowH = screen.height;
         windowW = screen.width;
     }
-    Rezo.windowW = windowW;
-    Rezo.windowH = windowH;
+    _1.Rezo.windowW = windowW;
+    _1.Rezo.windowH = windowH;
 }
-//# sourceMappingURL=resizeFun.js.map
+exports.updateWindowSize = updateWindowSize;

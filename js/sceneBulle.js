@@ -1,28 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //sceneBulle.ts Containing Bulles
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var SceneBulle = (function (_super) {
-    __extends(SceneBulle, _super);
-    function SceneBulle() {
-        _super.apply(this, arguments);
-    }
-    SceneBulle.bitmapDraw = function () {
-        var bulles = bubbleArray;
+const _1 = require("./");
+class SceneBulle extends PIXI.Container {
+    static bitmapDraw() {
+        var bulles = _1.bubbleArray;
         for (var i = 0; i < bulles.length; i++) {
             var bulle = bulles[i].bulle;
             var texture;
-            if (bulle.shape.kind == ShapeEnum.poly) {
-                texture = bulle.text.textDraw.generateTexture(Rezo.renderer);
+            if (bulle.shape.kind == _1.ShapeEnum.poly) {
+                texture = bulle.text.textDraw.generateCanvasTexture();
                 var shapeSprite = new PIXI.Sprite(texture);
                 bulle.text.textDraw._bmp = shapeSprite;
-                Rezo.sceneBulle.addChild(bulle.text.textDraw._bmp);
-                Rezo.sceneBulle.removeChild(bulle.text.textDraw);
+                _1.Rezo.sceneBulle.addChild(bulle.text.textDraw._bmp);
+                _1.Rezo.sceneBulle.removeChild(bulle.text.textDraw);
             }
         }
-    };
-    return SceneBulle;
-}(PIXI.Container));
-//# sourceMappingURL=sceneBulle.js.map
+    }
+}
+exports.SceneBulle = SceneBulle;

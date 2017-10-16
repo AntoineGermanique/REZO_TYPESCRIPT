@@ -1,10 +1,12 @@
 ////////rezo.js
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const _1 = require("./");
 function init() {
     new Rezo();
 }
-var Rezo = (function () {
-    function Rezo() {
+class Rezo {
+    constructor() {
         Rezo.rezoNameDiv.html(Rezo.rezoName);
         if (Rezo.windowH > screen.height) {
             Rezo.windowH = screen.height;
@@ -12,7 +14,7 @@ var Rezo = (function () {
         }
         //////STAGE CREATION
         var interactive = false;
-        var stage = new Stage();
+        var stage = new _1.Stage();
         Rezo.stage = stage;
         // console.log(screen.height+"_screen.height  "+screen.width+"_screen.width")
         // console.log( window.innerHeight+"_window.innerHeight  "+window.innerWidth+"_window.innerWidth")
@@ -28,7 +30,7 @@ var Rezo = (function () {
         renderer.view.id = "canvasId";
         document.body.appendChild(renderer.view);
         //upperScene
-        var upperScene = new UpperScene();
+        var upperScene = new _1.UpperScene();
         Rezo.upperScene = upperScene;
         upperScene.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
         upperScene.interactive = true;
@@ -40,33 +42,33 @@ var Rezo = (function () {
         var sensorDrawBulleScene = new PIXI.Container();
         sensorDrawBulleScene.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
         sensorDrawBulleScene.interactive = false;
-        var sensorZoomScene = new SensorZoomScene();
+        var sensorZoomScene = new _1.SensorZoomScene();
         Rezo.sensorZoomScene = sensorZoomScene;
         sensorZoomScene.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
         sensorZoomScene.interactive = true;
-        var sensorZoomScene2 = new SensorZoomScene();
+        var sensorZoomScene2 = new _1.SensorZoomScene();
         Rezo.sensorZoomScene2 = sensorZoomScene2;
         sensorZoomScene2.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
         sensorZoomScene2.interactive = false;
         // scaleScene
-        var scaleScene = new ScaleScene();
+        var scaleScene = new _1.ScaleScene();
         scaleScene.pivot.x = windowW / 2;
         scaleScene.pivot.y = windowH / 2;
         scaleScene.x = windowW / 2;
         scaleScene.y = windowH / 2;
         Rezo.scaleScene = scaleScene;
         //scene
-        var scene = new Scene();
+        var scene = new _1.Scene();
         Rezo.scene = scene;
         //sceneMulti
-        sceneMulti = new PIXI.Container();
+        Rezo.sceneMulti = new PIXI.Container();
         //sceneSelect
-        sceneSelect = new PIXI.Container();
-        sceneSelect.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
+        Rezo.sceneSelect = new PIXI.Container();
+        Rezo.sceneSelect.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
         //sceneDraw
-        sceneDraw = new SceneDraw();
-        sceneDraw.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
-        Rezo.sceneDraw = sceneDraw;
+        Rezo.sceneDraw = new _1.SceneDraw();
+        Rezo.sceneDraw.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
+        Rezo.sceneDraw = Rezo.sceneDraw;
         //sceneBulle;
         var sceneBulle = new PIXI.Container();
         Rezo.sceneBulle = sceneBulle;
@@ -80,15 +82,15 @@ var Rezo = (function () {
         stage.addChild(sensorZoomScene);
         stage.addChild(sensorZoomScene2);
         stage.addChild(sensorScaleBulleScene);
-        stage.addChildAt(sceneSelect, 0);
-        stage.addChild(sceneDraw);
+        stage.addChildAt(Rezo.sceneSelect, 0);
+        stage.addChild(Rezo.sceneDraw);
         sensorZoomScene.addChild(upperScene);
         upperScene.addChild(scaleScene);
         scaleScene.addChild(scene);
         scene.addChild(sceneHyper);
         scene.addChild(sceneLink);
         scene.addChild(sceneBulle);
-        scene.addChild(sceneMulti);
+        scene.addChild(Rezo.sceneMulti);
         stage.sensorScaleBulleScene = sensorScaleBulleScene;
         stage.sensorZoomScene = sensorZoomScene;
         stage.sensorZoomScene2 = sensorZoomScene2;
@@ -98,8 +100,8 @@ var Rezo = (function () {
         scene.sceneBulle = sceneBulle;
         scene.sceneHyper = sceneHyper;
         scene.sceneLink = sceneLink;
-        scene.sceneMulti = sceneMulti;
-        var primaryBulle = new Bulle(bulleX, bulleY, "rezo", color, defaultScale);
+        scene.sceneMulti = Rezo.sceneMulti;
+        var primaryBulle = new _1.Bulle(_1.Bulle.bulleX, _1.Bulle.bulleY, "rezo", _1.Bulle.bulleColor, _1.Bulle.defaultScale);
         Rezo.sceneBulle.addChild(primaryBulle);
         requestAnimationFrame(animate);
         function animate() {
@@ -108,15 +110,15 @@ var Rezo = (function () {
         }
         $("canvas").appendTo("#canvasContainer");
         upperScene.dragScene();
-        scrollZoom();
-        touchZoom();
-        resizeFun();
-        scaleBulle();
-        selectIntercative();
-        menu();
-        setSortingListener();
+        _1.Zoom.scrollZoom();
+        _1.Zoom.touchZoom();
+        _1.resizeFun();
+        _1.Scale.scaleBulle();
+        _1.Select.selectIntercative();
+        _1.Menu.menu();
+        _1.setSortingListener();
         $("#loading").hide();
-        Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
+        Rezo.initialRezo = JSON.stringify(_1.Save.nullifyTimeStamp(_1.Save.createJsonRezo(Rezo.rezoName)));
         //$(window).on('beforeunload', function () {
         //    return 'Are you sure you want to leave?';
         //});
@@ -133,75 +135,76 @@ var Rezo = (function () {
             Rezo.hasRecoveryAvailable = false;
         }
         if (Rezo.hasRecoveryAvailable) {
+            //this.suggestRecovery();
         }
         else {
-            saveLocal("AutoSave");
+            _1.Save.saveLocal("AutoSave");
         }
         window.setInterval(this.checkAutoSave, 30000);
     }
     ;
-    Rezo.checkSaveStatus = function () {
-        var rezoSaveToCompare = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
+    static checkSaveStatus() {
+        var rezoSaveToCompare = JSON.stringify(_1.Save.nullifyTimeStamp(_1.Save.createJsonRezo(Rezo.rezoName)));
         if (Rezo.isSaved(rezoSaveToCompare)) {
         }
         else {
             if (confirm("le rezo n'est apparement pas sauver, faut-il le faire?")) {
                 if (Rezo.isDriveConnected) {
-                    saveDrive();
+                    _1.Save.saveDrive();
                 }
                 else {
-                    saveLocal();
+                    _1.Save.saveLocal();
                 }
             }
         }
-    };
-    Rezo.isSaved = function (rezoSaveToCompare) {
+    }
+    static isSaved(rezoSaveToCompare) {
         if (rezoSaveToCompare == Rezo.initialRezo) {
             return true;
         }
         return false;
-    };
-    Rezo.prototype.checkAutoSave = function () {
+    }
+    checkAutoSave() {
         if (!Rezo.hasRecoveryAvailable) {
-            saveLocal("AutoSave");
+            _1.Save.saveLocal("AutoSave");
         }
-    };
-    Rezo.prototype.suggestRecovery = function () {
+    }
+    suggestRecovery() {
         if (confirm("un rezo non sauver est r�cup�rable, le restaurer ?")) {
-            localLoad("AutoSave");
+            _1.LocalStorage.localLoad("AutoSave");
             Rezo.hasRecoveryAvailable = false;
         }
         else {
         }
-    };
-    Rezo.load = document.getElementById("loading");
-    Rezo.isDriveConnected = false;
+    }
+}
+Rezo.load = document.getElementById("loading");
+Rezo.isDriveConnected = false;
+Rezo.rezoName = "Nouveau Rezo";
+Rezo.rezoNameDiv = $("#rezoName");
+Rezo.opened = false;
+Rezo.windowH = window.innerHeight;
+Rezo.windowW = window.innerWidth;
+Rezo.menu = new _1.Menu();
+Rezo.newRezo = function () {
     Rezo.rezoName = "Nouveau Rezo";
-    Rezo.rezoNameDiv = $("#rezoName");
+    Rezo.rezoNameDiv.html(Rezo.rezoName);
     Rezo.opened = false;
-    Rezo.windowH = window.innerHeight;
-    Rezo.windowW = window.innerWidth;
-    Rezo.newRezo = function () {
-        Rezo.rezoName = "Nouveau Rezo";
-        Rezo.rezoNameDiv.html(Rezo.rezoName);
-        Rezo.opened = false;
-        while (bubbleArray.length > 0) {
-            bubbleArray.pop();
-        }
-        while (Link.linkArray.length > 0) {
-            Link.linkArray.pop();
-        }
-        Rezo.sceneBulle.removeChildren();
-        Rezo.sceneLink.removeChildren();
-        bulleX = Rezo.windowW / 2;
-        bulleY = Rezo.windowH / 2;
-        var bulle = Rezo.sceneBulle.addChild(new Bulle(bulleX, bulleY, "rezo", bulleColor, defaultScale, ShapeEnum.circle));
-        Rezo.scaleScene.scale.x = 1;
-        Rezo.scaleScene.scale.y = 1;
-        Rezo.scene.position.x = 0;
-        Rezo.scene.position.y = 0;
-        $("img#closeOpen").trigger("click");
-    };
-    return Rezo;
-}());
-//# sourceMappingURL=rezo.js.map
+    while (_1.bubbleArray.length > 0) {
+        _1.bubbleArray.pop();
+    }
+    while (_1.Link.linkArray.length > 0) {
+        _1.Link.linkArray.pop();
+    }
+    Rezo.sceneBulle.removeChildren();
+    Rezo.sceneLink.removeChildren();
+    _1.Bulle.bulleX = Rezo.windowW / 2;
+    _1.Bulle.bulleY = Rezo.windowH / 2;
+    var bulle = Rezo.sceneBulle.addChild(new _1.Bulle(_1.Bulle.bulleX, _1.Bulle.bulleY, "rezo", _1.Bulle.bulleColor, _1.Bulle.defaultScale, _1.ShapeEnum.circle));
+    Rezo.scaleScene.scale.x = 1;
+    Rezo.scaleScene.scale.y = 1;
+    Rezo.scene.position.x = 0;
+    Rezo.scene.position.y = 0;
+    $("img#closeOpen").trigger("click");
+};
+exports.Rezo = Rezo;

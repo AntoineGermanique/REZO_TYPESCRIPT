@@ -7,7 +7,7 @@ export class SceneBulle extends PIXI.Container {
             var bulle = bulles[i].bulle;
             var texture: PIXI.Texture
             if (bulle.shape.kind == ShapeEnum.poly) {
-                texture = bulle.text.textDraw.generateTexture(Rezo.renderer);
+                texture = bulle.text.textDraw.generateCanvasTexture();
                 var shapeSprite = new PIXI.Sprite(texture);
                 bulle.text.textDraw._bmp = shapeSprite;
 

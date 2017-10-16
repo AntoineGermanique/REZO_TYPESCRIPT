@@ -13,7 +13,8 @@ import {
     Zoom, resizeFun,
     Scale, setSortingListener, Save,
     bubbleArray, Link,
-    ShapeEnum, LocalStorage
+    ShapeEnum, LocalStorage,
+    Select
     
 } from './'
 
@@ -179,7 +180,7 @@ export class Rezo {
         Zoom.touchZoom();
         resizeFun();
         Scale.scaleBulle();
-        selectIntercative();
+        Select.selectIntercative();
         Menu.menu();
         setSortingListener();
         $("#loading").hide();
