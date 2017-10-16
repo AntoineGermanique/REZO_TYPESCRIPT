@@ -1,7 +1,8 @@
 /////////////open.js
 "use strict"
 
-var bubbleTemp
+import {DriveAPI, Load, Utilitary, Ressource, Rezo, Menu, LocalStorage} from './'
+
 var isTitreInvalid
 var titre;
 export var drive: DriveAPI = new DriveAPI();
@@ -9,7 +10,7 @@ var counter :number=0;
 
 
 
-function openLoad(data){
+export function openLoad(data){
     if (data) {
         $("#openContainer").append(data);
     }
@@ -23,7 +24,7 @@ function addListenersDrive() {
         console.log(counter++)
         var id = $(this).parent().attr("id")
         $('#loading').css("display", "block");
-        drive.getFile(id, (file) => { drive.downloadFile(file, load2) })
+        drive.getFile(id, (file) => { drive.downloadFile(file, Load.load2) })
     })
     $(".openImgModif").click(function () {
         var oldTitle = $(this).attr("id")
@@ -54,7 +55,7 @@ function addListenersDrive() {
 
     })
     $("img#closeOpen").click(function () {
-        openActif = true;
+        Menu.openActif = true;
         $("#homeBulle").trigger("click");
     })
     //$("img#saveOpen").click(function(){
@@ -94,7 +95,7 @@ enum Sort {
     nameUp,nameDown,dateUp,dateDown
 }
 
-function setSortingListener() {
+export function setSortingListener() {
     console.log("set listeners");
     $("#orderName .arrowUp").click(() => { sort(Sort.nameUp) });
     $("#orderName .arrowDown").click(() => { sort(Sort.nameDown) });
@@ -105,7 +106,7 @@ function setSortingListener() {
 function sort(sort: Sort) {
     console.log("general sort");
 
-    var nodeList = <NodeListOf<HTMLElement>>document.getElementsByClassName("open");
+    var nodeList = <HTMLCollectionOf<HTMLElement>>document.getElementsByClassName("open");
     var array: HTMLElement[] = [];
     for (var i = 0; i < nodeList.length; i++) {
         array.push(nodeList.item(i));
@@ -129,9 +130,9 @@ function sort(sort: Sort) {
     for (var i = 0; i < array.length; i++) {
         $("#openContainer").append(array[i]);
     }
-    if (isLocalHome) {
-        addListenersLocal()
-    } else if (isDriveHome) {
+    if (Menu.isLocalHome) {
+        LocalStorage.addListenersLocal()
+    } else if (Menu.isDriveHome) {
         addListenersDrive();
     }
 }

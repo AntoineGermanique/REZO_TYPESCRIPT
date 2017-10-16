@@ -1,6 +1,6 @@
 ﻿//Ressource.js
 
-class Ressource {
+export class Ressource {
     static pathImg: string = "images/";
     static pathImgFast: string = Ressource.pathImg + "fast_back.png";
     static pathImgLink: string = Ressource.pathImg + "link_back.png";

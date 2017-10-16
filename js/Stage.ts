@@ -1,6 +1,7 @@
 ﻿//Stage.ts highest container, renderer PIXI.js
+import {} from './'
 
-class Stage extends PIXI.Container {
+export class Stage extends PIXI.Container {
     sensorZoomScene: SensorZoomScene;
     sensorZoomScene2: SensorZoomScene;
     sceneDraw: PIXI.Graphics;

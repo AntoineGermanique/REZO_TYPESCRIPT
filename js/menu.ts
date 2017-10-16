@@ -3,59 +3,68 @@ import $ from 'jquery'
 import {
     Rezo,
     Link,
-    hyperPlusFun,
+    Hyper,
     Bulle,
     updateWindowSize,
-    supprFun, 
-    drive
+    supprFun,
+    drive,
+    Save,
+    Ressource,
+    setSortingListener,
+    fastFun, SceneDraw,
+    Zoom,
+    Scale, 
+    gradient,
+    Multi,
+    bubbleArray, Realtime
 } from './'
 
 "use strict"
 
-interface Document {
+interface Document extends HTMLBodyElement{
     cancelFullScreen: () => void;
     mozCancelFullScreen: () => void;
 }
 interface HTMLElement {
     mozRequestFullScreen: () => void;
 }
-class Menu {
-    isLocalSave = false;
-    menuActif = false;
-    openActif = false;
-    fastBool = false;
-    editBool = false;
-    naviBool = false;
-    scalBool = false;
-    coloBool = false;
-    multBool = false;
-    selectBool = false;
-    drawBool = false;
-    hyperBool = false;
-    isLocalHome = false;
-    isDriveHome = false;
+export class Menu {
+    static isLocalSave = false;
+    static menuActif = false;
+    static openActif = false;
+    static fastBool = false;
+    static editBool = false;
+    static naviBool = false;
+    static scalBool = false;
+    static coloBool = false;
+    static multBool = false;
+    static selectBool = false;
+    static drawBool = false;
+    static hyperBool = false;
+    static isLocalHome = false;
+    static isDriveHome = false;
+    static isFullScreen = false;
+    static bulleMiddlePoX: number;
+    static bulleMiddlePoY: number;
 
-    bulleMiddlePoX: number;
-    bulleMiddlePoY: number;
-
-    menu() {
+    static menu() {
         let windowW = Rezo.windowW;
         let windowH = Rezo.windowH;
         $("#menuBtn").click(() => {
-            if (!this.menuActif) {
-                this.menuActif = true;
+            if (!Menu.menuActif) {
+                Menu.menuActif = true;
                 $("#menuContainer").css("display", "block")
                 $("#menuBtn").removeClass("menuBtn").addClass("menuBtn_replie");
-                if (this.naviBool) { $("#naviBulle").trigger("click") }
-                if (this.editBool) { $("#editBulle").trigger("click") }
-                if (this.drawBool) { $("#drawBulle").trigger("click") }
+                if (Menu.naviBool) { $("#naviBulle").trigger("click") }
+                if (Menu.editBool) { $("#editBulle").trigger("click") }
+                if (Menu.drawBool) { $("#drawBulle").trigger("click") }
             } else {
-                this.menuActif = false;
+                Menu.menuActif = false;
                 $("#menuBtn").removeClass("menuBtn_replie").addClass("menuBtn");
                 $("#menuContainer").css("display", "none")
-                if (this.naviBool) { $("#naviBulle").trigger("click") }
-                if (this.editBool) { $("#editBulle").trigger("click") }
-                if (this.drawBool) { $("#drawBulle").trigger("click") }
+                if (Menu.naviBool) { $("#naviBulle").trigger("click") }
+                if (Menu.editBool) { $("#editBulle").trigger("click") }
+                if (Menu.drawBool) { $("#drawBulle").trigger("click") }
             }
         })
 
@@ -63,15 +72,15 @@ class Menu {
 
         $("#plusBulle").click(() => {
             updateWindowSize()
-            if (this.hyperBool) {
-                hyperPlusFun()
+            if (Menu.hyperBool) {
+                new Hyper().hyperPlusFun()
             } else {
                 var scaleScene = Rezo.scaleScene;
-                this.bulleMiddlePoX = windowW / 2 / scaleScene.scale.x - scaleScene.scene.x - (windowW / scaleScene.scale.x - windowW) / 2
-                this.bulleMiddlePoY = windowH / 2 / scaleScene.scale.x - scaleScene.scene.y - (windowH / scaleScene.scale.x - windowH) / 2
+                Menu.bulleMiddlePoX = windowW / 2 / scaleScene.scale.x - scaleScene.scene.x - (windowW / scaleScene.scale.x - windowW) / 2
+                Menu.bulleMiddlePoY = windowH / 2 / scaleScene.scale.x - scaleScene.scene.y - (windowH / scaleScene.scale.x - windowH) / 2
                 // dispatchMouseEvent(selectedBulle, 'mousedown', true, true);
                 // dispatchMouseEvent(selectedBulle, 'mouseup', true, true);
-                scaleScene.scene.sceneBulle.addChild(new Bulle(this.bulleMiddlePoX, this.bulleMiddlePoY, "txt", bulleColor, 1));
+                scaleScene.scene.sceneBulle.addChild(new Bulle(Menu.bulleMiddlePoX, Menu.bulleMiddlePoY, "txt", Bulle.bulleColor, 1));
             }
         })
 
@@ -81,44 +90,44 @@ class Menu {
             drive.handleAuthClick(event)
         });
 
-        $("#saveBulle").click(saveDrive);
+        $("#saveBulle").click(Save.saveDrive);
         $("#localSaveBulle").click(() => {
-            saveLocal();
+            Save.saveLocal();
         });
-        $("#linkBulle").click(linkButton);
+        $("#linkBulle").click(Menu.linkButton);
         $("#link2Bulle").click(() => {
             Link.emptyLinkArray()
             if (Link.link2Bool == false) {
-                this.setBackground(Ressource.pathImgLink2)
+                Menu.setBackground(Ressource.pathImgLink2)
                 Link.link3Bool = false;
                 $("#link3Bulle").css({ "box-shadow": "none" })
                 Link.link2Bool = true;
                 $("#link2Bulle").css({ "box-shadow": "purple 0px 0px 20px inset", "border-radius": "20px" })
             } else {
                 Link.link2Bool = false;
-                this.setBackground(Ressource.pathImgLink)
+                Menu.setBackground(Ressource.pathImgLink)
                 $("#link2Bulle").css({ "box-shadow": "none" })
             }
         })
         $("#link3Bulle").click(() => {
             Link.emptyLinkArray()
             if (Link.link3Bool == false) {
-                this.setBackground(Ressource.pathImgLink3);
+                Menu.setBackground(Ressource.pathImgLink3);
                 Link.link2Bool = false;
                 $("#link2Bulle").css({ "box-shadow": "none" })
                 Link.link3Bool = true;
                 $("#link3Bulle").css({ "box-shadow": "purple 0px 0px 20px inset", "border-radius": "20px" })
             } else {
-                this.setBackground(Ressource.pathImgLink);
+                Menu.setBackground(Ressource.pathImgLink);
                 Link.link3Bool = false;
                 $("#link3Bulle").css({ "box-shadow": "none" })
             }
         })
 
         $("#homeBulle").click(() => {
-            if (this.openActif == false) {
+            if (Menu.openActif == false) {
                 Rezo.checkSaveStatus();
-                this.isDriveHome = true;
+                Menu.isDriveHome = true;
                 $(".open").remove();
 
                 $('#loading').css("display", "block");
@@ -128,32 +137,32 @@ class Menu {
                 //	openLoad(data);
                 //})
                 $("#open").css("display", "block")
-                this.openActif = true;
+                Menu.openActif = true;
             } else {
                 $("#open").css("display", "none");
                 $(".open").remove();
                 $("img#closeOpen").off();
                 $("img#saveOpen").off();
-                this.openActif = false;
-                this.isDriveHome = false;
+                Menu.openActif = false;
+                Menu.isDriveHome = false;
             }
         })
         $("#localHome").click(() => {
-            if (this.openActif == false) {
+            if (Menu.openActif == false) {
                 Rezo.checkSaveStatus();
-                this.isLocalHome = true;
-                var arrayLocal = localOpen();
+                Menu.isLocalHome = true;
+                var arrayLocal = new localStorage.localOpen();
                 $("#open").css("display", "block")
-                this.openActif = true
+                Menu.openActif = true
                 setSortingListener()
 
             } else {
                 $("#open").css("display", "none");
                 $("img#closeOpen").off();
                 $(".open").remove();
-                this.openActif = false;
-                localClose();
-                this.isLocalHome = false;
+                Menu.openActif = false;
+                new localStorage.localClose();
+                Menu.isLocalHome = false;
 
             }
         })
@@ -163,10 +172,10 @@ class Menu {
         $("#fastBulle").click(() => {
             fastFun();
         })
-        $("#editBulle").click(editButton)
+        $("#editBulle").click(Menu.editButton)
         $("#naviBulle").click(() => {
-            if (!this.naviBool) {
-                this.naviBool = true;
+            if (!Menu.naviBool) {
+                Menu.naviBool = true;
                 $("#zoomPBulle").removeClass("hiddenButton");
                 $("#zoomMBulle").removeClass("hiddenButton");
                 $("#zoomPText").removeClass("hiddenButton");
@@ -175,7 +184,7 @@ class Menu {
 
 
             } else {
-                this.naviBool = false;
+                Menu.naviBool = false;
                 $("#zoomPBulle").addClass("hiddenButton");
                 $("#zoomMBulle").addClass("hiddenButton");
                 $("#zoomPText").addClass("hiddenButton");
@@ -185,23 +194,18 @@ class Menu {
             }
         })
         $("#zoomPBulle").click(() => {
-            zoomScenePlus()
+            Zoom.zoomScenePlus()
         })
         $("#zoomMBulle").click(() => {
-            zoomSceneMoins()
+            Zoom.zoomSceneMoins()
         })
         $("#fullBulle").click(() => {
             var body = <HTMLBodyElement>document.getElementsByTagName("body")[0];
-            if (this.isFullScreen) {
-                if (document.cancelFullScreen) {
-                    document.cancelFullScreen()
-                } else if (document.webkitCancelFullScreen) {
-                    document.webkitCancelFullScreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
+            if (Menu.isFullScreen) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen() 
                 }
-
-                this.isFullScreen = false;
+                Menu.isFullScreen = false;
             } else {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
@@ -211,28 +215,28 @@ class Menu {
                 // else if (document.documentElement.mozRequestFullScreen) {
                 //     document.documentElement.mozRequestFullScreen()
                 // }
-                this.isFullScreen = true;
+                Menu.isFullScreen = true;
             }
         })
         $("#scalBulle").click(() => {
-            if (!this.scalBool) {
-                this.scalBool = true
-                setBackgroundScale();
+            if (!Menu.scalBool) {
+                Menu.scalBool = true
+                Menu.setBackgroundScale();
                 $("#scalBackground").css({ "box-shadow": "0px 0px 20px inset", "border-radius": "100px" })
                 $("#scalZPBulle").css("display", "block")
                 $("#scalZMBulle").css("display", "block")
                 $("#scalBackground").css("background", "rgb(127, 255, 0)")
-                scaleBulleTouch()
+                Scale.scaleBulleTouch()
 
 
             } else {
-                this.scalBool = false
-                setBackgroundScale();
+                Menu.scalBool = false
+                Menu.setBackgroundScale();
                 $("#scalBackground").css({ "box-shadow": "none" })
                 $("#scalZPBulle").css("display", "none")
                 $("#scalZMBulle").css("display", "none")
                 $("#scalBackground").css("background", "none")
-                scaleBulleTouch()
+                Scale.scaleBulleTouch()
 
             }
         })
@@ -240,33 +244,33 @@ class Menu {
             gradient()
         })
         $("#scalZPBulle").click(() => {
-            if (this.multBool) {
-                multiScaleBullePlus(multiArray)
+            if (Menu.multBool) {
+                Scale.multiScaleBullePlus(Multi.multiArray)
             } else {
-                scaleBullePlus(Rezo.selectedBulle)
+                Scale.scaleBullePlus(Rezo.selectedBulle)
             }
         })
         $("#scalZMBulle").click(() => {
-            if (this.multBool) {
-                multiScaleBulleMoins(multiArray)
+            if (Menu.multBool) {
+                Scale.multiScaleBulleMoins(Multi.multiArray)
             } else {
-                scaleBulleMoins(Rezo.selectedBulle)
+                Scale.scaleBulleMoins(Rezo.selectedBulle)
             }
         })
-        $("#multBulle").click(multiButton);
+        $("#multBulle").click(this.multiButton);
         $("#selectBulle").click(() => {
-            if (this.selectBool) {
-                this.setBackground(Ressource.pathImgMulti);
-                this.selectBool = false
+            if (Menu.selectBool) {
+                Menu.setBackground(Ressource.pathImgMulti);
+                Menu.selectBool = false
                 select();
                 detectPathGraphics.clear()
                 $("#selectBulle").css({ "box-shadow": "none" })
                 $("#selectBulle").addClass("noRound")
 
             } else {
-                this.setBackground(Ressource.pathImgSelect);
-                if (this.scalBool) { $("#scalBulle").trigger("click") }
-                this.selectBool = true
+                Menu.setBackground(Ressource.pathImgSelect);
+                if (Menu.scalBool) { $("#scalBulle").trigger("click") }
+                Menu.selectBool = true
                 select();
                 $("#selectBulle").css({ "box-shadow": "0PX 0PX 5PX 5px orangered" })
                 $("#selectBulle").removeClass("noRound")
@@ -275,18 +279,18 @@ class Menu {
         })
 
         $("#zoomPText").click(() => {
-            multiScaleBullePlus(bubbleArray)
+            Scale.multiScaleBullePlus(bubbleArray)
         })
         $("#zoomMText").click(() => {
-            multiScaleBulleMoins(bubbleArray)
+            Scale.multiScaleBulleMoins(bubbleArray)
         })
         $("#hyperBulle").click(() => {
-            if (this.hyperBool) {
-                this.hyperBool = false
+            if (Menu.hyperBool) {
+                Menu.hyperBool = false
                 $("#hyperBulle").css({ "background": "none", "border-radius": "100px", "box-shadow": "none" })
 
             } else {
-                this.hyperBool = true
+                Menu.hyperBool = true
                 $("#hyperBulle").css({ "background": "rgba(0, 0, 255, 0.44)", "border-radius": "100px", "box-shadow": "0PX 0PX 5PX 5px blue" })
             }
         })
@@ -303,15 +307,15 @@ class Menu {
     }
 
 
-    linkButton() {
+    static linkButton() {
 
         Link.emptyLinkArray()
         if (Link.linkBool == false) {
-            if (this.multBool) {
+            if (Menu.multBool) {
                 $("#multBulle").trigger("click");
             }
-            this.setBackground(Ressource.pathImgLink);
-            disableButton($("#multBulle"));
+            Menu.setBackground(Ressource.pathImgLink);
+            Menu.disableButton($("#multBulle"));
             Link.linkBool = true;
             $("#linkBulle").css({ "box-shadow": "0px 0px 20px inset", "border-radius": "20px" })
             $("#link2Bulle").css("display", "block")
@@ -319,8 +323,8 @@ class Menu {
             $("#menu").css("max-height", "none")
 
         } else {
-            this.setBackground();
-            enableButton($("#multBulle"), multiButton);
+            Menu.setBackground();
+            Menu.enableButton($("#multBulle"), this.multiButton);
             Link.linkBool = false;
             $("#linkBulle").css({ "box-shadow": "none" })
             Link.link2Bool = false;
@@ -334,34 +338,34 @@ class Menu {
         console.log("hop")
     };
 
-    multiButton() {
-        if (!this.multBool) {
-            this.setBackground(Ressource.pathImgMulti);
+    static multiButton() {
+        if (!Menu.multBool) {
+            Menu.setBackground(Ressource.pathImgMulti);
             if (Link.linkBool) {
                 $("#linkBulle").trigger("click");
             }
-            disableButton($("#linkBulle"));
-            this.multBool = true
+            Menu.disableButton($("#linkBulle"));
+            Menu.multBool = true
             $("#selectBulle").css("display", "block")
             $("#multiBackground").css({ "box-shadow": "0px 0px 20px inset", "border-radius": "100px" })
-            multi();
+            Multi.multi();
 
         } else {
-            this.multBool = false
-            this.enableButton($("#linkBulle"), this.linkButton);
+            Menu.multBool = false
+            Menu.enableButton($("#linkBulle"), this.linkButton);
 
             $("#selectBulle").css("display", "none")
             $("#multiBackground").css({ "box-shadow": "none" })
-            multi()
-            if (this.selectBool) { $("#selectBulle").trigger("click") }
+            Multi.multi()
+            if (Menu.selectBool) { $("#selectBulle").trigger("click") }
             detectPathGraphics.clear()
-            this.setBackground();
+            Menu.setBackground();
 
         }
     }
-    editButton() {
-        if (!this.editBool) {
-            this.editBool = true;
+    static editButton() {
+        if (!Menu.editBool) {
+            Menu.editBool = true;
             $("#supprBulle").css("display", "block");
             $("#textBulle").css("display", "block");
             $("#linkBulle").css("display", "block");
@@ -378,7 +382,7 @@ class Menu {
 
 
         } else {
-            this.editBool = false;
+            Menu.editBool = false;
             $("#supprBulle").css("display", "none");
             $("#textBulle").css("display", "none");
             $("#linkBulle").css("display", "none");
@@ -396,25 +400,25 @@ class Menu {
             $("#naviBulle").css("display","block");
             $("#navBackground").css("display","block"); */
             $("#editBulle").removeClass("whiteBackground");
-            if (this.scalBool) { $("#scalBulle").trigger("click") }
+            if (Menu.scalBool) { $("#scalBulle").trigger("click") }
             if (Link.linkBool) { $("#linkBulle").trigger("click") }
-            if (this.coloBool) { $("#coloBulle").trigger("click") }
-            if (this.multBool) { $("#multBulle").trigger("click") }
+            if (Menu.coloBool) { $("#coloBulle").trigger("click") }
+            if (Menu.multBool) { $("#multBulle").trigger("click") }
 
         }
     }
 
-    enableButton(button: JQuery, callback: () => void) {
+    static enableButton(button: JQuery, callback: () => void) {
         button.css("opacity", "1");
         button.css("cursor", "pointer");
         button.on("click", callback);
     }
-    disableButton(button: JQuery) {
+    static disableButton(button: JQuery) {
         button.css("opacity", "0.2");
         button.css("cursor", "not-allowed");
         button.off();
     }
-    setBackground(path?: string) {
+    static setBackground(path?: string) {
         if (path) {
             $("#background").css("background", "url('" + path + "')");
             this.setBackgroundScale();
@@ -423,8 +427,8 @@ class Menu {
             this.setBackgroundScale();
         }
     }
-    setBackgroundScale() {
-        if (this.scalBool) {
+    static setBackgroundScale() {
+        if (Menu.scalBool) {
             $("#background-scale").css("background", "url('" + Ressource.pathImgScale + "')");
         } else {
             $("#background-scale").css("background", "none");

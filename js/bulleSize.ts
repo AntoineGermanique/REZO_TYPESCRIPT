@@ -2,7 +2,7 @@
 "use strict";
 
 
-function bulleSize(bulleToSize: PIXI.Graphics): number {
+export function bulleSize(bulleToSize: PIXI.Graphics): number {
     var toSize: PIXI.Graphics = <PIXI.Graphics>bulleToSize.getChildAt(0);
 	var rawSize=toSize.width;
 	var lineSize=toSize.lineWidth

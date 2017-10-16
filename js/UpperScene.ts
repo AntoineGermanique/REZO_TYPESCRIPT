@@ -2,12 +2,14 @@
 // import { Graphics } from 'pixi.js'
 
 
-class UpperScene extends PIXI.Graphics {
+import {ScaleScene, dragScene} from './'
+
+export class UpperScene extends PIXI.Graphics {
     scaleScene: ScaleScene;
     dragScene() {
         var scene = this.scaleScene.scene
         var scaleScene = this.scaleScene;
-        var startDrag = function (data: Data) {
+        var startDrag = function (data: dragScene.Data) {
             console.log(data.data.global.x)
             // stop the default event...
             data.data.originalEvent.preventDefault();
@@ -16,9 +18,9 @@ class UpperScene extends PIXI.Graphics {
             // we want to track the movement of this particular touch
             this.data = data;
             this.dragging = true;
-            oldX = scene.position.x * scaleScene.scale.x;
-            oldY = scene.position.y * scaleScene.scale.x;
-            oldPosition = data.data.getLocalPosition(this.parent);
+            dragScene.oldX = scene.position.x * scaleScene.scale.x;
+            dragScene.oldY = scene.position.y * scaleScene.scale.x;
+            dragScene.oldPosition = data.data.getLocalPosition(this.parent);
         };
         this.on("mousedown", startDrag);
         this.on("touchstart", startDrag);
@@ -41,8 +43,8 @@ class UpperScene extends PIXI.Graphics {
         var drag = function (data) {
             if (this.dragging) {
                 var newPosition = this.data.data.getLocalPosition(this.parent);
-                scene.position.x = (newPosition.x - oldPosition.x + oldX) / scaleScene.scale.x
-                scene.position.y = (newPosition.y - oldPosition.y + oldY) / scaleScene.scale.x
+                scene.position.x = (newPosition.x - dragScene.oldPosition.x + dragScene.oldX) / scaleScene.scale.x
+                scene.position.y = (newPosition.y - dragScene.oldPosition.y + dragScene.oldY) / scaleScene.scale.x
                 //Rezo.sceneDraw.position.x = Rezo.sceneDraw.position.x -scene.position.x;
                 //Rezo.sceneDraw.position.y = Rezo.sceneDraw.position.y -scene.position.y;
                 //// this.hitArea.x=-this.position.x+windowW/2*this.scale.x

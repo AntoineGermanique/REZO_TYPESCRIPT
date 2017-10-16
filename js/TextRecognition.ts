@@ -1,5 +1,7 @@
 ﻿declare var CryptoJS;
 
+import {TextRezo, Ressource} from './'
+
 interface TextRecognitionInputs {
     textParameter: { language: string, textInputMode: string },
     inputUnits: TextInputUnits[];
@@ -23,12 +25,12 @@ interface StrokeComponent {
     t: number[];
     type: string;
 }
-interface Path {
+export interface Path {
     x: number[];
     y: number[];
     t: number[];
 }
-class TextRecognition {
+export class TextRecognition {
     input: TextRecognitionInputs;
     data: TextRecognitionData;
     xhr(type: string, url: string, data: TextRecognitionData, text: TextRezo) {

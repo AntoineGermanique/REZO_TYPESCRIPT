@@ -1,12 +1,10 @@
 ////////////filter.js
-
-var invertFilter = new PIXI.filters.InvertFilter();
+import {Rezo} from './'
 var blurFilter = new PIXI.filters.BlurFilter()
-var dotFilter = new PIXI.filters.DotScreenFilter()
 blurFilter.blur=5;
 function invertFilterFun(){
 	
-	Rezo.scene.filters = [invertFilter,blurFilter];
+	Rezo.scene.filters = [blurFilter];
 	//scene.filterArea = new PIXI.Rectangle(0, 0, windowW, windowH);
 	//console.log(scene.filterArea)
 	// for(i=0;i<(sceneBulle.children).length;i++){

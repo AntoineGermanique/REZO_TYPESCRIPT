@@ -1,5 +1,5 @@
 ﻿//SceneLink contains all Links
 
-class SceneLink extends PIXI.Container {
+export class SceneLink extends PIXI.Container {
 
 }

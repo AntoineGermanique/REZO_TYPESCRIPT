@@ -1,25 +1,27 @@
 ///////interactiveHyper.js
 
-function hyperInteractiveFun(){
+import {Hyper} from './'
+
+export function hyperInteractiveFun(){
 	var dragStart=function(data){
 		this.dragging=true
 		selectHyperFun(this,data)
     }
-    hyperHandler.on("mousedown", dragStart);
-    hyperHandler.on("touchstart", dragStart);
+    Hyper.hyperHandler.on("mousedown", dragStart);
+    Hyper.hyperHandler.on("touchstart", dragStart);
 
 	var dragStop=function(data){
 		releaseHyper(this)
     }
-    hyperHandler.on("mouseup", dragStop);
-    hyperHandler.on("mouseupoutside", dragStop);
-    hyperHandler.on("touchend", dragStop);
-    hyperHandler.on("touchendoutside", dragStop);
+    Hyper.hyperHandler.on("mouseup", dragStop);
+    Hyper.hyperHandler.on("mouseupoutside", dragStop);
+    Hyper.hyperHandler.on("touchend", dragStop);
+    Hyper.hyperHandler.on("touchendoutside", dragStop);
 	var drag=function(data){
 		dragHyper(this)
     }
-    hyperHandler.on("mousemove", drag);
-    hyperHandler.on("touchmove", drag);
+    Hyper.hyperHandler.on("mousemove", drag);
+    Hyper.hyperHandler.on("touchmove", drag);
 }
 
 function selectHyperFun(clickedHyper,data){

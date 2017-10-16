@@ -8,8 +8,6 @@ export function resizeFun(){
         var windowH = Rezo.windowH;
         var scaleScene = Rezo.scaleScene;
         var upperScene = Rezo.upperScene;
-        renderer.width = windowW;
-        renderer.height = windowH;
         renderer.resize(windowW, windowH);
 		renderer.view.style.width = windowW + "px";
 		renderer.view.style.height = windowH + "px";

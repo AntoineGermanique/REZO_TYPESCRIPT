@@ -1,6 +1,24 @@
 ////////rezo.js
 "use strict";
-import {} from 'pixi.js'
+import {
+    Menu,
+    Stage,
+    Scene,
+    SceneLink,
+    SceneDraw,
+    ScaleScene,
+    SceneBulle,
+    UpperScene, Bulle,
+    SensorZoomScene,
+    Zoom, resizeFun,
+    Scale, setSortingListener, Save,
+    bubbleArray, Link,
+    ShapeEnum, LocalStorage
+    
+} from './'
+
+
+
 function init() {
     new Rezo();
 }
@@ -11,6 +29,8 @@ export class Rezo {
     static isDriveConnected: boolean = false;
     static stage: Stage;
     static scene: Scene;
+    static sceneSelect: PIXI.Container
+    static sceneMulti: PIXI.Container    
     static sceneLink: SceneLink;
     static scaleScene: ScaleScene;
     static sceneHyper: PIXI.Container;
@@ -30,6 +50,7 @@ export class Rezo {
     static initialRezo: string;
     static autoSaveRezo: string;
     static hasRecoveryAvailable: boolean
+    static menu = new Menu()
     constructor() {
         Rezo.rezoNameDiv.html(Rezo.rezoName);
         if (Rezo.windowH > screen.height) {
@@ -92,17 +113,17 @@ export class Rezo {
         Rezo.scene = scene;
 
         //sceneMulti
-        sceneMulti = new PIXI.Container();
+        Rezo.sceneMulti = new PIXI.Container();
 
         //sceneSelect
-        sceneSelect = new PIXI.Container();
-        sceneSelect.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
+        Rezo.sceneSelect = new PIXI.Container();
+        Rezo.sceneSelect.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
 
         //sceneDraw
 
-        sceneDraw = new SceneDraw();
-        sceneDraw.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
-        Rezo.sceneDraw = sceneDraw;
+        Rezo.sceneDraw = new SceneDraw();
+        Rezo.sceneDraw.hitArea = new PIXI.Rectangle(0, 0, windowW, windowH);
+        Rezo.sceneDraw = Rezo.sceneDraw;
 
         //sceneBulle;
         var sceneBulle = new PIXI.Container();
@@ -121,8 +142,8 @@ export class Rezo {
         stage.addChild(sensorZoomScene)
         stage.addChild(sensorZoomScene2)
         stage.addChild(sensorScaleBulleScene)
-        stage.addChildAt(sceneSelect, 0);
-        stage.addChild(sceneDraw);
+        stage.addChildAt(Rezo.sceneSelect, 0);
+        stage.addChild(Rezo.sceneDraw);
         sensorZoomScene.addChild(upperScene)
 
         upperScene.addChild(scaleScene)
@@ -130,7 +151,7 @@ export class Rezo {
         scene.addChild(sceneHyper)
         scene.addChild(sceneLink)
         scene.addChild(sceneBulle)
-        scene.addChild(sceneMulti)
+        scene.addChild(Rezo.sceneMulti)
 
         stage.sensorScaleBulleScene = sensorScaleBulleScene;
         stage.sensorZoomScene = sensorZoomScene;
@@ -141,10 +162,10 @@ export class Rezo {
         scene.sceneBulle = sceneBulle;
         scene.sceneHyper = sceneHyper;
         scene.sceneLink = sceneLink;
-        scene.sceneMulti = sceneMulti;
+        scene.sceneMulti = Rezo.sceneMulti;
 
 
-        var primaryBulle = new Bulle(bulleX, bulleY, "rezo", color, defaultScale);
+        var primaryBulle = new Bulle(Bulle.bulleX, Bulle.bulleY, "rezo", Bulle.bulleColor, Bulle.defaultScale);
         Rezo.sceneBulle.addChild(primaryBulle);
 
         requestAnimationFrame(animate);
@@ -154,15 +175,15 @@ export class Rezo {
         }
         $("canvas").appendTo("#canvasContainer");
         upperScene.dragScene();
-        scrollZoom();
-        touchZoom();
+        Zoom.scrollZoom();
+        Zoom.touchZoom();
         resizeFun();
-        scaleBulle();
+        Scale.scaleBulle();
         selectIntercative();
-        menu();
+        Menu.menu();
         setSortingListener();
         $("#loading").hide();
-        Rezo.initialRezo = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
+        Rezo.initialRezo = JSON.stringify(Save.nullifyTimeStamp(Save.createJsonRezo(Rezo.rezoName)));
         //$(window).on('beforeunload', function () {
         //    return 'Are you sure you want to leave?';
         //});
@@ -176,12 +197,12 @@ export class Rezo {
         } else {
             Rezo.hasRecoveryAvailable = false;
         }
-        
+
 
         if (Rezo.hasRecoveryAvailable) {
             //this.suggestRecovery();
-        }else{
-            saveLocal("AutoSave");
+        } else {
+            Save.saveLocal("AutoSave");
         }
         window.setInterval(this.checkAutoSave, 30000);
 
@@ -200,10 +221,10 @@ export class Rezo {
         Rezo.sceneBulle.removeChildren();
         Rezo.sceneLink.removeChildren();
 
-        bulleX = Rezo.windowW / 2;
-        bulleY = Rezo.windowH / 2;
-        var bulle=
-        Rezo.sceneBulle.addChild(new Bulle(bulleX, bulleY, "rezo", bulleColor, defaultScale, ShapeEnum.circle));
+        Bulle.bulleX = Rezo.windowW / 2;
+        Bulle.bulleY = Rezo.windowH / 2;
+        var bulle =
+            Rezo.sceneBulle.addChild(new Bulle(Bulle.bulleX, Bulle.bulleY, "rezo", Bulle.bulleColor, Bulle.defaultScale, ShapeEnum.circle));
 
         Rezo.scaleScene.scale.x = 1
         Rezo.scaleScene.scale.y = 1
@@ -214,20 +235,20 @@ export class Rezo {
     }
 
     static checkSaveStatus() {
-        var rezoSaveToCompare = JSON.stringify(nullifyTimeStamp(createJsonRezo(Rezo.rezoName)));
-        if (Rezo.isSaved(rezoSaveToCompare)){
+        var rezoSaveToCompare = JSON.stringify(Save.nullifyTimeStamp(Save.createJsonRezo(Rezo.rezoName)));
+        if (Rezo.isSaved(rezoSaveToCompare)) {
 
         } else {
             if (confirm("le rezo n'est apparement pas sauver, faut-il le faire?")) {
                 if (Rezo.isDriveConnected) {
-                    saveDrive();
+                    Save.saveDrive();
                 } else {
-                    saveLocal();
+                    Save.saveLocal();
                 }
             }
         }
     }
-    static isSaved(rezoSaveToCompare: string): boolean{
+    static isSaved(rezoSaveToCompare: string): boolean {
         if (rezoSaveToCompare == Rezo.initialRezo) {
             return true;
         }
@@ -236,13 +257,13 @@ export class Rezo {
     checkAutoSave() {
         if (!Rezo.hasRecoveryAvailable) {
 
-                saveLocal("AutoSave");
-            
+            Save.saveLocal("AutoSave");
+
         }
     }
     suggestRecovery() {
         if (confirm("un rezo non sauver est r�cup�rable, le restaurer ?")) {
-            localLoad("AutoSave")
+            LocalStorage.localLoad("AutoSave")
             Rezo.hasRecoveryAvailable = false;
         } else {
 

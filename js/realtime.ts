@@ -1,7 +1,8 @@
 ﻿
 declare var utils;
-
-class Realtime {
+import {Rezo, drive, Save} from './'
+import gapi from 'gapi-client'
+export class Realtime {
     realtimeUtils = new utils.RealtimeUtils({ clientId: drive.CLIENT_ID });
 
     init() {
@@ -9,7 +10,7 @@ class Realtime {
     }
 
     startUsingRealtime() {
-        var fileId = (Rezo.rezoId) ? Rezo.rezoId : saveDrive();
+        var fileId = (Rezo.rezoId) ? Rezo.rezoId : Save.saveDrive();
         if (fileId)
             gapi.drive.realtime.load(
                 fileId,

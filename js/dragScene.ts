@@ -1,12 +1,13 @@
 //////////////////dragScene.js
 
 "use strict";
-
-var oldPosition: PIXI.Point;
-var oldX: number;
-var oldY: number;
-interface Data {
-    data: PIXI.interaction.InteractionData;
+export namespace dragScene {
+    export var oldPosition: PIXI.Point;
+    export var oldX: number;
+    export var oldY: number;
+    export interface Data {
+        data: PIXI.interaction.InteractionData;
+    }
 }
 
 //function dragScene() {
@@ -49,8 +50,8 @@ interface Data {
 //			var newPosition = this.data.data.getLocalPosition(this.parent);
 //			scene.position.x = (newPosition.x-oldPosition.x+oldX)/scaleScene.scale.x
 //			scene.position.y = (newPosition.y-oldPosition.y+oldY)/scaleScene.scale.x
-			
-			
+
+
 //			// this.hitArea.x=-this.position.x+windowW/2*this.scale.x
 //			// this.hitArea.y=-this.position.y+windowH/2*this.scale.y
 
@@ -58,11 +59,10 @@ interface Data {
 //			// updateWindowSize()
 //			// this.beginFill(0xFF5500, 0.2)
 //			// this.drawRect(-this.position.x/this.scale.x,-this.position.y/this.scale.y,windowW/this.scale.x,windowH/this.scale.x)
-			
-			
+
+
 //		}
 //    }
 //    upperScene.on("mousemove", drag);
 //    upperScene.on("touchmove",drag)
 //}
-	

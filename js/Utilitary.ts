@@ -1,6 +1,6 @@
 ﻿//Utilitary
 
-class Utilitary {
+export class Utilitary {
     static replaceAll(str: String, find: string, replace: string) {
         return str.replace(new RegExp(find, 'g'), replace);
     }

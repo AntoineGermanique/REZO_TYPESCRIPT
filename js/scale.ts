@@ -1,65 +1,68 @@
 /////////////////////////scale.js
 "use strict";
 
+import { MultiBulleArray, Rezo, Menu, Multi, BulleArray, Bulle } from './'
+
 var scalBullFirstPo
 var tempScaleArray: MultiBulleArray[] = []
-function scaleBulle() {
+export class Scale {
+ static scaleBulle() {
     var selectedBulle = Rezo.selectedBulle;
-    var startZoom = function (data) {
+    var startZoom =  (data: Bulle) =>{
         selectedBulle = Rezo.selectedBulle;
 
-		data.data.originalEvent.preventDefault();
-		this.dragging = true
-		//upperScene.dragging = false;
-        scalBullFirstPo = data.data.getLocalPosition(this.parent)
-		if(multBool){
-			tempScaleArray=multiArray
-		}else{
+        data.data.originalEvent.preventDefault();
+        data.dragging = true
+        //upperScene.dragging = false;
+        scalBullFirstPo = data.data.getLocalPosition(data.parent)
+        if (Menu.multBool) {
+            tempScaleArray = Multi.multiArray
+        } else {
             tempScaleArray.push({
                 bulle: selectedBulle,
-                loc:{
+                loc: {
                     x: selectedBulle.x,
                     y: selectedBulle.y
                 },
                 links: [],
                 linksIndex: []
             })
-		}
+        }
     }
     var sensorScaleBulleScene = Rezo.sensorScaleBulleScene
     sensorScaleBulleScene.on("touchstart", startZoom);
-	var stopZoom=function (data){
-		this.dragging = false;
-		tempScaleArray=[]
+    var stopZoom =  (data: Bulle)=> {
+        data.dragging = false;
+        tempScaleArray = []
     }
     sensorScaleBulleScene.on("touchend", stopZoom);
     sensorScaleBulleScene.on("touchendouside", stopZoom);
-	var zoomTouch = function (data){
-        if (this.dragging &&selectBool==false){
-			
-            var newPosition = data.data.getLocalPosition(this.parent);
-			
-			if(newPosition.y<scalBullFirstPo.y){
-                for (var i = 0; i < tempScaleArray.length; i++){
+    var zoomTouch =  (data: Bulle)=> {
+        if (data.dragging && Menu.selectBool == false) {
+
+            var newPosition = data.data.getLocalPosition(data.parent);
+
+            if (newPosition.y < scalBullFirstPo.y) {
+                for (var i = 0; i < tempScaleArray.length; i++) {
                     tempScaleArray[i].bulle.scale.x *= 1.03;
                     tempScaleArray[i].bulle.scale.y *= 1.03;
-				}
-			}else{
-                for (var i = 0; i < tempScaleArray.length; i++){
+                }
+            } else {
+                for (var i = 0; i < tempScaleArray.length; i++) {
                     tempScaleArray[i].bulle.scale.x /= 1.03;
                     tempScaleArray[i].bulle.scale.y /= 1.03;
-				}
-			}
-			
-		}
+                }
+            }
+
+        }
     }
     sensorScaleBulleScene.on("touchmove", zoomTouch);
-	sensorScaleBulleScene.interactive=false
+    sensorScaleBulleScene.interactive = false
 }
-function scaleBulleScroll(scrollEvent){
-	if(multBool){
-        tempScaleArray = multiArray;
-	}else{
+static scaleBulleScroll(scrollEvent) {
+    if (Menu.multBool) {
+        tempScaleArray = Multi.multiArray;
+    } else {
         tempScaleArray.push({
             bulle: Rezo.selectedBulle,
             loc: {
@@ -69,52 +72,53 @@ function scaleBulleScroll(scrollEvent){
             links: [],
             linksIndex: []
         });
-	}
-	if(scrollEvent.deltaY<0){
-        for (var i = 0; i < tempScaleArray.length; i++){
+    }
+    if (scrollEvent.deltaY < 0) {
+        for (var i = 0; i < tempScaleArray.length; i++) {
             tempScaleArray[i].bulle.scale.x /= 1.1
             tempScaleArray[i].bulle.scale.y /= 1.1
-		}		
-	}else{
-        for (var i = 0; i < tempScaleArray.length; i++){
+        }
+    } else {
+        for (var i = 0; i < tempScaleArray.length; i++) {
             tempScaleArray[i].bulle.scale.x *= 1.1
             tempScaleArray[i].bulle.scale.y *= 1.1
-		}
-	}
-	tempScaleArray=[]
+        }
+    }
+    tempScaleArray = []
 }
-function scaleBullePlus(bulleToScale){
-	bulleToScale.scale.x*=1.5
-	bulleToScale.scale.y*=1.5	
+ static scaleBullePlus(bulleToScale) {
+    bulleToScale.scale.x *= 1.5
+    bulleToScale.scale.y *= 1.5
 }
-function scaleBulleMoins(bulleToScale){
-	bulleToScale.scale.x/=1.5
-	bulleToScale.scale.y/=1.5	
+ static scaleBulleMoins(bulleToScale) {
+    bulleToScale.scale.x /= 1.5
+    bulleToScale.scale.y /= 1.5
 }
 
-function scaleBulleTouch(){
+static scaleBulleTouch() {
     var stage = Rezo.stage;
-    if (scalBool) {
+    if (Menu.scalBool) {
         Rezo.sensorScaleBulleScene.interactive = true;
         Rezo.upperScene.interactive = false;
         Rezo.sensorZoomScene.interactive = false;
-		stage.swapChildren(stage.sensorZoomScene,stage.sensorScaleBulleScene)
-	}else{
+        stage.swapChildren(stage.sensorZoomScene, stage.sensorScaleBulleScene)
+    } else {
         Rezo.sensorScaleBulleScene.interactive = false
         Rezo.upperScene.interactive = true;
         Rezo.sensorZoomScene.interactive = true;
 
 
-		stage.swapChildren(stage.sensorZoomScene,stage.sensorScaleBulleScene)
-	}
+        stage.swapChildren(stage.sensorZoomScene, stage.sensorScaleBulleScene)
+    }
 }
-function multiScaleBullePlus(scaleMultiArray: BulleArray[]) {
-	for(var i=0;i<scaleMultiArray.length;i++){
-		scaleBullePlus(scaleMultiArray[i].bulle)
-	}
+ static multiScaleBullePlus(scaleMultiArray: BulleArray[]) {
+    for (var i = 0; i < scaleMultiArray.length; i++) {
+        Scale.scaleBullePlus(scaleMultiArray[i].bulle)
+    }
 }
-function multiScaleBulleMoins(scaleMultiArray: BulleArray[]) {
-	for(var i=0;i<scaleMultiArray.length;i++){
-		scaleBulleMoins(scaleMultiArray[i].bulle)
-	}
+ static multiScaleBulleMoins(scaleMultiArray: BulleArray[]) {
+    for (var i = 0; i < scaleMultiArray.length; i++) {
+        Scale.scaleBulleMoins(scaleMultiArray[i].bulle)
+    }
+}
 }

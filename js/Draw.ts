@@ -1,5 +1,12 @@
 ﻿//class draw, to draw stuff...
-
+import {
+    Loc,
+    SceneDraw,
+    Path, 
+    Bezier, 
+    Bulle
+    
+} from './'
 
 
 export let sceneDraw: SceneDraw;
@@ -80,7 +87,7 @@ export class Draw extends PIXI.Graphics {
 
     drawPoly() {
         this.clear();
-        this.beginFill(bulleColor);
+        this.beginFill(Bulle.bulleColor);
         this.drawPolygon(this._polyPath);
         this.endFill();
 

@@ -1,7 +1,7 @@
 ﻿//class SceneDraw
+import {TextRecognition,Draw, dragScene, Rezo, Bulle, Loc, ShapeEnum, Menu, Bezier, Ressource} from './'
 
-
-class SceneDraw extends PIXI.Container {
+export class SceneDraw extends PIXI.Container {
     _draw: Draw;
     _drawText: Draw;
     _drawBulle: Draw;
@@ -16,7 +16,7 @@ class SceneDraw extends PIXI.Container {
     }
 
     setListeners():void {
-        var drawStart = (data: Data) => {
+        var drawStart = (data:dragScene.Data) => {
             this._drawDown = true;
             if (SceneDraw.isWriting) {
                 this.drawWriteStart(data);
@@ -29,7 +29,7 @@ class SceneDraw extends PIXI.Container {
         this.on("mousedown", drawStart);
         this.on("touchstart", drawStart);
 
-        var draw = (data: Data) => {
+        var draw = (data: dragScene.Data) => {
             if (this._drawDown) {
                 if (SceneDraw.isWriting) {
                     if (this._drawPause) {
@@ -83,9 +83,9 @@ class SceneDraw extends PIXI.Container {
         this._drawText.setPathNumber(this.correctDrawingPathNumber(this._drawText.getPathNumber(), x, y));
         this._drawText.setPath(this.correctDrawingPath(this._drawText.getPath(), x, y));
         this._drawText.drawLine();
-        var bulleScale = defaultScale / Rezo.scaleScene.scale.x;
+        var bulleScale = Bulle.defaultScale / Rezo.scaleScene.scale.x;
 
-        Rezo.sceneBulle.addChild(new Bulle(x, y, "", bulleColor, bulleScale, ShapeEnum.poly, this._drawBulle, this._drawText))
+        Rezo.sceneBulle.addChild(new Bulle(x, y, "", Bulle.bulleColor, bulleScale, ShapeEnum.poly, this._drawBulle, this._drawText))
         SceneDraw.toggleDrawingWrite();
     }
 
@@ -110,7 +110,7 @@ class SceneDraw extends PIXI.Container {
 
 
 
-    drawWriteStart(data:Data) {
+    drawWriteStart(data:dragScene.Data) {
         var loc: Loc = {
             x: data.data.global.x,
             y: data.data.global.y
@@ -120,7 +120,7 @@ class SceneDraw extends PIXI.Container {
         this.addChild(this._draw)
         this._drawDown = true;
     }
-    drawBulleStart(data: Data) {
+    drawBulleStart(data: dragScene.Data) {
         var loc: Loc = {
             x: data.data.global.x,
             y: data.data.global.y
@@ -130,7 +130,7 @@ class SceneDraw extends PIXI.Container {
         this.addChild(this._draw);
         this._drawDown = true;
     }
-    drawWrite(data: Data) {
+    drawWrite(data: dragScene.Data) {
 
         this._draw.addPathPoint(data.data.global.x, data.data.global.y, data.data.originalEvent.timeStamp);
         this._draw.lineStyle(3, 0x000000, 1);
@@ -138,13 +138,13 @@ class SceneDraw extends PIXI.Container {
         this._draw.lineTo(this._draw.getLastPoint().x, this._draw.getLastPoint().y);
         this._draw.endFill();
     }
-    drawBulle(data: Data) {
+    drawBulle(data: dragScene.Data) {
         this._draw.addPolyPathPoint(data.data.global.x, data.data.global.y, data.data.originalEvent.timeStamp);
         this._draw.drawPoly();
     }
     static toggleDrawingMode() {
-        if (!drawBool) {
-            drawBool = true;
+        if (!Menu.drawBool) {
+            Menu.drawBool = true;
             $("#drawBulle").addClass("buttonOpened");
             $(".drawBTN").addClass("drawBTNFloat");
             $("#drawing").addClass("drawingExpend");
@@ -154,13 +154,13 @@ class SceneDraw extends PIXI.Container {
             $("#supprDrawBulle").removeClass("hiddenButton");
             $("#undoDrawBulle").removeClass("hiddenButton");
             if (!SceneDraw.isWriting) { SceneDraw.toggleDrawingWrite() };
-            setBackground(Ressource.pathImgPen);
+            Menu.setBackground(Ressource.pathImgPen);
             Rezo.sceneDraw.interactive = true;
             Rezo.upperScene.interactive = false;
             Rezo.sensorZoomScene.interactive = false;
             Rezo.stage.swapChildren(Rezo.sensorZoomScene, Rezo.sceneDraw);
         } else {
-            drawBool = false;
+            Menu.drawBool = false;
             $("#drawBulle").removeClass("buttonOpened");
             $(".drawBTN").removeClass("drawBTNFloat");
             $("#drawing").removeClass("drawingExpend");
@@ -172,7 +172,7 @@ class SceneDraw extends PIXI.Container {
             if (SceneDraw.isWriting) { SceneDraw.toggleDrawingWrite() };
             if (SceneDraw.isBulling) { SceneDraw.toggleDrawingBulle() };
 
-            setBackground();
+            Menu.setBackground();
             Rezo.sceneDraw.interactive = false;
             Rezo.upperScene.interactive = true;
             Rezo.sensorZoomScene.interactive = true;

@@ -1,4 +1,4 @@
-function wordwrap(str, int_width, str_break?:any, anycut?:any):string {
+export function wordwrap(str, int_width, str_break?:any, anycut?:any):string {
   //  discuss at: http://phpjs.org/functions/wordwrap/
   // original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
   // improved by: Nick Callen

@@ -1,6 +1,6 @@
 ﻿// class to handel Drive Api request//
 // using the v2 version
-import { Rezo } from './';
+import { Rezo, Utilitary, openLoad, RezoSave } from './';
 import gapi from 'gapi-client'
 
 

@@ -1,6 +1,6 @@
 ﻿import { Rezo, Loc } from './'
 
-class Bezier {
+export class Bezier {
     pathTest: Loc[] = [];
 
     testBezier() {

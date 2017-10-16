@@ -1,4 +1,4 @@
-﻿function afficheGoodNews() {
+﻿export function afficheGoodNews() {
     $("#goodNews").css("visibility", "visible");
     $("#goodNews").css("background-color", "#0F0");
     $("#goodNews").css("top", "0");
@@ -6,7 +6,7 @@
         cacherGoodNews();
     }, 3000);
 }
-function cacherGoodNews() {
+export function cacherGoodNews() {
     $("#goodNews").css("visibility", "");
     $("#goodNews").css("background-color", "");
     $("#goodNews").css("top", "");

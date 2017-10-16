@@ -1,5 +1,5 @@
 ////////////////////////////////link.js
-import { Bulle } from './'
+import { Bulle, bubbleArray, Rezo, SceneBulle, supprFun } from './'
 
 export interface LinkArray {
     link: Link;
@@ -28,7 +28,7 @@ export class Link extends PIXI.Graphics {
 
     saveBubbleLinked() {
         for (var i = 0; i < bubbleArray.length; i++) {
-            if (bubbleArray[i].bulle == lastBulleSelected) {
+            if (bubbleArray[i].bulle == Bulle.lastBulleSelected) {
                 bubbleArray[i].links.push(this);
                 bubbleArray[i].linksIndex.push(this.parent.getChildIndex(this));
             }
@@ -159,8 +159,8 @@ export class Link extends PIXI.Graphics {
                 console.log("aller encore un ptt effort");
             } else {
                 Link.bubbleLinked.push(selectedBulle)
-                var bulleX0 = Number(lastBulleSelected.x);
-                var bulleY0 = Number(lastBulleSelected.y);
+                var bulleX0 = Number(Bulle.lastBulleSelected.x);
+                var bulleY0 = Number(Bulle.lastBulleSelected.y);
                 var bulleX1 = Number(selectedBulle.x);
                 var bulleY1 = Number(selectedBulle.y);
                 var link = new Link();
@@ -179,9 +179,9 @@ export class Link extends PIXI.Graphics {
                 var linkArray = Link.linkArray;
                 linkArray.push({
                     link: link,
-                    bulle1: lastBulleSelected,
+                    bulle1: Bulle.lastBulleSelected,
                     bulle2: selectedBulle,
-                    indexBulle1: Rezo.sceneBulle.getChildIndex(lastBulleSelected),
+                    indexBulle1: Rezo.sceneBulle.getChildIndex(Bulle.lastBulleSelected),
                     indexBulle2: Rezo.sceneBulle.getChildIndex(selectedBulle)
                 });
 

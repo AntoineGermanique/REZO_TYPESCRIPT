@@ -1,5 +1,5 @@
 ﻿//ScaleScene.ts :Handle scale of scene, contains scene.
-
-class ScaleScene extends PIXI.Graphics {
+import {Scene} from './'
+export class ScaleScene extends PIXI.Graphics {
     scene: Scene;
 }
