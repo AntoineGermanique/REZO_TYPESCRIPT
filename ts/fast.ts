@@ -9,6 +9,9 @@ import {
     Select,
     Bulle
 } from './'
+import * as PIXI from 'pixi.js'
+
+
 export function fastFun() {
     if (!Menu.fastBool) {
         if (Menu.editBool) {

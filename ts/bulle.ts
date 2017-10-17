@@ -1,18 +1,19 @@
 /////////////bulle.js
 "use strict";
 import {
-    Rezo,
     TextRezo,
+    Rezo,
     TextRezoType,
     array,
     Draw,
     Menu,
     Multi,
     wordwrap,
-    Link, 
-    Motion, 
+    Link,
+    Motion,
     bulleSize
 } from './'
+import * as PIXI from 'pixi.js'
 
 
 var dataFake;
@@ -24,13 +25,13 @@ var stopDragBulle: (data?: any) => void;
 
 
 export class Bulle extends PIXI.Graphics {
-    static bulleX = Rezo.windowW / 2;
-    static bulleY = Rezo.windowH / 2;
+    static bulleX// = Rezo.windowW / 2;
+    static bulleY// = Rezo.windowH / 2;
     static defaultScale = 1
     static bulleDefaultSize = 50
     static lastBulleSelected: Bulle;
     static bulleColor: number = parseInt("#FF00CC".replace(/^#/, ''), 16);
-    static bubbleTemp    
+    static bubbleTemp
     data: any;
     lineAlpha: number;
     shape: Shape;
@@ -41,6 +42,8 @@ export class Bulle extends PIXI.Graphics {
 
     constructor(X: number, Y: number, bulleText: string, color?: number, scale?: number, shapeEnum?: ShapeEnum, bulleDraw?: Draw, textDraw?: Draw) {
         super();
+        Bulle.bulleX = Rezo.windowW / 2;
+        Bulle.bulleY = Rezo.windowH / 2;
         //init and set Bulle params
         if (shapeEnum) {
             if (shapeEnum === ShapeEnum.circle as ShapeEnum) {
@@ -146,7 +149,7 @@ export class Bulle extends PIXI.Graphics {
         this.dragBulle();
         array(this);
         text.autoSizeText(Bulle.bulleDefaultSize);
-        var selectedBulle = Rezo.selectedBulle;
+        var selectedBulle = Rezo ? Rezo.selectedBulle : undefined;
         if (!selectedBulle) {
             Rezo.selectedBulle = this;
         } else if (Menu.multBool) {

@@ -17,12 +17,13 @@ import {
     Select
     
 } from './'
+import * as PIXI from 'pixi.js'
+import * as $ from 'jquery'
 
 
-
-function init() {
-    new Rezo();
-}
+(()=>{
+    window.addEventListener('load', () => new Rezo(), false);    
+})()
 
 export class Rezo {
     static load: HTMLElement = <HTMLElement>document.getElementById("loading");
@@ -166,8 +167,8 @@ export class Rezo {
         scene.sceneMulti = Rezo.sceneMulti;
 
 
-        var primaryBulle = new Bulle(Bulle.bulleX, Bulle.bulleY, "rezo", Bulle.bulleColor, Bulle.defaultScale);
-        Rezo.sceneBulle.addChild(primaryBulle);
+        // var primaryBulle = new Bulle(Bulle.bulleX, Bulle.bulleY, "rezo", Bulle.bulleColor, Bulle.defaultScale);
+        // Rezo.sceneBulle.addChild(primaryBulle);
 
         requestAnimationFrame(animate);
         function animate() {

@@ -1,5 +1,8 @@
 ////////////filter.js
 import {Rezo} from './'
+import * as PIXI from 'pixi.js'
+
+
 var blurFilter = new PIXI.filters.BlurFilter()
 blurFilter.blur=5;
 function invertFilterFun(){

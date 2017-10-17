@@ -1,5 +1,6 @@
 /////////////bulleSize.js
 "use strict";
+import * as PIXI from 'pixi.js'
 
 
 export function bulleSize(bulleToSize: PIXI.Graphics): number {

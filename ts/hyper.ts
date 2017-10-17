@@ -1,5 +1,8 @@
 //////////////////////hyper.js
 import { Rezo, TextRezo, TextRezoType, wordwrap, hyperInteractiveFun } from './'
+import * as PIXI from 'pixi.js'
+
+
 export class Hyper {
     hyper
     hyperSize = 200

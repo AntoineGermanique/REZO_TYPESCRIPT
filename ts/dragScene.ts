@@ -1,4 +1,5 @@
 //////////////////dragScene.js
+import * as PIXI from 'pixi.js'
 
 "use strict";
 export namespace dragScene {

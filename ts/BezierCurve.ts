@@ -1,4 +1,5 @@
 ﻿import { Rezo, Loc } from './'
+import * as PIXI from 'pixi.js'
 
 export class Bezier {
     pathTest: Loc[] = [];

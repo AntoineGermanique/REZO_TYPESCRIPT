@@ -7,6 +7,7 @@ import {
     Bulle
     
 } from './'
+import * as PIXI from 'pixi.js'
 
 
 export let sceneDraw: SceneDraw;
