@@ -1,14 +1,14 @@
 ///////////////////////////fast.js
 var sensorFast
+import { Rezo } from './rezo'
 import {
-    Rezo,
     Link,
     Menu, 
     Ressource,
     updateWindowSize,
     Select,
     Bulle
-} from './'
+} from './index'
 import * as PIXI from 'pixi.js'
 
 

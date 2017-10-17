@@ -1,5 +1,7 @@
 //////////resizeFun.js
-import {Rezo} from './'
+import { Rezo } from './rezo'
+import * as $ from 'jquery'
+
 export function resizeFun(){
 	$( window ).resize(function() {
         updateWindowSize();

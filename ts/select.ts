@@ -1,10 +1,10 @@
 ﻿//////////////////select.js
 "use strict";
-import { Rezo, updateWindowSize, Menu, Multi, Bulle, bulleSize } from './'
+import { Rezo } from './rezo'
+
+import {  updateWindowSize, Menu, Multi, Bulle, bulleSize } from './index'
 export class Select {
 	static rectTestGraph: PIXI.Graphics = new PIXI.Graphics();
-	static sceneMulti: PIXI.Container;
-	static sceneSelect: PIXI.Container;
 	path = [];
 	color: number;
 	static drawnGraphics = new PIXI.Graphics();
@@ -23,9 +23,9 @@ export class Select {
 	}
 
 	static selectIntercative() {
-		Select.sceneSelect.addChild(Select.drawnGraphics);
-		this.sceneMulti.addChild(Select.detectPathGraphics);
-		this.sceneMulti.addChild(this.rectTestGraph);
+		Rezo.sceneSelect.addChild(Select.drawnGraphics);
+		Rezo.sceneMulti.addChild(Select.detectPathGraphics);
+		Rezo.sceneMulti.addChild(this.rectTestGraph);
 		var selectStart = function () {
 			console.log("select")
 			updateWindowSize();
@@ -34,8 +34,8 @@ export class Select {
 			this.path = [];
 			this.color = 0x5D0776;
 		}
-		Select.sceneSelect.on("mousedown", selectStart);
-		Select.sceneSelect.on("touchstart", selectStart);
+		Rezo.sceneSelect.on("mousedown", selectStart);
+		Rezo.sceneSelect.on("touchstart", selectStart);
 
 		var select = function (data) {
 			if (!this.selectDown) return;
@@ -49,8 +49,8 @@ export class Select {
 
 
 		}
-		Select.sceneSelect.on("mousemove", select);
-		Select.sceneSelect.on("touchmove", select);
+		Rezo.sceneSelect.on("mousemove", select);
+		Rezo.sceneSelect.on("touchmove", select);
 
 		var selectStop = function () {
 			this.selectDown = false;
@@ -62,10 +62,10 @@ export class Select {
 			this.rectCollisionTest(Select.drawnGraphics, this.path);
 			this.path = [];
 		}
-		Select.sceneSelect.on("mouseup", selectStop);
-		Select.sceneSelect.on("mouseupoutside", selectStop);
-		Select.sceneSelect.on("touchend", selectStop);
-		Select.sceneSelect.on("touchendoutside", selectStop);
+		Rezo.sceneSelect.on("mouseup", selectStop);
+		Rezo.sceneSelect.on("mouseupoutside", selectStop);
+		Rezo.sceneSelect.on("touchend", selectStop);
+		Rezo.sceneSelect.on("touchendoutside", selectStop);
 	}
 static select() {
 	if (Menu.selectBool) {
@@ -73,13 +73,13 @@ static select() {
 		Rezo.sensorZoomScene.interactive = false;
 
 		Rezo.upperScene.interactive = false
-		Select.sceneSelect.interactive = true
+		Rezo.sceneSelect.interactive = true
 	} else {
 		console.log("it's off...")
 		Rezo.upperScene.interactive = true
 		Rezo.sensorZoomScene.interactive = true;
 
-		Select.sceneSelect.interactive = false
+		Rezo.sceneSelect.interactive = false
 		Select.drawnGraphics.clear()
 	}
 }

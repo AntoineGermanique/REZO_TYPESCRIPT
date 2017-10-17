@@ -5,16 +5,16 @@ var sceneBullePo = []
 var sceneLinkPo = []
 var scenePo = []
 var scalePo = []
+import { Rezo } from './rezo'
 
 import {
     Ressource,
-    Rezo,
     LocalStorage,
     drive, Link,
     bubbleArray,
     BulleArray,
     Utilitary
-} from './'
+} from './index'
 
 export interface RezoSave {
     bullesArray: BulleSave[];

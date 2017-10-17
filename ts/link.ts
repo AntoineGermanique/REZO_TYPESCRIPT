@@ -1,5 +1,6 @@
 ////////////////////////////////link.js
-import { Bulle, bubbleArray, Rezo, SceneBulle, supprFun } from './'
+import { Rezo } from './rezo'
+import { Bulle, bubbleArray, SceneBulle, supprFun } from './index'
 import * as PIXI from 'pixi.js'
 
 export interface LinkArray {

@@ -6,7 +6,7 @@ import {
     Bezier, 
     Bulle
     
-} from './'
+} from './index'
 import * as PIXI from 'pixi.js'
 
 

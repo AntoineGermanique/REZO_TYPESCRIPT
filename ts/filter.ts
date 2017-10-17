@@ -1,5 +1,5 @@
 ////////////filter.js
-import {Rezo} from './'
+import { Rezo } from './rezo'
 import * as PIXI from 'pixi.js'
 
 

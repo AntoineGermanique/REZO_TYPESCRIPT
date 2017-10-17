@@ -1,5 +1,6 @@
 ////////multi.js
-import {BulleArray, Loc, LinkArray, Menu, Rezo, Bulle, Link, Select} from './'
+import { Rezo } from './rezo'
+import {BulleArray, Loc, LinkArray, Menu, Bulle, Link, Select} from './index'
 
 var multiLinkArray: LinkArray[] = [];
 var multiExist = false;

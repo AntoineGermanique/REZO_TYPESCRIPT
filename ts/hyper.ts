@@ -1,5 +1,6 @@
 //////////////////////hyper.js
-import { Rezo, TextRezo, TextRezoType, wordwrap, hyperInteractiveFun } from './'
+import { Rezo } from './rezo'
+import { TextRezo, TextRezoType, wordwrap, hyperInteractiveFun } from './index'
 import * as PIXI from 'pixi.js'
 
 

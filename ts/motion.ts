@@ -1,5 +1,6 @@
 /////////motion.js
-import { Link, Bulle, bubbleArray, Rezo } from './'
+import { Rezo } from './rezo'
+import { Link, Bulle, bubbleArray } from './index'
 
 
 var selectedLinks: Link[];

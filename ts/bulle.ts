@@ -1,8 +1,8 @@
 /////////////bulle.js
 "use strict";
+import { Rezo } from './rezo'
 import {
     TextRezo,
-    Rezo,
     TextRezoType,
     array,
     Draw,
@@ -12,7 +12,7 @@ import {
     Link,
     Motion,
     bulleSize
-} from './'
+} from './index'
 import * as PIXI from 'pixi.js'
 
 

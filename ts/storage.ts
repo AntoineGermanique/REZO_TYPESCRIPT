@@ -1,6 +1,6 @@
 /////////storage.js
 "use strict";
-import { Rezo } from './'
+import { Rezo } from './rezo'
 var arrayBulle = []
 var arrayBulleX = []
 var arrayBulleY = []

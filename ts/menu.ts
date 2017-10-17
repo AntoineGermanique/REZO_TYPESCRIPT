@@ -1,6 +1,7 @@
 /////////////menu.js
+import { Rezo } from './rezo'
+import * as $ from 'jquery'
 import {
-    Rezo,
     Link,
     Hyper,
     Bulle,
@@ -17,7 +18,7 @@ import {
     Multi,
     bubbleArray, Realtime,
     Select
-} from './'
+} from './index'
 
 "use strict"
 

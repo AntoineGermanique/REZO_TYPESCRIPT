@@ -1,5 +1,7 @@
 ﻿//////////////////////////text.js
-import { Loc, Draw, Menu, Hyper, Rezo, wordwrap, bulleSize } from './'
+import { Rezo } from './rezo'
+
+import { Loc, Draw, Menu, Hyper, wordwrap, bulleSize } from './index'
 
 export enum TextRezoType {
     codex, type

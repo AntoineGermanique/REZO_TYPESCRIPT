@@ -16,7 +16,7 @@ import {
     ShapeEnum, LocalStorage,
     Select
     
-} from './'
+} from './index'
 import * as PIXI from 'pixi.js'
 import * as $ from 'jquery'
 
@@ -167,8 +167,8 @@ export class Rezo {
         scene.sceneMulti = Rezo.sceneMulti;
 
 
-        // var primaryBulle = new Bulle(Bulle.bulleX, Bulle.bulleY, "rezo", Bulle.bulleColor, Bulle.defaultScale);
-        // Rezo.sceneBulle.addChild(primaryBulle);
+         var primaryBulle = new Bulle(Bulle.bulleX, Bulle.bulleY, "rezo", Bulle.bulleColor, Bulle.defaultScale);
+         Rezo.sceneBulle.addChild(primaryBulle);
 
         requestAnimationFrame(animate);
         function animate() {

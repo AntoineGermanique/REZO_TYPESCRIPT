@@ -1,6 +1,6 @@
 ///////////////////////////////////whipe.js
 
-import { Rezo } from './'
+import { Rezo } from './rezo'
 
 export function whipe() {
 	Rezo.sceneLink.removeChildren()

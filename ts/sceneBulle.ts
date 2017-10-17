@@ -1,5 +1,7 @@
 ﻿//sceneBulle.ts Containing Bulles
-import {bubbleArray, ShapeEnum, Rezo} from './'
+import { Rezo } from './rezo'
+
+import {bubbleArray, ShapeEnum} from './index'
 export class SceneBulle extends PIXI.Container {
     static bitmapDraw() {
         var bulles = bubbleArray;

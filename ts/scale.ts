@@ -1,7 +1,8 @@
 /////////////////////////scale.js
 "use strict";
+import { Rezo } from './rezo'
 
-import { MultiBulleArray, Rezo, Menu, Multi, BulleArray, Bulle } from './'
+import { MultiBulleArray, Menu, Multi, BulleArray, Bulle } from './index'
 
 var scalBullFirstPo
 var tempScaleArray: MultiBulleArray[] = []

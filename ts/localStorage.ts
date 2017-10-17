@@ -1,13 +1,14 @@
-﻿import {
+﻿import { Rezo } from './rezo'
+
+import {
     RezoSave,
-    Rezo,
     afficheGoodNews,
     Menu,
     whipe,
     Save,
     Ressource,
     Load
-} from './'
+} from './index'
 
 export class LocalStorage {
     static localSave(array: RezoSave, name: string) {

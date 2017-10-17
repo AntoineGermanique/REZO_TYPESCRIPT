@@ -1,6 +1,6 @@
 ///////interactiveHyper.js
 
-import { Hyper } from './'
+import { Hyper } from './index'
 
 export function hyperInteractiveFun() {
 	var dragStart = function (data) {

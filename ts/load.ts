@@ -1,5 +1,6 @@
 /////////////////////load.js
-import { Rezo, RezoSave, bubbleArray, BulleSave, ShapeEnum, Bulle, Draw, Link, Save } from './'
+import { Rezo } from './rezo'
+import {  RezoSave, bubbleArray, BulleSave, ShapeEnum, Bulle, Draw, Link, Save } from './index'
 
 export class Load {
     static load2(rezoSave: RezoSave, title: string) {

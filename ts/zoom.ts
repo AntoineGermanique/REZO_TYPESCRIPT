@@ -1,8 +1,9 @@
 /////////////////////zoom.js
 "use strict"
+import { Rezo } from './rezo'
 
-import { Rezo, Menu, Scale } from './'
-
+import {  Menu, Scale } from './index'
+import * as $ from 'jquery'
 interface JQueryEventObject {
 	deltaY: number;
 }

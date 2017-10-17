@@ -1,6 +1,8 @@
 ////////////////////////suppr.js
 "use strict"
-import {Link, Rezo, bubbleArray} from './'
+import { Rezo } from './rezo'
+
+import {Link, bubbleArray} from './index'
 
 
 var supprLinkArray: Link[] = [];

@@ -1,22 +1,23 @@
 /////////////open.js
 "use strict"
-
-import {DriveAPI, Load, Utilitary, Ressource, Rezo, Menu, LocalStorage} from './'
+import { Rezo } from './rezo'
+import * as $ from 'jquery'
+import { DriveAPI, Load, Utilitary, Ressource, Menu, LocalStorage } from './index'
 
 var isTitreInvalid
 var titre;
 export var drive: DriveAPI = new DriveAPI();
-var counter :number=0;
+var counter: number = 0;
 
 
 
-export function openLoad(data){
+export function openLoad(data) {
     if (data) {
         $("#openContainer").append(data);
     }
     addListenersDrive();
 
-    
+
 }
 
 function addListenersDrive() {
@@ -74,12 +75,12 @@ function titreIsValid(newTitle) {
     var iChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
 
     for (var i = 0; i < newTitle.length; i++) {
-		if (iChars.indexOf(newTitle.charAt(i)) != -1) {
-			return true
+        if (iChars.indexOf(newTitle.charAt(i)) != -1) {
+            return true
         }
     }
-	return false
- }
+    return false
+}
 //function postModify(newTitle,oldTitle,goodMenu){
 //	$('#loading').css("display","block");
 //	$.post("php/modif.php",{"newTitle":newTitle,"oldTitle":oldTitle},function(data){
@@ -87,12 +88,12 @@ function titreIsValid(newTitle) {
 //			$(goodMenu).text(newTitle);
 //			$(goodMenu).attr("id",newTitle);
 //			$(goodMenu).parent().attr("id",newTitle);
-			
+
 //		})
 //}
 
 enum Sort {
-    nameUp,nameDown,dateUp,dateDown
+    nameUp, nameDown, dateUp, dateDown
 }
 
 export function setSortingListener() {
@@ -139,7 +140,7 @@ function sort(sort: Sort) {
 
 function sortUpDate(array: Array<HTMLElement>): Array<HTMLElement> {
     console.log("sortUpDate");
-    array.sort((b, a):number => {
+    array.sort((b, a): number => {
         if ($(a).attr("attr") < $(b).attr("attr"))
             return 1;
         if ($(a).attr("attr") > $(b).attr("attr"))
@@ -149,7 +150,7 @@ function sortUpDate(array: Array<HTMLElement>): Array<HTMLElement> {
     return array;
 }
 
-function sortDownDate (array: Array<HTMLElement>): Array<HTMLElement> {
+function sortDownDate(array: Array<HTMLElement>): Array<HTMLElement> {
     console.log("sortDownDate");
 
     array.sort((a, b): number => {

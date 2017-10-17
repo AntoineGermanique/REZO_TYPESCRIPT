@@ -1,5 +1,7 @@
 ﻿//class SceneDraw
-import {TextRecognition,Draw, dragScene, Rezo, Bulle, Loc, ShapeEnum, Menu, Bezier, Ressource} from './'
+import { Rezo } from './rezo'
+import * as $ from 'jquery' 
+import {TextRecognition,Draw, dragScene, Bulle, Loc, ShapeEnum, Menu, Bezier, Ressource} from './index'
 
 export class SceneDraw extends PIXI.Container {
     _draw: Draw;

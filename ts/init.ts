@@ -1,4 +1,4 @@
-import { Rezo } from './'
+import { Rezo } from './rezo'
 
 (()=>{
     window.addEventListener('load', () => new Rezo(), false);    

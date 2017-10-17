@@ -1,4 +1,5 @@
-﻿import { Rezo, Loc } from './'
+﻿import { Loc } from './index'
+import { Rezo } from './rezo'
 import * as PIXI from 'pixi.js'
 
 export class Bezier {

@@ -1,6 +1,6 @@
 ﻿declare var CryptoJS;
 
-import {TextRezo, Ressource} from './'
+import {TextRezo, Ressource} from './index'
 
 interface TextRecognitionInputs {
     textParameter: { language: string, textInputMode: string },

@@ -1,4 +1,4 @@
-export * from './rezo';
+// export * from './rezo';
 export * from './link';
 export * from './save';
 export * from './text';

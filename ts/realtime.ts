@@ -1,6 +1,7 @@
 ﻿
 declare var utils;
-import { Rezo, drive, Save } from './'
+import { Rezo } from './rezo'
+import { drive, Save } from './index'
 import gapi from 'gapi-client'
 export class Realtime {
     realtimeUtils = new utils.RealtimeUtils({ clientId: drive.CLIENT_ID });

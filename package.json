@@ -26,6 +26,8 @@
   "dependencies": {
     "@types/gapi": "0.0.35",
     "@types/gapi.auth2": "0.0.45",
+    "@types/gapi.client": "^1.0.0",
+    "@types/gapi.drive": "0.0.1",
     "file": "^0.2.2",
     "gapi-client": "0.0.3",
     "html-loader": "^0.5.1",

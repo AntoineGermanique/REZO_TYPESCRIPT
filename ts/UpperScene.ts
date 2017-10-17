@@ -2,7 +2,7 @@
 // import { Graphics } from 'pixi.js'
 
 
-import {ScaleScene, dragScene} from './'
+import {ScaleScene, dragScene} from './index'
 
 export class UpperScene extends PIXI.Graphics {
     scaleScene: ScaleScene;

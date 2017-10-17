@@ -1,5 +1,5 @@
 ///////////////////////////////////////array.js
-import { Bulle, Link } from './'
+import { Bulle, Link } from './index'
 "use strict";
 
 export interface BulleArray {
