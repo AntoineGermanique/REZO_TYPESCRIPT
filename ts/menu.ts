@@ -3,6 +3,7 @@ import { Rezo } from './rezo'
 import * as $ from 'jquery'
 import {
     Link,
+    LocalStorage,
     Hyper,
     Bulle,
     updateWindowSize,
@@ -152,7 +153,7 @@ export class Menu {
             if (Menu.openActif == false) {
                 Rezo.checkSaveStatus();
                 Menu.isLocalHome = true;
-                var arrayLocal = new localStorage.localOpen();
+                var arrayLocal = LocalStorage.localOpen();
                 $("#open").css("display", "block")
                 Menu.openActif = true
                 setSortingListener()
@@ -162,7 +163,7 @@ export class Menu {
                 $("img#closeOpen").off();
                 $(".open").remove();
                 Menu.openActif = false;
-                new localStorage.localClose();
+                LocalStorage.localClose();
                 Menu.isLocalHome = false;
 
             }

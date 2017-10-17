@@ -1,5 +1,5 @@
 ﻿import { Rezo } from './rezo'
-
+import * as $ from 'jquery'
 import {
     RezoSave,
     afficheGoodNews,
@@ -43,9 +43,9 @@ export class LocalStorage {
 
             $("#localHome").trigger("click");
         });
-        $(".openSpan").click(() => {
+        $(".openSpan").click((event) => {
             whipe();
-            LocalStorage.localLoad($(this).attr("id"));
+            LocalStorage.localLoad($(event.target).attr("id"));
             $("#localHome").trigger("click");
         });
         $("img#plusOpen").click(Rezo.newRezo);
@@ -73,7 +73,7 @@ export class LocalStorage {
         });
 
     }
-    localClose() {
+    static localClose() {
         $("#driveOpen").show();
 
     }
@@ -92,8 +92,13 @@ export class LocalStorage {
 
     static getLocalTimeStamp(key: string): number {
         var rezoSaveString: string = localStorage.getItem(key);
-        var rezoSaveObj: RezoSave = JSON.parse(rezoSaveString);
-        return rezoSaveObj.timeStamp;
+        try{
+            var rezoSaveObj: RezoSave = JSON.parse(rezoSaveString);
+            return rezoSaveObj.timeStamp;
+        }catch (e){
+            return null;
+        }
+
     }
     //# sourceMappingURL=localStorage.js.map
 }

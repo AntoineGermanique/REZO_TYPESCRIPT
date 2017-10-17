@@ -10,6 +10,7 @@ import {
     Bulle
 } from './index'
 import * as PIXI from 'pixi.js'
+import * as $ from 'jquery'
 
 
 export function fastFun() {

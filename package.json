@@ -7,6 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
+    "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,7 +30,6 @@
     "@types/gapi.client": "^1.0.0",
     "@types/gapi.drive": "0.0.1",
     "file": "^0.2.2",
-    "gapi-client": "0.0.3",
     "html-loader": "^0.5.1",
     "jquery": "^3.2.1",
     "pixi.js": "^4.5.6",

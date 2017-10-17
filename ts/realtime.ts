@@ -2,7 +2,7 @@
 declare var utils;
 import { Rezo } from './rezo'
 import { drive, Save } from './index'
-import gapi from 'gapi-client'
+declare const gapi 
 export class Realtime {
     realtimeUtils = new utils.RealtimeUtils({ clientId: drive.CLIENT_ID });
 

@@ -1,4 +1,5 @@
-﻿export function afficheGoodNews() {
+﻿import * as $ from 'jquery'
+export function afficheGoodNews() {
     $("#goodNews").css("visibility", "visible");
     $("#goodNews").css("background-color", "#0F0");
     $("#goodNews").css("top", "0");

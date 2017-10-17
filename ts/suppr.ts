@@ -1,7 +1,7 @@
 ////////////////////////suppr.js
 "use strict"
 import { Rezo } from './rezo'
-
+import * as $ from 'jquery'
 import {Link, bubbleArray} from './index'
 
 

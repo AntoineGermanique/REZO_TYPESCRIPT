@@ -1,9 +1,10 @@
 ﻿// class to handel Drive Api request//
 // using the v2 version
 import { Rezo } from './rezo'
-import {  Utilitary, openLoad, RezoSave } from './index';
-import gapi from 'gapi-client'
-
+import { Utilitary, openLoad, RezoSave } from './index';
+// import {gapi} from 'gapi.client'
+// import gapi from 'gapi-client'
+declare const gapi 
 
 //object of the js drive api didn't found tpescript def, but should exist
 // declare namespace gapi.client {

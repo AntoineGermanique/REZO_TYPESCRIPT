@@ -1,4 +1,5 @@
 /////////////////////load.js
+import * as $ from 'jquery'
 import { Rezo } from './rezo'
 import {  RezoSave, bubbleArray, BulleSave, ShapeEnum, Bulle, Draw, Link, Save } from './index'
 

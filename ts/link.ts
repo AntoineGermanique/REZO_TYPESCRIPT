@@ -2,6 +2,7 @@
 import { Rezo } from './rezo'
 import { Bulle, bubbleArray, SceneBulle, supprFun } from './index'
 import * as PIXI from 'pixi.js'
+import * as $ from 'jquery'
 
 export interface LinkArray {
     link: Link;

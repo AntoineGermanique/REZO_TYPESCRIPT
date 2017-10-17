@@ -27,9 +27,11 @@ export class Zoom {
 		var elem = $('#canvasContainer')
 		$(elem).on('mousewheel', function (event) {
 			if (Menu.scalBool) {
-				Scale.scaleBulleScroll(event)
+				Scale.scaleBulleScroll(event.originalEvent)
 			} else {
-				if ((<any>event).deltaY < 0) {
+				let wheelEvent: WheelEvent= event.originalEvent as WheelEvent
+				console.log("scroll event")
+				if (wheelEvent.deltaY < 0) {
 					scaleScene.scale.x /= 1.1
 					scaleScene.scale.y /= 1.1
 

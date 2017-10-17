@@ -1,20 +1,20 @@
 ﻿//////////////////select.js
 "use strict";
 import { Rezo } from './rezo'
-
+import * as $ from 'jquery'
 import {  updateWindowSize, Menu, Multi, Bulle, bulleSize } from './index'
 export class Select {
 	static rectTestGraph: PIXI.Graphics = new PIXI.Graphics();
-	path = [];
-	color: number;
+	static path = [];
+	static color: number;
 	static drawnGraphics = new PIXI.Graphics();
 	static detectPathGraphics = new PIXI.Graphics();
-	rectTestArray = [];
+	static rectTestArray = [];
 	static selectDown = false;
-	clockwiseSelect = true;
-	counterClockwiseSelect = false;
-	diffScaleX
-	diffScaleY
+	static clockwiseSelect = true;
+	static counterClockwiseSelect = false;
+	static diffScaleX
+	static diffScaleY
 
 	constructor() {
 		Select.drawnGraphics.alpha = 0.2;
@@ -25,26 +25,26 @@ export class Select {
 	static selectIntercative() {
 		Rezo.sceneSelect.addChild(Select.drawnGraphics);
 		Rezo.sceneMulti.addChild(Select.detectPathGraphics);
-		Rezo.sceneMulti.addChild(this.rectTestGraph);
+		Rezo.sceneMulti.addChild(Select.rectTestGraph);
 		var selectStart = function () {
 			console.log("select")
 			updateWindowSize();
 			Select.drawnGraphics.clear();
-			this.selectDown = true;
-			this.path = [];
-			this.color = 0x5D0776;
+			Select.selectDown = true;
+			Select.path = [];
+			Select.color = 0x5D0776;
 		}
 		Rezo.sceneSelect.on("mousedown", selectStart);
 		Rezo.sceneSelect.on("touchstart", selectStart);
 
 		var select = function (data) {
-			if (!this.selectDown) return;
+			if (!Select.selectDown) return;
 
-			this.path.push(data.data.global.x);
-			this.path.push(data.data.global.y);
+			Select.path.push(data.data.global.x);
+			Select.path.push(data.data.global.y);
 			Select.drawnGraphics.clear()
 			Select.drawnGraphics.lineStyle(5, 0x000000, 1)
-			Select.drawnGraphics.drawPolygon(this.path)
+			Select.drawnGraphics.drawPolygon(Select.path)
 			Select.drawnGraphics.endFill();
 
 
@@ -53,14 +53,14 @@ export class Select {
 		Rezo.sceneSelect.on("touchmove", select);
 
 		var selectStop = function () {
-			this.selectDown = false;
-			Select.drawnGraphics.beginFill(this.color);
-			Select.drawnGraphics.drawPolygon(this.path);
+			Select.selectDown = false;
+			Select.drawnGraphics.beginFill(Select.color);
+			Select.drawnGraphics.drawPolygon(Select.path);
 			Select.drawnGraphics.endFill();
-			Select.drawnGraphics.hitArea = new PIXI.Polygon(this.path);
+			Select.drawnGraphics.hitArea = new PIXI.Polygon(Select.path);
 			Select.drawnGraphics.interactive = true;
-			this.rectCollisionTest(Select.drawnGraphics, this.path);
-			this.path = [];
+			Select.rectCollisionTest(Select.drawnGraphics, Select.path);
+			Select.path = [];
 		}
 		Rezo.sceneSelect.on("mouseup", selectStop);
 		Rezo.sceneSelect.on("mouseupoutside", selectStop);
@@ -83,25 +83,25 @@ static select() {
 		Select.drawnGraphics.clear()
 	}
 }
-rectCollisionTest(rectTest, currentPath) {
+static rectCollisionTest(rectTest, currentPath) {
 	var windowH = Rezo.windowH;
 	var windowW = Rezo.windowW;
 	var scaleScene = Rezo.scaleScene;
-	this.diffScaleX = ((windowW - windowW * scaleScene.scale.x) / 2) / scaleScene.scale.x
-	this.diffScaleY = ((windowH - windowH * scaleScene.scale.x) / 2) / scaleScene.scale.x
+	Select.diffScaleX = ((windowW - windowW * scaleScene.scale.x) / 2) / scaleScene.scale.x
+	Select.diffScaleY = ((windowH - windowH * scaleScene.scale.x) / 2) / scaleScene.scale.x
 	console.log(scaleScene.scale.x + "<----scaleScene.scale.x")
-	console.log(this.diffScaleX + "<----this.diffScaleX")
+	console.log(Select.diffScaleX + "<----Select.diffScaleX")
 	console.log(rectTest)
 	var rectZoneTest = rectTest.getBounds()
 	var allBulle = scaleScene.scene.sceneBulle.children;
-	var x1 = rectZoneTest.x / scaleScene.scale.x - scaleScene.scene.x - this.diffScaleX;
+	var x1 = rectZoneTest.x / scaleScene.scale.x - scaleScene.scene.x - Select.diffScaleX;
 	var x2 = x1 + rectZoneTest.width / scaleScene.scale.x;
-	var y1 = rectZoneTest.y / scaleScene.scale.x - scaleScene.scene.y - this.diffScaleY;
+	var y1 = rectZoneTest.y / scaleScene.scale.x - scaleScene.scene.y - Select.diffScaleY;
 	var y2 = y1 + rectZoneTest.height / scaleScene.scale.x;
 
-	// this.rectTestGraph.clear()
-	// this.rectTestGraph.beginFill(0x373173,0.3)
-	// this.rectTestGraph.drawPolygon(x1,y1,x2,y1,x2,y2,x1,y2)
+	// Select.rectTestGraph.clear()
+	// Select.rectTestGraph.beginFill(0x373173,0.3)
+	// Select.rectTestGraph.drawPolygon(x1,y1,x2,y1,x2,y2,x1,y2)
 	console.log(Select.rectTestGraph.x)
 	for (var i = 0; i < allBulle.length; i++) {
 		console.log("bulle test par rectTest")
@@ -109,27 +109,27 @@ rectCollisionTest(rectTest, currentPath) {
 		var by = allBulle[i].y
 		console.log(bx + ">" + x1 + "&&" + bx + "<" + x2 + "&&" + by + ">" + y1 + "&&" + by + "<" + y2)
 		if (bx > x1 && bx < x2 && by > y1 && by < y2) {
-			this.rectTestArray.push(allBulle[i])
+			Select.rectTestArray.push(allBulle[i])
 		}
 	}
-	if (this.rectTestArray.length > 0) {
+	if (Select.rectTestArray.length > 0) {
 		console.log("au moins Une bulle dans la selection")
-		this.polygonCollisionTest(this.rectTestArray, currentPath)
+		Select.polygonCollisionTest(Select.rectTestArray, currentPath)
 	}
 	Select.drawnGraphics.clear();
 }
 
-currentPathX = []
-currentPathY = []
-smallestX
-yOfSmallestX
-smallestXIndex
-arrayDetect = []
-isDetect = false
-pathX;
-pathY;
-z;
-polygonCollisionTest(rectTestArray, currentPath) {
+static currentPathX = []
+static currentPathY = []
+static smallestX
+static yOfSmallestX
+static smallestXIndex
+static arrayDetect = []
+static isDetect = false
+static pathX;
+static pathY;
+static z;
+static polygonCollisionTest(rectTestArray, currentPath) {
 	/* a = $('#canvasId')[0];
 	b = document.getElementById("b");
 	gl = a.getContext("webgl");
@@ -150,121 +150,121 @@ polygonCollisionTest(rectTestArray, currentPath) {
 	for (var i = 0; i < currentPath.length; i++) {
 		var scaleScene = Rezo.scaleScene;
 		if (i % 2 == 1) {
-			this.currentPathY.push(currentPath[i] / scaleScene.scale.x - scaleScene.scene.y - this.diffScaleY)
+			Select.currentPathY.push(currentPath[i] / scaleScene.scale.x - scaleScene.scene.y - Select.diffScaleY)
 		} else {
-			this.currentPathX.push(currentPath[i] / scaleScene.scale.x - scaleScene.scene.x - this.diffScaleX)
+			Select.currentPathX.push(currentPath[i] / scaleScene.scale.x - scaleScene.scene.x - Select.diffScaleX)
 			if (i == 0) {
-				this.smallestX = currentPath[i]
-				this.smallestXIndex = i / 2
-			} else if (currentPath[i] < this.smallestX) {
-				this.smallestX = currentPath[i]
-				this.smallestXIndex = i / 2
+				Select.smallestX = currentPath[i]
+				Select.smallestXIndex = i / 2
+			} else if (currentPath[i] < Select.smallestX) {
+				Select.smallestX = currentPath[i]
+				Select.smallestXIndex = i / 2
 			}
 		}
 	}
-	var endCurrentPathX = this.currentPathX.splice(0, this.smallestXIndex)
-	this.pathX = $.merge(this.currentPathX, endCurrentPathX);
-	var endCurrentPathY = this.currentPathY.splice(0, this.smallestXIndex)
-	this.pathY = $.merge(this.currentPathY, endCurrentPathY);
-	if (this.pathY[0] < this.pathY[1] && this.pathY[0] < this.pathY[10]) {////////////////clockwise or counterClockwise
-		this.clockwiseSelect = false
-		this.counterClockwiseSelect = true
+	var endCurrentPathX = Select.currentPathX.splice(0, Select.smallestXIndex)
+	Select.pathX = $.merge(Select.currentPathX, endCurrentPathX);
+	var endCurrentPathY = Select.currentPathY.splice(0, Select.smallestXIndex)
+	Select.pathY = $.merge(Select.currentPathY, endCurrentPathY);
+	if (Select.pathY[0] < Select.pathY[1] && Select.pathY[0] < Select.pathY[10]) {////////////////clockwise or counterClockwise
+		Select.clockwiseSelect = false
+		Select.counterClockwiseSelect = true
 	} else {
-		this.clockwiseSelect = true
-		this.counterClockwiseSelect = false
+		Select.clockwiseSelect = true
+		Select.counterClockwiseSelect = false
 	}
 	for (var j = 0; j < rectTestArray.length; j++) {
 		console.log(rectTestArray)
 		var detectbulleX = rectTestArray[j].x
 		var detectbulleY = rectTestArray[j].y
-		this.yOfSmallestX = this.pathY[0]
-		for (i = 0; i < this.pathX.length; i++) {
+		Select.yOfSmallestX = Select.pathY[0]
+		for (i = 0; i < Select.pathX.length; i++) {
 
-			if (this.pathX[i] != this.pathX[i + 1]) {//si this.pathX et this.pathX+1 sont différent
-				if (this.pathY[i] > this.yOfSmallestX) {//si this.pathY est "negatif"
-					if (this.pathX[i] < this.pathX[i + 1]) {/////////si this.pathX++
-						if (this.pathX[i] < detectbulleX && detectbulleX < this.pathX[i + 1]) {//si bulle dans interval this.pathX et this.pathX+1
-							if (this.pathY[i] > detectbulleY && this.pathY[i + 1] > detectbulleY && detectbulleY > this.yOfSmallestX) {
-								console.log("detection y- this.path++ Clock--")
-								this.arrayDetect.push([this.counterClockwiseSelect, this.pathY[i]])
-							} else if (this.pathY[i] > detectbulleY && detectbulleY > this.yOfSmallestX || this.pathY[i + 1] > detectbulleY && detectbulleY > this.yOfSmallestX) {
+			if (Select.pathX[i] != Select.pathX[i + 1]) {//si Select.pathX et Select.pathX+1 sont différent
+				if (Select.pathY[i] > Select.yOfSmallestX) {//si Select.pathY est "negatif"
+					if (Select.pathX[i] < Select.pathX[i + 1]) {/////////si Select.pathX++
+						if (Select.pathX[i] < detectbulleX && detectbulleX < Select.pathX[i + 1]) {//si bulle dans interval Select.pathX et Select.pathX+1
+							if (Select.pathY[i] > detectbulleY && Select.pathY[i + 1] > detectbulleY && detectbulleY > Select.yOfSmallestX) {
+								console.log("detection y- Select.path++ Clock--")
+								Select.arrayDetect.push([Select.counterClockwiseSelect, Select.pathY[i]])
+							} else if (Select.pathY[i] > detectbulleY && detectbulleY > Select.yOfSmallestX || Select.pathY[i + 1] > detectbulleY && detectbulleY > Select.yOfSmallestX) {
 								////go to border detect function
 							}
 						}
-					} else if (this.pathX[i] > this.pathX[i + 1]) {////si PathX-- 
-						if (this.pathX[i] > detectbulleX && detectbulleX > this.pathX[i + 1]) {//si bulle dans interval this.pathX et this.pathX+1
-							if (this.pathY[i] > detectbulleY && this.pathY[i + 1] > detectbulleY && detectbulleY > this.yOfSmallestX) {
-								console.log("detection y- this.path-- Clock++")
-								this.arrayDetect.push([this.clockwiseSelect, this.pathY[i]])
-							} else if (this.pathY[i] > detectbulleY && detectbulleY > this.yOfSmallestX || this.pathY[i + 1] > detectbulleY && detectbulleY > this.yOfSmallestX) {
+					} else if (Select.pathX[i] > Select.pathX[i + 1]) {////si PathX-- 
+						if (Select.pathX[i] > detectbulleX && detectbulleX > Select.pathX[i + 1]) {//si bulle dans interval Select.pathX et Select.pathX+1
+							if (Select.pathY[i] > detectbulleY && Select.pathY[i + 1] > detectbulleY && detectbulleY > Select.yOfSmallestX) {
+								console.log("detection y- Select.path-- Clock++")
+								Select.arrayDetect.push([Select.clockwiseSelect, Select.pathY[i]])
+							} else if (Select.pathY[i] > detectbulleY && detectbulleY > Select.yOfSmallestX || Select.pathY[i + 1] > detectbulleY && detectbulleY > Select.yOfSmallestX) {
 								////go to border detect function
 							}
 						}
 					}
 
-				} else if (this.pathY[i] < this.yOfSmallestX) {//si this.pathY est "positif"
-					if (this.pathX[i] < this.pathX[i + 1]) {/////////si this.pathX++
-						if (this.pathX[i] < detectbulleX && detectbulleX < this.pathX[i + 1]) {//si bulle dans interval this.pathX et this.pathX+1
-							if (this.pathY[i] < detectbulleY && this.pathY[i + 1] < detectbulleY && detectbulleY < this.yOfSmallestX) {
-								this.arrayDetect.push([this.clockwiseSelect, this.pathY[i]])
-								console.log("detection y+ this.path++ Clock++")
-							} else if (this.pathY[i] > detectbulleY && detectbulleY > this.yOfSmallestX || this.pathY[i + 1] > detectbulleY && detectbulleY > this.yOfSmallestX) {
+				} else if (Select.pathY[i] < Select.yOfSmallestX) {//si Select.pathY est "positif"
+					if (Select.pathX[i] < Select.pathX[i + 1]) {/////////si Select.pathX++
+						if (Select.pathX[i] < detectbulleX && detectbulleX < Select.pathX[i + 1]) {//si bulle dans interval Select.pathX et Select.pathX+1
+							if (Select.pathY[i] < detectbulleY && Select.pathY[i + 1] < detectbulleY && detectbulleY < Select.yOfSmallestX) {
+								Select.arrayDetect.push([Select.clockwiseSelect, Select.pathY[i]])
+								console.log("detection y+ Select.path++ Clock++")
+							} else if (Select.pathY[i] > detectbulleY && detectbulleY > Select.yOfSmallestX || Select.pathY[i + 1] > detectbulleY && detectbulleY > Select.yOfSmallestX) {
 								////go to border detect function
 							}
 						}
-					} else if (this.pathX[i] > this.pathX[i + 1]) {////si PathX-- 
-						if (this.pathX[i] > detectbulleX && detectbulleX > this.pathX[i + 1]) {//si bulle dans interval this.pathX et this.pathX+1
-							if (this.pathY[i] < detectbulleY && this.pathY[i + 1] < detectbulleY && detectbulleY < this.yOfSmallestX) {
-								this.arrayDetect.push([this.counterClockwiseSelect, this.pathY[i]])
-								console.log("detection y+ this.path-- Clock--")
-							} else if (this.pathY[i] > detectbulleY && detectbulleY > this.yOfSmallestX || this.pathY[i + 1] > detectbulleY && detectbulleY > this.yOfSmallestX) {
+					} else if (Select.pathX[i] > Select.pathX[i + 1]) {////si PathX-- 
+						if (Select.pathX[i] > detectbulleX && detectbulleX > Select.pathX[i + 1]) {//si bulle dans interval Select.pathX et Select.pathX+1
+							if (Select.pathY[i] < detectbulleY && Select.pathY[i + 1] < detectbulleY && detectbulleY < Select.yOfSmallestX) {
+								Select.arrayDetect.push([Select.counterClockwiseSelect, Select.pathY[i]])
+								console.log("detection y+ Select.path-- Clock--")
+							} else if (Select.pathY[i] > detectbulleY && detectbulleY > Select.yOfSmallestX || Select.pathY[i + 1] > detectbulleY && detectbulleY > Select.yOfSmallestX) {
 								////go to border detect function
 							}
 						}
 					}
 				}
 
-			} else {////si this.pathX et this.pathX+1 sont égaux
+			} else {////si Select.pathX et Select.pathX+1 sont égaux
 				//tour pour rien
 			}
 		}
 
-		this.z = 0;
+		Select.z = 0;
 
-		this.funDelay()
+		Select.funDelay()
 		//Select.drawnGraphics.clear();
-		console.log(this.arrayDetect[0])
-		if (this.arrayDetect.length == 1) {//si une detection
-			this.isDetect = this.arrayDetect[0][0]
+		console.log(Select.arrayDetect[0])
+		if (Select.arrayDetect.length == 1) {//si une detection
+			Select.isDetect = Select.arrayDetect[0][0]
 			console.log("une détéction dans arraydetect")
-			console.log("cette detection est_" + this.isDetect)
-		} else if (this.arrayDetect.length > 1) {//si plusieurs detection 
-			for (i = 0; i < this.arrayDetect.length; i++) {
-				var diffTemp = Math.abs(this.arrayDetect[i][1] - detectbulleY)
-				this.arrayDetect[i][1] = diffTemp
+			console.log("cette detection est_" + Select.isDetect)
+		} else if (Select.arrayDetect.length > 1) {//si plusieurs detection 
+			for (i = 0; i < Select.arrayDetect.length; i++) {
+				var diffTemp = Math.abs(Select.arrayDetect[i][1] - detectbulleY)
+				Select.arrayDetect[i][1] = diffTemp
 				if (i > 0) {
-					if (this.arrayDetect[i][1] > this.arrayDetect[i - 1][1]) {
-						this.isDetect = this.arrayDetect[i - 1][0]
+					if (Select.arrayDetect[i][1] > Select.arrayDetect[i - 1][1]) {
+						Select.isDetect = Select.arrayDetect[i - 1][0]
 					} else {
-						this.isDetect = this.arrayDetect[i][0]
+						Select.isDetect = Select.arrayDetect[i][0]
 					}
 				}
 			}
 		} else {//si pas detection
-			this.isDetect = false
+			Select.isDetect = false
 		}
-		while (this.arrayDetect.length > 0) {
-			this.arrayDetect.pop()
+		while (Select.arrayDetect.length > 0) {
+			Select.arrayDetect.pop()
 		}
-		// while(this.pathX.length>0){
-		// this.pathX.pop()
+		// while(Select.pathX.length>0){
+		// Select.pathX.pop()
 		// }
-		// while(this.pathY.length>0){
-		// this.pathY.pop()
+		// while(Select.pathY.length>0){
+		// Select.pathY.pop()
 		// }
 
 
-		if (this.isDetect) {
+		if (Select.isDetect) {
 			var selectedBulle = Rezo.selectedBulle;
 			Multi.multiArray.push({
 				bulle: rectTestArray[j],
@@ -277,10 +277,10 @@ polygonCollisionTest(rectTestArray, currentPath) {
 			});
 			selectedBulle = rectTestArray[j];
 			Bulle.bulleDefaultSize = bulleSize(selectedBulle)
-			this.color = (<Bulle>selectedBulle).shape.rezoColor;
-			selectedBulle.lineStyle(16, this.color, 0.5)
+			Select.color = (<Bulle>selectedBulle).shape.rezoColor;
+			selectedBulle.lineStyle(16, Select.color, 0.5)
 			selectedBulle.drawCircle(0, 0, Bulle.bulleDefaultSize)
-			if (this.color == 0xffffff) {
+			if (Select.color == 0xffffff) {
 				selectedBulle.lineStyle(16, 0x000000, 0.5)
 				selectedBulle.drawCircle(0, 0, Bulle.bulleDefaultSize)
 			}
@@ -295,27 +295,27 @@ polygonCollisionTest(rectTestArray, currentPath) {
 		rectTestArray.pop()
 	}
 }
-funDelay() {
+static funDelay() {
 
-	if (this.z < this.pathX.length) {
-		this.path.push(this.pathX[this.z])
-		this.path.push(this.pathY[this.z])
-		//console.log(this.pathY[this.z])
+	if (Select.z < Select.pathX.length) {
+		Select.path.push(Select.pathX[Select.z])
+		Select.path.push(Select.pathY[Select.z])
+		//console.log(Select.pathY[Select.z])
 		Select.detectPathGraphics.clear();
 		Select.detectPathGraphics.lineStyle(5, 0x000000, 1)
-		Select.detectPathGraphics.beginFill(this.color);
-		Select.detectPathGraphics.drawPolygon(this.path)
+		Select.detectPathGraphics.beginFill(Select.color);
+		Select.detectPathGraphics.drawPolygon(Select.path)
 		Select.detectPathGraphics.endFill();
 
-		this.z += 5
-		window.setTimeout(this.funDelay, 2);
+		Select.z += 5
+		window.setTimeout(Select.funDelay, 2);
 	} else {
-		this.path = []
-		while (this.pathX.length > 0) {
-			this.pathX.pop()
+		Select.path = []
+		while (Select.pathX.length > 0) {
+			Select.pathX.pop()
 		}
-		while (this.pathY.length > 0) {
-			this.pathY.pop()
+		while (Select.pathY.length > 0) {
+			Select.pathY.pop()
 		}
 	}
 } 
