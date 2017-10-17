@@ -7,6 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
+    "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +25,29 @@
   },
   "homepage": "https://github.com/AntoineGermanique/REZO_TYPESCRIPT#readme",
   "dependencies": {
-    "webpack": "^3.7.1"
+    "@types/gapi": "0.0.35",
+    "@types/gapi.auth2": "0.0.45",
+    "@types/gapi.client": "^1.0.0",
+    "@types/gapi.drive": "0.0.1",
+    "file": "^0.2.2",
+    "html-loader": "^0.5.1",
+    "jquery": "^3.2.1",
+    "pixi.js": "^4.5.6",
+    "typescript": "^2.5.3"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.2.13",
+    "@types/pixi.js": "^4.5.7",
+    "css": "^2.2.1",
+    "css-entry-webpack-plugin": "^1.0.0-beta.4",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.1",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.30.1",
+    "style-loader": "^0.19.0",
+    "ts-loader": "^3.0.2",
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.2",
+    "webpack-init": "^0.1.2"
   }
 }
