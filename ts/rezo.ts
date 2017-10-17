@@ -167,7 +167,7 @@ export class Rezo {
         scene.sceneMulti = Rezo.sceneMulti;
 
 
-         var primaryBulle = new Bulle(Bulle.bulleX, Bulle.bulleY, "rezo", Bulle.bulleColor, Bulle.defaultScale);
+         var primaryBulle = new Bulle(Rezo.windowW / 2, Rezo.windowH / 2, "rezo", Bulle.bulleColor, Bulle.defaultScale);
          Rezo.sceneBulle.addChild(primaryBulle);
 
         requestAnimationFrame(animate);

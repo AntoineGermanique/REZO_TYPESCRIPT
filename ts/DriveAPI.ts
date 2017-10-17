@@ -2,9 +2,10 @@
 // using the v2 version
 import { Rezo } from './rezo'
 import { Utilitary, openLoad, RezoSave } from './index';
+import * as $ from 'jquery'
 // import {gapi} from 'gapi.client'
 // import gapi from 'gapi-client'
-declare const gapi 
+declare const gapi
 
 //object of the js drive api didn't found tpescript def, but should exist
 // declare namespace gapi.client {
@@ -24,7 +25,7 @@ interface DriveFile {
 
 export class DriveAPI {
 
-    CLIENT_ID: string = '274114145570-ohvfonvi299jafoco3s9jld3omfhk3in.apps.googleusercontent.com';
+    CLIENT_ID: string = '868894976686-v9jemj2h2ejkjhf0tplf6jp4v4vfleju.apps.googleusercontent.com';
 
     SCOPES: string[] = ['https://www.googleapis.com/auth/drive'];
     faustFolder: string = "FaustPlayground";
@@ -62,6 +63,10 @@ export class DriveAPI {
                 },
                 (authResult) => {
                     this.handleAuthResult(authResult)
+                },
+                (error) => {
+                    var event = new CustomEvent("clouderror", { 'detail': error.error })
+                    document.dispatchEvent(event);
                 }
             );
         }
@@ -108,7 +113,9 @@ export class DriveAPI {
                 { client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false },
                 (authResult) => {
                     this.handleAuthResult(authResult)
-                });
+                },
+                (error) => { console.log(error) }
+            );
         } else {
             alert("connexion au drive impossible, vérifiez votre connexion  internet")
             Utilitary.stopLoad();
