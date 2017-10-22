@@ -46,3 +46,4 @@ export * from './zoom'
 export * from './select'
 export * from './init'
 export * from './bulle';
+export * from './background'

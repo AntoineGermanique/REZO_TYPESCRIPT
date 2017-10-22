@@ -164,6 +164,7 @@ export class DriveAPI {
 
             } else {
                 this.appendPre("", null, null, null);
+                $('#loading').css("display", "none");                
             }
         });
     }
