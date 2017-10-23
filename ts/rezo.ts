@@ -20,6 +20,8 @@ import {
 import * as PIXI from 'pixi.js'
 import * as $ from 'jquery'
 
+declare const ENV
+console.log(ENV);
 
 (() => {
     window.addEventListener('load', () => new Rezo(), false);

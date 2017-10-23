@@ -9,6 +9,7 @@
   "scripts": {
     "start": "webpack-dev-server --host 0.0.0.0 --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
+    "dev": "webpack --config webpack.devmobile.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
