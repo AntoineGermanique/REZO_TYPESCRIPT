@@ -7,8 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "webpack-dev-server  --host 0.0.0.0",
-    "build": "webpack",
+    "start": "webpack-dev-server --host 0.0.0.0 --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -49,6 +49,7 @@
     "ts-loader": "^3.0.2",
     "webpack": "^3.7.1",
     "webpack-dev-server": "^2.9.2",
-    "webpack-init": "^0.1.2"
+    "webpack-init": "^0.1.2",
+    "webpack-merge": "^4.1.0"
   }
 }
