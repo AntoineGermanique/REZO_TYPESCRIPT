@@ -9,10 +9,7 @@ module.exports = {
     "main": __dirname + '/ts/rezo.ts',
   },
 
-  output: {
-    path: __dirname + '/dist',
-    filename: "[name].bundle.js"
-  },
+
   module: {
     loaders: [
       { test: /\.ts$/, loader: 'ts-loader' },

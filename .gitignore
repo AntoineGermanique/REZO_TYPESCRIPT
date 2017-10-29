@@ -104,3 +104,6 @@ node_modules/
 dist/
 js/
 environment/
+plugins/
+platforms/
+www/
