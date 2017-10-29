@@ -10,6 +10,8 @@
     "start": "webpack-dev-server --host 0.0.0.0 --open --config environment/webpack.dev.js",
     "build": "webpack --config environment/webpack.prod.js",
     "build-mobile": "webpack --config environment/webpack.prodmobile.js",
+    "dev-mobile": "npm run dev && npm run cordova",
+    "cordova": "cordova run android",
     "dev": "webpack --config environment/webpack.devmobile.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
