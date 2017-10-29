@@ -1,7 +1,7 @@
 ﻿//class SceneDraw
 import { Rezo } from './rezo'
-import * as $ from 'jquery' 
-import {TextRecognition,Draw, dragScene, Bulle, Loc, ShapeEnum, Menu, Bezier, Ressource} from './index'
+import * as $ from 'jquery'
+import { TextRecognition, Draw, dragScene, Bulle, Loc, ShapeEnum, Menu, Bezier, Ressource } from './index'
 
 export class SceneDraw extends PIXI.Container {
     _draw: Draw;
@@ -11,14 +11,17 @@ export class SceneDraw extends PIXI.Container {
     _drawPause: boolean = false;
     static isWriting: boolean = false;
     static isBulling: boolean = false;
+    falseEvent: Event
+    interval: number
 
     constructor() {
         super();
         this.setListeners();
     }
+    // checking for galaxy not pen (double event remove second one)
 
-    setListeners():void {
-        var drawStart = (data:dragScene.Data) => {
+    setListeners(): void {
+        var drawStart = (data: dragScene.Data) => {
             this._drawDown = true;
             if (SceneDraw.isWriting) {
                 this.drawWriteStart(data);
@@ -26,9 +29,9 @@ export class SceneDraw extends PIXI.Container {
                 this.drawBulleStart(data);
             }
 
-           
+
         }
-        this.on("mousedown", drawStart);
+        // this.on("mousedown", drawStart);
         this.on("touchstart", drawStart);
 
         var draw = (data: dragScene.Data) => {
@@ -46,13 +49,13 @@ export class SceneDraw extends PIXI.Container {
 
 
         }
-        this.on("mousemove", draw);
+        // this.on("mousemove", draw);
         this.on("touchmove", draw);
 
         var drawStop = () => {
             this._drawDown = false;
             if (SceneDraw.isWriting) {
-                if (this._draw){
+                if (this._draw) {
                     this._drawPause = true
                     this._draw.drawLine();
                 }
@@ -68,12 +71,12 @@ export class SceneDraw extends PIXI.Container {
             }
 
         }
-        this.on("mouseup", drawStop);
-        this.on("mouseupoutside", drawStop);
+        // this.on("mouseup", drawStop);
+        // this.on("mouseupoutside", drawStop);
         this.on("touchend", drawStop);
         this.on("touchendoutside", drawStop);
     }
-    createDrawBulle() {        
+    createDrawBulle() {
         console.log("createBulle");
         var x = this._drawBulle.getLocalBounds().x;
         var y = this._drawBulle.getLocalBounds().y;
@@ -112,13 +115,13 @@ export class SceneDraw extends PIXI.Container {
 
 
 
-    drawWriteStart(data:dragScene.Data) {
+    drawWriteStart(data: dragScene.Data) {
         var loc: Loc = {
             x: data.data.global.x,
             y: data.data.global.y
         }
         if (!this._draw)
-            this._draw = new Draw(loc,0);
+            this._draw = new Draw(loc, 0);
         this.addChild(this._draw)
         this._drawDown = true;
     }
@@ -205,8 +208,8 @@ export class SceneDraw extends PIXI.Container {
                 //var texture = Rezo.sceneDraw._drawText.generateTexture(Rezo.renderer); var shapeSprite = new PIXI.Sprite(texture);
                 //Rezo.scene.addChild(shapeSprite)
                 //Rezo.sceneDraw._drawText._bmp = shapeSprite;
-            //    var bezier = new Bezier();
-            //    bezier.drawQuadraticCurve(Rezo.sceneDraw._drawText.getPath(), Rezo.sceneDraw._drawText)
+                //    var bezier = new Bezier();
+                //    bezier.drawQuadraticCurve(Rezo.sceneDraw._drawText.getPath(), Rezo.sceneDraw._drawText)
             }
             Rezo.sceneDraw._draw = null;
             if (SceneDraw.isWriting) {
@@ -251,9 +254,9 @@ export class SceneDraw extends PIXI.Container {
             var bezier = new Bezier();
             var pathPath = bezier.slicePath(Rezo.sceneDraw._draw.getPath());
             pathPath.pop();
-            var newPath:Loc[] = [];
+            var newPath: Loc[] = [];
             for (var i = 0; i < pathPath.length; i++) {
-                newPath=newPath.concat(pathPath[i]);
+                newPath = newPath.concat(pathPath[i]);
             }
             Rezo.sceneDraw._draw.setPath(newPath);
             Rezo.sceneDraw._draw.drawLine();

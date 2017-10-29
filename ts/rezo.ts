@@ -14,15 +14,16 @@ import {
     Scale, setSortingListener, Save,
     bubbleArray, Link,
     ShapeEnum, LocalStorage,
-    Select
-    
+    Select, background
+
 } from './index'
 import * as PIXI from 'pixi.js'
 import * as $ from 'jquery'
 
 
-(()=>{
-    window.addEventListener('load', () => new Rezo(), false);    
+
+(() => {
+    window.addEventListener('load', () => new Rezo(), false);
 })()
 
 export class Rezo {
@@ -32,7 +33,7 @@ export class Rezo {
     static stage: Stage;
     static scene: Scene;
     static sceneSelect: PIXI.Container
-    static sceneMulti: PIXI.Container    
+    static sceneMulti: PIXI.Container
     static sceneLink: SceneLink;
     static scaleScene: ScaleScene;
     static sceneHyper: PIXI.Container;
@@ -140,7 +141,6 @@ export class Rezo {
         Rezo.sceneHyper = sceneHyper;
 
         scene.filterArea = new PIXI.Rectangle(0, 0, windowW, windowH);
-
         stage.addChild(sensorZoomScene)
         stage.addChild(sensorZoomScene2)
         stage.addChild(sensorScaleBulleScene)
@@ -149,7 +149,9 @@ export class Rezo {
         sensorZoomScene.addChild(upperScene)
 
         upperScene.addChild(scaleScene)
+
         scaleScene.addChild(scene)
+
         scene.addChild(sceneHyper)
         scene.addChild(sceneLink)
         scene.addChild(sceneBulle)
@@ -165,10 +167,16 @@ export class Rezo {
         scene.sceneHyper = sceneHyper;
         scene.sceneLink = sceneLink;
         scene.sceneMulti = Rezo.sceneMulti;
+        // let images = ['../assets/upper.png', '../assets/sensor1.png', '../assets/stage.png', '../assets/scale.png']
+        // background.loadImages(images).then(() => {
+        //     sensorZoomScene.addChild(background.makeBgContainer(new PIXI.Point(100, 100), PIXI.Sprite.fromImage('../assets/sensor1.png')))
+        //     stage.addChild(background.makeBgContainer(new PIXI.Point(100, 100), PIXI.Sprite.fromImage('../assets/stage.png')))
+        //     upperScene.addChild(background.makeBgContainer(new PIXI.Point(100, 100), PIXI.Sprite.fromImage('../assets/upper.png')))
+        //     scaleScene.addChild(background.makeBgContainer(new PIXI.Point(100, 100), PIXI.Sprite.fromImage('../assets/scale.png')))
+        // })
 
-
-         var primaryBulle = new Bulle(Rezo.windowW / 2, Rezo.windowH / 2, "rezo", Bulle.bulleColor, Bulle.defaultScale);
-         Rezo.sceneBulle.addChild(primaryBulle);
+        var primaryBulle = new Bulle(Rezo.windowW / 2, Rezo.windowH / 2, "rezo", Bulle.bulleColor, Bulle.defaultScale);
+        Rezo.sceneBulle.addChild(primaryBulle);
 
         requestAnimationFrame(animate);
         function animate() {

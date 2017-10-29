@@ -7,7 +7,8 @@ export * from './Draw';
 export * from './hyper';
 export * from './resizeFun';
 export * from './suppr';
-export * from './DriveAPI'
+export * from './platform'
+export * from './models'
 export * from './open'
 export * from './menu'
 export * from './multi'
@@ -46,3 +47,4 @@ export * from './zoom'
 export * from './select'
 export * from './init'
 export * from './bulle';
+export * from './background'

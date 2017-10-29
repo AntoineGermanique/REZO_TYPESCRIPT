@@ -2,11 +2,10 @@
 "use strict"
 import { Rezo } from './rezo'
 import * as $ from 'jquery'
-import { DriveAPI, Load, Utilitary, Ressource, Menu, LocalStorage } from './index'
+import { drive, Load, Utilitary, Ressource, Menu, LocalStorage } from './index'
 
 var isTitreInvalid
 var titre;
-export var drive: DriveAPI = new DriveAPI();
 var counter: number = 0;
 
 
