@@ -1,7 +1,7 @@
 ﻿// class to handel Drive Api request//
 // using the v2 version
-import { Rezo } from './rezo'
-import { Utilitary, openLoad, RezoSave } from './index';
+import { Rezo } from '../rezo'
+import { Utilitary, openLoad, RezoSave, IDriveAPI } from '../index';
 import * as $ from 'jquery'
 // import {gapi} from 'gapi.client'
 // import gapi from 'gapi-client'
@@ -22,11 +22,9 @@ interface DriveFile {
     fileExtension: string;
 
 }
-
-export class DriveAPI {
+export class DriveAPI implements IDriveAPI  {
 
     CLIENT_ID: string = '868894976686-v9jemj2h2ejkjhf0tplf6jp4v4vfleju.apps.googleusercontent.com';
-
     SCOPES: string[] = ['https://www.googleapis.com/auth/drive'];
     faustFolder: string = "FaustPlayground";
     isFaustFolderPresent: boolean = false;
@@ -36,8 +34,6 @@ export class DriveAPI {
     tempBlob: Blob;
     innerHTML: string = "";
     extension: string = ".rezo";
-    static counter: number = 0;
-
 
 
     /**
@@ -47,9 +43,6 @@ export class DriveAPI {
     checkAuth() {
 
     }
-
-
-
     updateConnection() {
         $('#loading').css("display", "block");
         if (Rezo.isDriveConnected) {
@@ -143,7 +136,6 @@ export class DriveAPI {
         });
 
         request.execute((resp) => {
-            console.log(DriveAPI.counter++)
             var event = new CustomEvent("finishloaddrive")
             document.dispatchEvent(event);
             var files = resp.items;
@@ -242,8 +234,6 @@ export class DriveAPI {
         });
         try {
             request.execute((resp) => {
-                console.log(DriveAPI.counter++)
-
                 this.lastSavedFileMetadata = resp;
                 callback(resp)
             })
@@ -342,7 +332,6 @@ export class DriveAPI {
             'fileId': fileId
         });
         request.execute(() => {
-            console.log(DriveAPI.counter++)
             $(".open").remove();
             $('#loading').css("display", "block");
             this.updateConnection();
